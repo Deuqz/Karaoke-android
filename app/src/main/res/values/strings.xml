@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">Karaoke_android</string>
+    <string name="app_name">Karaoke</string>
+    <string name="log_in">Log in</string>
+    <string name="sing_up">Sing up</string>
+    <string name="registration">Registration</string>
+    <string name="enter_your_first_name">Enter your first name</string>
+    <string name="first_name">First name</string>
+    <string name="second_name">Second name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="ok">OK</string>
 </resources>
