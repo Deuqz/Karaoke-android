@@ -1,9 +1,11 @@
 package database;
 
+import java.io.IOException;
+
 public interface DataBase {
 
     //    add user to dataBase
-    void add(User user);
+    boolean add(User user) throws IOException;
 
     //    is user correct
     boolean containsUser(String email);
@@ -12,5 +14,5 @@ public interface DataBase {
     boolean containsPassword(String email, String password);
 
     //    remove user from database
-    void remove(User user);
+    boolean remove(User user);
 }

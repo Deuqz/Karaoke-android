@@ -3,8 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.1818655549765503" />
-        <entry key="app/src/main/res/layout/activity_start.xml" value="0.1" />
+        <entry key="..\:/Projects/AndroidStudioProjects/Karaoke-android/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2525" />
+        <entry key="..\:/Projects/AndroidStudioProjects/Karaoke-android/app/src/main/res/layout/activity_login.xml" value="0.4" />
+        <entry key="..\:/Projects/AndroidStudioProjects/Karaoke-android/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Projects/AndroidStudioProjects/Karaoke-android/app/src/main/res/layout/activity_singup.xml" value="0.264" />
+        <entry key="..\:/Projects/AndroidStudioProjects/Karaoke-android/app/src/main/res/layout/activity_start.xml" value="0.2" />
+        <entry key="..\:/Projects/AndroidStudioProjects/Karaoke-android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2525" />
       </map>
     </option>
   </component>

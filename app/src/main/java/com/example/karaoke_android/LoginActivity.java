@@ -10,16 +10,18 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import database.DataBase;
+import database.FilesDatabase;
 import database.SimpleDatabase;
 
 public class LoginActivity extends AppCompatActivity {
 
-    DataBase database = new SimpleDatabase();
+    DataBase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        database = new FilesDatabase(getApplicationContext());
     }
 
     @SuppressLint("SetTextI18n")
