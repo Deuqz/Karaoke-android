@@ -56,9 +56,8 @@ public class FilesDatabase implements DataBase{
     public boolean containsPassword(String email, String password) throws RuntimeException {
         try (FileInputStream fr = context.openFileInput(email);
              BufferedReader reader = new BufferedReader(new InputStreamReader(fr))){
-            String str = reader.readLine();
-            str = reader.readLine();
-            return str.equals(password);
+            reader.readLine();
+            return reader.readLine().equals(password);
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Such user is not exists");
         } catch (IOException e) {
@@ -69,5 +68,23 @@ public class FilesDatabase implements DataBase{
     @Override
     public boolean remove(User user) {
         return context.deleteFile(user.email);
+    }
+
+    @Override
+    public User getUser(String email) {
+        File userFile = new File(context.getFilesDir(), email);
+        String password, name, surname;
+        try (FileInputStream fr = context.openFileInput(email);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(fr))){
+            reader.readLine();
+            password = reader.readLine();
+            name = reader.readLine();
+            surname = reader.readLine();
+            return new User(name, surname, email, password);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("Such user is not exists");
+        } catch (IOException e) {
+            throw new RuntimeException("Can't get user");
+        }
     }
 }

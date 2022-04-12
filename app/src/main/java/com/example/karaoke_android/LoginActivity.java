@@ -26,8 +26,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     public void okPushed(View view) {
-        String email = ((EditText) findViewById(R.id.email)).getText().toString();;
-        String password = ((EditText) findViewById(R.id.password)).getText().toString();;
+        String email = ((EditText) findViewById(R.id.email)).getText().toString();
+        String password = ((EditText) findViewById(R.id.password)).getText().toString();
         TextView textView = findViewById(R.id.errorMessage);
         if (email.isEmpty() || password.isEmpty()) {
             textView.setText("Please, fill all lines");
@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         textView.setVisibility(View.INVISIBLE);
         Intent intent = new Intent(this, com.example.karaoke_android.MainActivity.class);
+        intent.putExtra("User", database.getUser(email));
         startActivity(intent);
     }
 }

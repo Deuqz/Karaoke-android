@@ -18,4 +18,8 @@ public interface TrackPlayer {
     default void stop() {
         throw new UnsupportedOperationException();
     }
+
+    default void close() {
+        throw new UnsupportedOperationException();
+    }
 }

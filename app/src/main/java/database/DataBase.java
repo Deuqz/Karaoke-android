@@ -15,4 +15,9 @@ public interface DataBase {
 
     //    remove user from database
     boolean remove(User user);
+
+    //    get user from database
+    default User getUser(String email) {
+        throw new UnsupportedOperationException();
+    }
 }

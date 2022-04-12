@@ -26,7 +26,6 @@ public class SingUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_singup);
         database = new FilesDatabase(getApplicationContext());
-//        database = new SimpleDatabase();
     }
 
     @SuppressLint("SetTextI18n")
@@ -47,12 +46,14 @@ public class SingUpActivity extends AppCompatActivity {
             return;
         }
         textView.setVisibility(View.INVISIBLE);
+        User newUser = new User(firstName, secondName, email, password);
         try {
-            database.add(new User(firstName, secondName, email, password));
+            database.add(newUser);
         } catch (IOException e) {
             e.printStackTrace();
         }
         Intent intent = new Intent(this, com.example.karaoke_android.MainActivity.class);
+        intent.putExtra("User", newUser);
         startActivity(intent);
     }
 }

@@ -5,6 +5,8 @@ import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 import database.Track;
 
 public class TrackPlayerSimple implements TrackPlayer {
@@ -29,17 +31,21 @@ public class TrackPlayerSimple implements TrackPlayer {
         mediaPlayer.setOnCompletionListener(mp -> stop());
     }
 
-    public void play() {
+    public void play() throws NoTrackException {
+        if (mediaPlayer == null) {
+            throw new NoTrackException();
+        }
         mediaPlayer.start();
     }
 
     public void pause() {
-        if (mediaPlayer.isPlaying()) {
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
         }
     }
 
     public void stop() {
+        if (mediaPlayer == null) { return; }
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
         }
@@ -47,8 +53,14 @@ public class TrackPlayerSimple implements TrackPlayer {
             mediaPlayer.prepare();
             mediaPlayer.seekTo(0);
         }
-        catch (Throwable t) {
-            Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+        catch (IOException e) {
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void close() {
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
         }
     }
 }
