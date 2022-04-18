@@ -27,6 +27,10 @@ android {
     }
 }
 
+ext {
+    supportLibrary = "27.0.2"
+}
+
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.4.1'
