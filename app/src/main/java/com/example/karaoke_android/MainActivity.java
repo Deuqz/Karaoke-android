@@ -19,42 +19,38 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-// get the reference of FrameLayout and TabLayout
-        simpleFrameLayout = (FrameLayout) findViewById(R.id.simpleFrameLayout);
-        tabLayout = (TabLayout) findViewById(R.id.simpleTabLayout);
-// Create a new Tab named "First"
-        TabLayout.Tab firstTab = tabLayout.newTab();
-        firstTab.setText("First"); // set the Text for the first Tab
-        firstTab.setIcon(R.drawable.ic_launcher_background); // set an icon for the
-// first tab
-        tabLayout.addTab(firstTab); // add  the tab at in the TabLayout
-// Create a new Tab named "Second"
-        TabLayout.Tab secondTab = tabLayout.newTab();
-        secondTab.setText("Second"); // set the Text for the second Tab
-        secondTab.setIcon(R.drawable.ic_launcher_background); // set an icon for the second tab
-        tabLayout.addTab(secondTab); // add  the tab  in the TabLayout
-// Create a new Tab named "Third"
-        TabLayout.Tab thirdTab = tabLayout.newTab();
-        thirdTab.setText("Third"); // set the Text for the first Tab
-        thirdTab.setIcon(R.drawable.ic_launcher_background); // set an icon for the first tab
-        tabLayout.addTab(thirdTab); // add  the tab at in the TabLayout
+        simpleFrameLayout = findViewById(R.id.simpleFrameLayout);
+        tabLayout = findViewById(R.id.simpleTabLayout);
+        TabLayout.Tab musicTab = tabLayout.newTab();
+        musicTab.setText("\uD83C\uDFB6");
+        tabLayout.addTab(musicTab);
+        TabLayout.Tab searchTab = tabLayout.newTab();
+        searchTab.setText("\uD83D\uDD0E");
+        tabLayout.addTab(searchTab);
+        TabLayout.Tab settingsTab = tabLayout.newTab();
+        settingsTab.setText("⚙");
+        tabLayout.addTab(settingsTab);
+        TabLayout.Tab profileTab = tabLayout.newTab();
+        profileTab.setText("\uD83D\uDC64");
+        tabLayout.addTab(profileTab);
 
 
-// perform setOnTabSelectedListener event on TabLayout
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-// get the current selected tab's position and replace the fragment accordingly
                 Fragment fragment = null;
                 switch (tab.getPosition()) {
                     case 0:
                         fragment = new MusicFragment();
                         break;
                     case 1:
-                        fragment = new ProfileFragment();
+                        fragment = new SearchFragment();
                         break;
                     case 2:
                         fragment = new SettingsFragment();
+                        break;
+                    case 3:
+                        fragment = new ProfileFragment();
                         break;
                 }
                 FragmentManager fm = getSupportFragmentManager();
@@ -67,12 +63,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
     }

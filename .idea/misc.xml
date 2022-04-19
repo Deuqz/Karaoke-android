@@ -4,9 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Projects/AndroidStudioProjects/Karaoke-android/app/src/main/res/layout/activity_main.xml" value="0.4" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.20069204152249134" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_music.xml" value="0.746031746031746" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.3564356435643564" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.37662337662337664" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.3564356435643564" />
       </map>
     </option>
