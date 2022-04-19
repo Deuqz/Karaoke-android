@@ -10,22 +10,24 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import database.DataBase;
+import database.FilesDatabase;
 import database.SimpleDatabase;
 
 public class LoginActivity extends AppCompatActivity {
 
-    DataBase database = new SimpleDatabase();
+    DataBase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        database = new FilesDatabase(getApplicationContext());
     }
 
     @SuppressLint("SetTextI18n")
     public void okPushed(View view) {
-        String email = ((EditText) findViewById(R.id.email)).getText().toString();;
-        String password = ((EditText) findViewById(R.id.password)).getText().toString();;
+        String email = ((EditText) findViewById(R.id.email)).getText().toString();
+        String password = ((EditText) findViewById(R.id.password)).getText().toString();
         TextView textView = findViewById(R.id.errorMessage);
         if (email.isEmpty() || password.isEmpty()) {
             textView.setText("Please, fill all lines");
@@ -44,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         textView.setVisibility(View.INVISIBLE);
         Intent intent = new Intent(this, com.example.karaoke_android.MainActivity.class);
+        intent.putExtra("User", database.getUser(email));
         startActivity(intent);
     }
 }

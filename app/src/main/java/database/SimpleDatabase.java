@@ -8,9 +8,10 @@ public class SimpleDatabase implements DataBase {
     static HashSet<String> emailAndPassword = new HashSet<>();
 
     @Override
-    public void add(User user) {
-        emails.add(user.email);
-        emailAndPassword.add(user.email + " " + user.password);
+    public boolean add(User user) {
+        boolean result = emails.add(user.email);
+        result &= emailAndPassword.add(user.email + " " + user.password);
+        return result;
     }
 
     @Override
@@ -24,8 +25,9 @@ public class SimpleDatabase implements DataBase {
     }
 
     @Override
-    public void remove(User user) {
-        emails.remove(user.email);
-        emailAndPassword.remove(user.email + " " + user.password);
+    public boolean remove(User user) {
+        boolean result = emails.remove(user.email);
+        result &= emailAndPassword.remove(user.email + " " + user.password);
+        return result;
     }
 }
