@@ -12,15 +12,15 @@ import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
 
-    FrameLayout simpleFrameLayout;
+    FrameLayout frameLayout;
     TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        simpleFrameLayout = findViewById(R.id.simpleFrameLayout);
-        tabLayout = findViewById(R.id.simpleTabLayout);
+        frameLayout = findViewById(R.id.frameLayout);
+        tabLayout = findViewById(R.id.tabLayout);
         TabLayout.Tab musicTab = tabLayout.newTab();
         musicTab.setText("\uD83C\uDFB6");
         tabLayout.addTab(musicTab);
@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         TabLayout.Tab profileTab = tabLayout.newTab();
         profileTab.setText("\uD83D\uDC64");
         tabLayout.addTab(profileTab);
-
 
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -56,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 assert fragment != null;
-                ft.replace(R.id.simpleFrameLayout, fragment);
+                ft.replace(R.id.frameLayout, fragment);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 ft.commit();
             }

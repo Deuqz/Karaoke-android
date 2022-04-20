@@ -21,7 +21,7 @@ public class TrackPlayerSimple implements TrackPlayer {
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             stop();
         }
-        mediaPlayer = MediaPlayer.create(context, track.id);
+        mediaPlayer = MediaPlayer.create(context, track.getId());
         mediaPlayer.setAudioAttributes(
                 new AudioAttributes.Builder()
                         .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
