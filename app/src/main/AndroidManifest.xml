@@ -10,8 +10,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Karaoke_android">
         <activity
+            android:name=".SongActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
             android:name=".MainActivity"
-            android:exported="false" />
+            android:parentActivityName=".LoginActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".LoginActivity" />
+        </activity>
         <activity
             android:name=".SingUpActivity"
             android:parentActivityName=".StartActivity">

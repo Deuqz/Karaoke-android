@@ -21,6 +21,7 @@ public class MusicFragment extends Fragment {
     static private final ArrayList<Track> allTracks;
 
     static {
+//        TODO fill tracks
         allTracks = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             allTracks.add(new Track("Gde nas net", "Oxxxymiron", "", 0));
@@ -54,7 +55,8 @@ public class MusicFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.listView);
         listView.setAdapter(trackAdapter);
         listView.setOnItemClickListener((adapterView, view1, i, l) -> {
-            Intent intent = new Intent(view1.getContext(), SongActivity.class);
+            System.out.println("Yes");
+            Intent intent = new Intent(getActivity(), SongActivity.class);
             startActivity(intent);
         });
     }
