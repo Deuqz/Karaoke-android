@@ -1,5 +1,7 @@
 package database;
 
+import androidx.annotation.NonNull;
+
 public class Track {
     private String name;
     private String author;
@@ -43,5 +45,10 @@ public class Track {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @NonNull
+    public String toString() {
+        return getAuthor() + " \"" + getName() + "\"";
     }
 }

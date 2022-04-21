@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,8 @@ public class SongActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song);
         // Check permissions and make new classes for record and play
+        TextView textView = (TextView)findViewById(R.id.textView);
+        textView.setText(getIntent().getStringExtra("EXTRA_SESSION_ID"));
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
         trackPlayer = new TrackPlayerSimple(getApplicationContext());
         User user = getIntent().getParcelableExtra("User");
