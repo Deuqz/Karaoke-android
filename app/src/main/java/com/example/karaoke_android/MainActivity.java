@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         TabLayout.Tab profileTab = tabLayout.newTab();
         profileTab.setText("\uD83D\uDC64");
         tabLayout.addTab(profileTab);
-
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
