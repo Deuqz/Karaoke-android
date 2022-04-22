@@ -49,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 3:
                         fragment = new ProfileFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("userData", getIntent().getStringExtra("userData"));
+                        fragment.setArguments(bundle);
                         break;
                 }
                 FragmentManager fm = getSupportFragmentManager();

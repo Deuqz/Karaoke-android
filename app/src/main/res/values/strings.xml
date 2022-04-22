@@ -14,4 +14,7 @@
     <string name="microphone">🎤</string>
     <string name="profile">👤</string>
     <string name="find_track">Find track</string>
+    <string name="first_name_text">First name:</string>
+    <string name="second_name_text">Second name:</string>
+    <string name="profileTitle">Profile</string>
 </resources>

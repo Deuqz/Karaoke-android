@@ -9,8 +9,8 @@ public class SimpleDatabase implements DataBase {
 
     @Override
     public boolean add(User user) {
-        boolean result = emails.add(user.email);
-        result &= emailAndPassword.add(user.email + " " + user.password);
+        boolean result = emails.add(user.getEmail());
+        result &= emailAndPassword.add(user.getEmail() + " " + user.getPassword());
         return result;
     }
 
@@ -26,8 +26,8 @@ public class SimpleDatabase implements DataBase {
 
     @Override
     public boolean remove(User user) {
-        boolean result = emails.remove(user.email);
-        result &= emailAndPassword.remove(user.email + " " + user.password);
+        boolean result = emails.remove(user.getEmail());
+        result &= emailAndPassword.remove(user.getEmail() + " " + user.getPassword());
         return result;
     }
 }

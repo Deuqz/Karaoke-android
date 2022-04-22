@@ -24,7 +24,7 @@ public class VoiceRecorderSimple implements VoiceRecorder {
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        String fileName = user.email + 1;
+        String fileName = user.getEmail() + 1;
         recorder.setOutputFile(fileName);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         try {

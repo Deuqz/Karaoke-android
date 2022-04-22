@@ -3,11 +3,13 @@ package database;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 public class User implements Parcelable {
-    public String firstName;
-    public String secondName;
-    public String email;
-    public String password;
+    private String firstName;
+    private String secondName;
+    private String email;
+    private String password;
 
     public User(String firstName, String secondName, String email, String password) {
         this.firstName = firstName;
@@ -21,6 +23,43 @@ public class User implements Parcelable {
         secondName = in.readString();
         email = in.readString();
         password = in.readString();
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getSecondName() {
+        return secondName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @NonNull
+    public String toString() {
+        return firstName + " " + secondName + " " + email + " " + password;
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
