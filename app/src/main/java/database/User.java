@@ -74,7 +74,7 @@ public class User implements Parcelable {
 
     @NonNull
     public String toString() {
-        return firstName + " " + secondName + " " + email + " " + password;
+        return firstName + " " + secondName + " " + email;
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
