@@ -29,15 +29,15 @@ public class FilesDatabase implements DataBase{
 
     @Override
     public boolean add(User user) throws RuntimeException {
-        String userFileName = user.email;
+        String userFileName = user.getEmail();
         try (FileOutputStream fos = context.openFileOutput(userFileName, Context.MODE_PRIVATE)){
-            fos.write(user.email.getBytes(StandardCharsets.UTF_8));
+            fos.write(user.getEmail().getBytes(StandardCharsets.UTF_8));
             fos.write('\n');
-            fos.write(user.password.getBytes(StandardCharsets.UTF_8));
+            fos.write(user.getPassword().getBytes(StandardCharsets.UTF_8));
             fos.write('\n');
-            fos.write(user.firstName.getBytes(StandardCharsets.UTF_8));
+            fos.write(user.getFirstName().getBytes(StandardCharsets.UTF_8));
             fos.write('\n');
-            fos.write(user.secondName.getBytes(StandardCharsets.UTF_8));
+            fos.write(user.getSecondName().getBytes(StandardCharsets.UTF_8));
             fos.write('\n');
         } catch (IOException e) {
             context.deleteFile(userFileName);
@@ -67,7 +67,7 @@ public class FilesDatabase implements DataBase{
 
     @Override
     public boolean remove(User user) {
-        return context.deleteFile(user.email);
+        return context.deleteFile(user.getEmail());
     }
 
     @Override

@@ -20,9 +20,9 @@
         android:layout_height="wrap_content"
         android:hint="@string/find_track"
         android:inputType="text"
-        android:textColor="#00BCD4"
+        android:textColor="#FF9800"
         android:textColorHighlight="#FFFFFF"
-        android:textColorHint="#00BCD4"
+        android:textColorHint="#FF9900"
         android:textColorLink="#FFFFFF"
         android:textStyle="bold|italic" />
 

@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         TabLayout.Tab profileTab = tabLayout.newTab();
         profileTab.setText("\uD83D\uDC64");
         tabLayout.addTab(profileTab);
-
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -50,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 3:
                         fragment = new ProfileFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("userData", getIntent().getStringExtra("userData"));
+                        fragment.setArguments(bundle);
                         break;
                 }
                 FragmentManager fm = getSupportFragmentManager();

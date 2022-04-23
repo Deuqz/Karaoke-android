@@ -14,7 +14,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/main"
+        app:srcCompat="@drawable/song"
         tools:layout_editor_absoluteX="27dp" />
 
     <Button
@@ -25,6 +25,8 @@
         android:layout_marginTop="152dp"
         android:onClick="playTrackPushed"
         android:text="play_track"
+        android:backgroundTint="#CCAF86"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,6 +38,8 @@
         android:layout_marginEnd="44dp"
         android:onClick="pauseTrackPushed"
         android:text="pause_track"
+        android:backgroundTint="#CCAF86"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,6 +52,8 @@
         android:layout_marginEnd="16dp"
         android:onClick="recordPushed"
         android:text="record"
+        android:backgroundTint="#CCAF86"
+        android:textColor="#000000"
         app:layout_constraintEnd_toStartOf="@+id/stopRecordButton"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,6 +67,8 @@
         android:layout_marginEnd="40dp"
         android:onClick="stopRecordPushed"
         android:text="stop"
+        android:backgroundTint="#CCAF86"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pauseTrackButton" />
 
@@ -69,7 +77,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:textColor="#3F51B5"
+        android:textColor="#000000"
         android:textSize="30sp"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="parent"

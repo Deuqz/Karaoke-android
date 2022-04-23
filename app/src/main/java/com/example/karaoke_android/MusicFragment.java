@@ -14,7 +14,6 @@ import database.Track;
 
 import androidx.fragment.app.Fragment;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 public class MusicFragment extends Fragment {
@@ -57,7 +56,7 @@ public class MusicFragment extends Fragment {
         listView.setAdapter(trackAdapter);
         listView.setOnItemClickListener((adapterView, view1, i, l) -> {
             Intent intent = new Intent(getActivity(), SongActivity.class);
-            intent.putExtra("EXTRA_SESSION_ID", tracks.get(i).toString());
+            intent.putExtra("trackName", tracks.get(i).toString());
             startActivity(intent);
         });
     }
