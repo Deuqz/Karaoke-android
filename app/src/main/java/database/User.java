@@ -5,11 +5,14 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
+
 public class User implements Parcelable {
     private String firstName;
     private String secondName;
     private String email;
     private String password;
+    private ArrayList<Track> trackList;
 
     public User(String firstName, String secondName, String email, String password) {
         this.firstName = firstName;
@@ -41,6 +44,10 @@ public class User implements Parcelable {
         return password;
     }
 
+    public ArrayList<Track> getTrackList() {
+        return trackList;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -55,6 +62,14 @@ public class User implements Parcelable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void addTrack(Track track) {
+        trackList.add(track);
+    }
+
+    public void removeTrack(Track track) {
+        trackList.remove(track);
     }
 
     @NonNull
