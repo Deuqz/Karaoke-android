@@ -10,11 +10,18 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import database.Track;
+import database.User;
 
 public class TrackAdaptor extends ArrayAdapter<Track> {
 
-    public TrackAdaptor(Activity context, ArrayList<Track> desserts) {
-        super(context, 0, desserts);
+    User user;
+
+    public TrackAdaptor(Activity context, ArrayList<Track> tracks) {
+        super(context, 0, tracks);
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

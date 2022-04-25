@@ -42,8 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 User user = getIntent().getParcelableExtra("User");
                 switch (tab.getPosition()) {
                     case 0:
-                        fragment = new MusicFragment();
-//                        TODO throw User
+                        fragment = MusicFragment.newInstance(user);
                         break;
                     case 1:
                         fragment = new SearchFragment();

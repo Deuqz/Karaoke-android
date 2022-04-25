@@ -45,16 +45,16 @@ public class ProfileFragment extends Fragment {
         secondName.setText(user.getSecondName());
         TextView email = view.findViewById(R.id.email);
         email.setText(user.getEmail());
-//        TODO write trackList
-//        ArrayList<Track> tracks = getArguments().getString("userData").split(" ");
-//        TrackAdaptor trackAdapter = new TrackAdaptor(getActivity(), tracks);
-//        ListView listView = (ListView) view.findViewById(R.id.listView);
-//        listView.setAdapter(trackAdapter);
-//        listView.setOnItemClickListener((adapterView, view1, i, l) -> {
-//            Intent intent = new Intent(getActivity(), SongActivity.class);
-//            intent.putExtra("trackName", tracks.get(i).toString());
-//            startActivity(intent);
-//        });
+//        TODO write trackList, now it is empty
+        TrackAdaptor trackAdapter = new TrackAdaptor(getActivity(), user.getTrackList());
+        ListView listView = view.findViewById(R.id.listView);
+        listView.setAdapter(trackAdapter);
+        listView.setOnItemClickListener((adapterView, view1, i, l) -> {
+            Intent intent = new Intent(getActivity(), SongActivity.class);
+//            TODO send track
+//            intent.putExtra("trackName", user.getTrackList().get(i).toString());
+            startActivity(intent);
+        });
         return view;
     }
 }

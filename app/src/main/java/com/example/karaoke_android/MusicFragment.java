@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import database.Track;
+import database.User;
 
 import androidx.fragment.app.Fragment;
 
@@ -29,6 +30,14 @@ public class MusicFragment extends Fragment {
             allTracks.add(new Track("Lose yourself", "Eminem", "", 0));
             allTracks.add(new Track("Vidihai", "Noize MC", "", 0));
         }
+    }
+
+    public static MusicFragment newInstance(User userSer) {
+        MusicFragment fragment = new MusicFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("User", userSer);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     private ArrayList<Track> getTackList(String subString) {
@@ -50,9 +59,10 @@ public class MusicFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    private void buttonsRedraw(View view, EditText editText) {
+    private void buttonsRedraw(User user, View view, EditText editText) {
         ArrayList<Track> tracks = getTackList(editText.getText().toString());
         TrackAdaptor trackAdapter = new TrackAdaptor(getActivity(), tracks);
+        trackAdapter.setUser(user);
         ListView listView = view.findViewById(R.id.listView);
         listView.setAdapter(trackAdapter);
         listView.setOnItemClickListener((adapterView, view1, i, l) -> {
@@ -68,6 +78,8 @@ public class MusicFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_music, container, false);
+        assert getArguments() != null;
+        User user = (User) getArguments().getSerializable("User");
         EditText editText = view.findViewById(R.id.textInput);
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -82,10 +94,10 @@ public class MusicFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
-                buttonsRedraw(view, editText);
+                buttonsRedraw(user, view, editText);
             }
         });
-        buttonsRedraw(view, editText);
+        buttonsRedraw(user, view, editText);
         return view;
     }
 }
