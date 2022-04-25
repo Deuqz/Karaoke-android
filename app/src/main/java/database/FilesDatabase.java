@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class FilesDatabase implements DataBase{
+public class FilesDatabase implements DataBase {
     private final Context context;
 
     public FilesDatabase(Context context) {
@@ -30,15 +30,8 @@ public class FilesDatabase implements DataBase{
     @Override
     public boolean add(User user) throws RuntimeException {
         String userFileName = user.getEmail();
-        try (FileOutputStream fos = context.openFileOutput(userFileName, Context.MODE_PRIVATE)){
-            fos.write(user.getEmail().getBytes(StandardCharsets.UTF_8));
-            fos.write('\n');
-            fos.write(user.getPassword().getBytes(StandardCharsets.UTF_8));
-            fos.write('\n');
-            fos.write(user.getFirstName().getBytes(StandardCharsets.UTF_8));
-            fos.write('\n');
-            fos.write(user.getSecondName().getBytes(StandardCharsets.UTF_8));
-            fos.write('\n');
+        try (FileOutputStream fos = context.openFileOutput(userFileName, Context.MODE_PRIVATE)) {
+            user.write(fos);
         } catch (IOException e) {
             context.deleteFile(userFileName);
             throw new RuntimeException("Can't add user");
@@ -55,7 +48,7 @@ public class FilesDatabase implements DataBase{
     @Override
     public boolean containsPassword(String email, String password) throws RuntimeException {
         try (FileInputStream fr = context.openFileInput(email);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(fr))){
+             BufferedReader reader = new BufferedReader(new InputStreamReader(fr))) {
             reader.readLine();
             return reader.readLine().equals(password);
         } catch (FileNotFoundException e) {
@@ -72,15 +65,13 @@ public class FilesDatabase implements DataBase{
 
     @Override
     public User getUser(String email) {
-        File userFile = new File(context.getFilesDir(), email);
-        String password, name, surname;
+//        File userFile = new File(context.getFilesDir(), email);
         try (FileInputStream fr = context.openFileInput(email);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(fr))){
+             BufferedReader reader = new BufferedReader(new InputStreamReader(fr))) {
             reader.readLine();
-            password = reader.readLine();
-            name = reader.readLine();
-            surname = reader.readLine();
-            return new User(name, surname, email, password);
+            User user = new User(reader);
+            user.setEmail(email);
+            return user;
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Such user is not exists");
         } catch (IOException e) {

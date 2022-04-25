@@ -10,6 +10,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.tabs.TabLayout;
 
+import database.User;
+
 public class MainActivity extends AppCompatActivity {
 
     FrameLayout frameLayout;
@@ -37,9 +39,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 Fragment fragment = null;
+                User user = getIntent().getParcelableExtra("User");
                 switch (tab.getPosition()) {
                     case 0:
                         fragment = new MusicFragment();
+//                        TODO throw User
                         break;
                     case 1:
                         fragment = new SearchFragment();
@@ -48,10 +52,7 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new SettingsFragment();
                         break;
                     case 3:
-                        fragment = new ProfileFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("userData", getIntent().getStringExtra("userData"));
-                        fragment.setArguments(bundle);
+                        fragment = ProfileFragment.newInstance(user);
                         break;
                 }
                 FragmentManager fm = getSupportFragmentManager();

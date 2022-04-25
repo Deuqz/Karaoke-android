@@ -2,6 +2,7 @@ package com.example.karaoke_android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -52,11 +53,13 @@ public class MusicFragment extends Fragment {
     private void buttonsRedraw(View view, EditText editText) {
         ArrayList<Track> tracks = getTackList(editText.getText().toString());
         TrackAdaptor trackAdapter = new TrackAdaptor(getActivity(), tracks);
-        ListView listView = (ListView) view.findViewById(R.id.listView);
+        ListView listView = view.findViewById(R.id.listView);
         listView.setAdapter(trackAdapter);
         listView.setOnItemClickListener((adapterView, view1, i, l) -> {
             Intent intent = new Intent(getActivity(), SongActivity.class);
-            intent.putExtra("trackName", tracks.get(i).toString());
+//            TODO putExtra track + user
+//            intent.putExtra("Track", (Parcelable) tracks.get(i));
+//            intent.putExtra("User", user);
             startActivity(intent);
         });
     }
@@ -65,7 +68,7 @@ public class MusicFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_music, container, false);
-        EditText editText = (EditText) view.findViewById(R.id.textInput);
+        EditText editText = view.findViewById(R.id.textInput);
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
