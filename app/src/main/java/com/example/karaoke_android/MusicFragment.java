@@ -67,8 +67,8 @@ public class MusicFragment extends Fragment {
         listView.setOnItemClickListener((adapterView, view1, i, l) -> {
             Intent intent = new Intent(getActivity(), SongActivity.class);
 //            TODO putExtra track + user
-//            intent.putExtra("Track", (Parcelable) tracks.get(i));
-//            intent.putExtra("User", user);
+            intent.putExtra("Track", (Parcelable) tracks.get(i));
+            intent.putExtra("User", (Parcelable) user);
             startActivity(intent);
         });
     }

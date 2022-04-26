@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import org.w3c.dom.Text;
+
 import database.Track;
 import database.User;
 import voice.TrackPlayer;
@@ -34,6 +36,8 @@ public class SongActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
         trackPlayer = new TrackPlayerSimple(getApplicationContext());
         User user = getIntent().getParcelableExtra("User");
+        Track track = getIntent().getParcelableExtra("Track");
+        textView.setText(track.getName());
         voiceRecorder = new VoiceRecorderSimple(getApplicationContext(), user);
     }
 
