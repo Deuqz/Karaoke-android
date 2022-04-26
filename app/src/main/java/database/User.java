@@ -125,6 +125,10 @@ public class User implements Parcelable, Serializable {
         trackList.remove(track);
     }
 
+    public boolean containsTrack(Track track) {
+        return trackList.contains(track);
+    }
+
     public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
         public User createFromParcel(Parcel in) {

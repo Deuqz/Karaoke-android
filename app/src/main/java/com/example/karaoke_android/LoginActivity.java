@@ -48,8 +48,6 @@ public class LoginActivity extends AppCompatActivity {
         ;
         textView.setVisibility(View.INVISIBLE);
         Intent intent = new Intent(this, com.example.karaoke_android.MainActivity.class);
-//        intent.putExtra("userData", database.getUser(email).toString());
-//        startActivity(intent);
         intent.putExtra("User", (Parcelable) database.getUser(email));
         startActivity(intent);
     }

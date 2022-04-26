@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -25,10 +26,8 @@ public class MusicFragment extends Fragment {
     static {
 //        TODO fill tracks
         allTracks = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            allTracks.add(new Track("Gde nas net", "Oxxxymiron", "", 0));
-            allTracks.add(new Track("Lose yourself", "Eminem", "", 0));
-            allTracks.add(new Track("Vidihai", "Noize MC", "", 0));
+        for (int i = 0; i < 30; i++) {
+            allTracks.add(new Track("Track" + i, "Oxxxymiron", "", 0));
         }
     }
 
