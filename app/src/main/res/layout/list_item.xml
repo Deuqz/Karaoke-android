@@ -8,8 +8,8 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/track_author"
-        android:layout_width="0dp"
+        android:id="@+id/trackAuthor"
+        android:layout_width="158dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="#EDEAE5"
@@ -17,12 +17,11 @@
         android:textStyle="bold|italic" />
 
     <TextView
-        android:id="@+id/track_name"
-        android:layout_width="0dp"
+        android:id="@+id/trackName"
+        android:layout_width="118dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="#EDEAE5"
         android:textSize="20sp"
         android:textStyle="bold|italic" />
-
 </LinearLayout>

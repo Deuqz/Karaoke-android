@@ -3,6 +3,7 @@ package com.example.karaoke_android;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -47,9 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         ;
         textView.setVisibility(View.INVISIBLE);
         Intent intent = new Intent(this, com.example.karaoke_android.MainActivity.class);
-        intent.putExtra("userData", database.getUser(email).toString());
-        startActivity(intent);
-        intent.putExtra("User", database.getUser(email));
+        intent.putExtra("User", (Parcelable) database.getUser(email));
         startActivity(intent);
     }
 }

@@ -13,10 +13,19 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 
 import database.Track;
+import database.User;
 
 public class ProfileFragment extends Fragment {
 
     public ProfileFragment() {
+    }
+
+    public static ProfileFragment newInstance(User userSer) {
+        ProfileFragment fragment = new ProfileFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("User", userSer);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
@@ -29,21 +38,23 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         assert getArguments() != null;
-        TextView firstName = (TextView) view.findViewById(R.id.firstName);
-        firstName.setText(getArguments().getString("userData").split(" ")[0]);
-        TextView secondName = (TextView) view.findViewById(R.id.secondName);
-        secondName.setText(getArguments().getString("userData").split(" ")[1]);
-        TextView email = (TextView) view.findViewById(R.id.email);
-        email.setText(getArguments().getString("userData").split(" ")[2]);
-//        ArrayList<Track> tracks = getArguments().getString("userData").split(" ");
-//        TrackAdaptor trackAdapter = new TrackAdaptor(getActivity(), tracks);
-//        ListView listView = (ListView) view.findViewById(R.id.listView);
-//        listView.setAdapter(trackAdapter);
-//        listView.setOnItemClickListener((adapterView, view1, i, l) -> {
-//            Intent intent = new Intent(getActivity(), SongActivity.class);
-//            intent.putExtra("trackName", tracks.get(i).toString());
-//            startActivity(intent);
-//        });
+        User user = (User) getArguments().getSerializable("User");
+        TextView firstName = view.findViewById(R.id.firstName);
+        firstName.setText(user.getFirstName());
+        TextView secondName = view.findViewById(R.id.secondName);
+        secondName.setText(user.getSecondName());
+        TextView email = view.findViewById(R.id.email);
+        email.setText(user.getEmail());
+//        TODO write trackList, now it is empty
+        TrackAdaptor trackAdapter = new TrackAdaptor(getActivity(), user.getTrackList());
+        ListView listView = view.findViewById(R.id.listView);
+        listView.setAdapter(trackAdapter);
+        listView.setOnItemClickListener((adapterView, view1, i, l) -> {
+            Intent intent = new Intent(getActivity(), SongActivity.class);
+//            TODO send track
+//            intent.putExtra("trackName", user.getTrackList().get(i).toString());
+            startActivity(intent);
+        });
         return view;
     }
 }
