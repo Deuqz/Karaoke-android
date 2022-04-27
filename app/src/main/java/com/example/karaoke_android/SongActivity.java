@@ -1,18 +1,17 @@
 package com.example.karaoke_android;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-
-import org.w3c.dom.Text;
 
 import database.Track;
 import database.User;
@@ -32,12 +31,17 @@ public class SongActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song);
         TextView textView = findViewById(R.id.textView);
-        textView.setText(getIntent().getStringExtra("trackName"));
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
         trackPlayer = new TrackPlayerSimple(getApplicationContext());
         User user = getIntent().getParcelableExtra("User");
         Track track = getIntent().getParcelableExtra("Track");
         textView.setText(track.getName());
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, com.example.karaoke_android.MainActivity.class);
+            intent.putExtra("User", (Parcelable) user);
+            startActivity(intent);
+        });
         voiceRecorder = new VoiceRecorderSimple(getApplicationContext(), user);
     }
 
