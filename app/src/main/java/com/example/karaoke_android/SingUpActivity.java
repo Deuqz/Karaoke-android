@@ -1,7 +1,6 @@
 package com.example.karaoke_android;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -12,11 +11,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import database.DataBase;
 import database.FilesDatabase;
-import database.SimpleDatabase;
 import database.User;
 
 public class SingUpActivity extends AppCompatActivity {

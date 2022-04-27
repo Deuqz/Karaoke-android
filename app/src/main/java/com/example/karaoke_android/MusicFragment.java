@@ -8,7 +8,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -66,7 +65,6 @@ public class MusicFragment extends Fragment {
         listView.setAdapter(trackAdapter);
         listView.setOnItemClickListener((adapterView, view1, i, l) -> {
             Intent intent = new Intent(getActivity(), SongActivity.class);
-//            TODO putExtra track + user
             intent.putExtra("Track", (Parcelable) tracks.get(i));
             intent.putExtra("User", (Parcelable) user);
             startActivity(intent);

@@ -3,8 +3,6 @@ package database;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.NonNull;
-
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.IOException;

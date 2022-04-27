@@ -10,9 +10,6 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import java.util.ArrayList;
-
-import database.Track;
 import database.User;
 
 public class ProfileFragment extends Fragment {
