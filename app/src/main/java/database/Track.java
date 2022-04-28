@@ -17,7 +17,7 @@ public class Track implements Parcelable, Serializable {
     private String url;
     private int id;
 
-    public Track(){
+    public Track() {
     }
 
     public Track(String name, String author, String url, int id) {

@@ -13,9 +13,9 @@
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/song"
-        tools:layout_editor_absoluteX="27dp" />
+        tools:layout_editor_absoluteX="0dp" />
 
     <Button
         android:id="@+id/playTrackButton"
@@ -23,9 +23,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="152dp"
+        android:backgroundTint="#CCAF86"
         android:onClick="playTrackPushed"
         android:text="play_track"
-        android:backgroundTint="#CCAF86"
         android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,9 +36,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="152dp"
         android:layout_marginEnd="44dp"
+        android:backgroundTint="#CCAF86"
         android:onClick="pauseTrackPushed"
         android:text="pause_track"
-        android:backgroundTint="#CCAF86"
         android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -50,9 +50,9 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="108dp"
         android:layout_marginEnd="16dp"
+        android:backgroundTint="#CCAF86"
         android:onClick="recordPushed"
         android:text="record"
-        android:backgroundTint="#CCAF86"
         android:textColor="#000000"
         app:layout_constraintEnd_toStartOf="@+id/stopRecordButton"
         app:layout_constraintHorizontal_bias="0.0"
@@ -65,9 +65,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="108dp"
         android:layout_marginEnd="40dp"
+        android:backgroundTint="#CCAF86"
         android:onClick="stopRecordPushed"
         android:text="stop"
-        android:backgroundTint="#CCAF86"
         android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pauseTrackButton" />
@@ -87,4 +87,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.716"
         tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#CCAF86"
+        android:text="@string/back"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.906" />
 </androidx.constraintlayout.widget.ConstraintLayout>
