@@ -16,7 +16,7 @@
 
     <EditText
         android:id="@+id/textInput"
-        android:layout_width="match_parent"
+        android:layout_width="363dp"
         android:layout_height="wrap_content"
         android:hint="@string/find_track"
         android:inputType="text"
@@ -30,6 +30,22 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:layout_below="@+id/textInput" />
+        android:layout_below="@+id/textInput" >
+
+    </ListView>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="47dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/listView"
+        android:layout_marginStart="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_toEndOf="@+id/textInput"
+        android:backgroundTint="#C69957"
+        android:text="@string/add"
+        android:onClick="addNewTrackPushed"
+        android:textColor="@android:color/black"
+        tools:ignore="UsingOnClickInXml" />
 
 </RelativeLayout>

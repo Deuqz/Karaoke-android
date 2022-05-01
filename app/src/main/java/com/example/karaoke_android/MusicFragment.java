@@ -1,5 +1,6 @@
 package com.example.karaoke_android;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -8,6 +9,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -18,9 +20,11 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
-public class MusicFragment extends Fragment {
+public class MusicFragment extends Fragment  implements View.OnClickListener {
 
     static private final ArrayList<Track> allTracks;
+
+    private static Intent addTrackIntent;
 
     static {
 //        TODO fill tracks
@@ -77,6 +81,10 @@ public class MusicFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_music, container, false);
         assert getArguments() != null;
         User user = (User) getArguments().getSerializable("User");
+        addTrackIntent = new Intent(getActivity(), AddSongActivity.class);
+        addTrackIntent.putExtra("User", (Parcelable) user);
+        Button addButton = (Button) view.findViewById(R.id.button);
+        addButton.setOnClickListener(this);
         EditText editText = view.findViewById(R.id.textInput);
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -96,5 +104,10 @@ public class MusicFragment extends Fragment {
         });
         buttonsRedraw(user, view, editText);
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+        startActivity(addTrackIntent);
     }
 }

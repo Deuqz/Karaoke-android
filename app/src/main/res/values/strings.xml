@@ -21,4 +21,5 @@
     <string name="email_text">Email</string>
     <string name="plus">+</string>
     <string name="back">back</string>
+    <string name="add">+</string>
 </resources>
