@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Projects/AndroidStudioProjects/Karaoke-android/app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="..\:/Projects/AndroidStudioProjects/Karaoke-android/app/src/main/res/layout/activity_song.xml" value="0.4" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_singup.xml" value="0.33" />

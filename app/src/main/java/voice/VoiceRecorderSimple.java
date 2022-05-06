@@ -4,13 +4,9 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.example.karaoke_android.R;
 
 import java.io.IOException;
 
-import database.Track;
 import database.User;
 
 public class VoiceRecorderSimple implements VoiceRecorder {
@@ -53,7 +49,7 @@ public class VoiceRecorderSimple implements VoiceRecorder {
             recorder = null;
             Log.e(LOG_TAG, "stop recording");
         }
-        if (flag) {
+        /*if (flag) {
             flag = false;
             try {
                 player = new MediaPlayer();
@@ -68,6 +64,10 @@ public class VoiceRecorderSimple implements VoiceRecorder {
             player.release();
             player = null;
             Log.e(LOG_TAG, "Stop playing recorded voice");
-        }
+        }*/
+    }
+
+    public String getFileName(){
+        return fileName;
     }
 }

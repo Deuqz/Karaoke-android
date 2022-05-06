@@ -22,6 +22,8 @@ import database.Track;
 import database.User;
 import voice.TrackPlayer;
 import voice.TrackPlayerSimple;
+import voice.TrackWorker;
+import voice.TrackWorkerSimple;
 import voice.VoiceRecorder;
 import voice.VoiceRecorderSimple;
 
@@ -30,6 +32,7 @@ import voice.VoiceRecorderSimple;
 public class SongActivity extends AppCompatActivity {
     private TrackPlayer trackPlayer;
     private VoiceRecorder voiceRecorder;
+    private TrackWorker trackWorker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +40,6 @@ public class SongActivity extends AppCompatActivity {
         setContentView(R.layout.activity_song);
         TextView textView = findViewById(R.id.textView);
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
-        trackPlayer = new TrackPlayerSimple(getApplicationContext());
         User user = getIntent().getParcelableExtra("User");
         Track track = getIntent().getParcelableExtra("Track");
         textView.setText(track.getName());
@@ -48,20 +50,16 @@ public class SongActivity extends AppCompatActivity {
             startActivity(intent);
         });
         voiceRecorder = new VoiceRecorderSimple(getApplicationContext(), user);
+        trackPlayer = new TrackPlayerSimple(getApplicationContext());
+        trackWorker = new TrackWorkerSimple(getApplicationContext(), user);
     }
 
-    private boolean pausePushed = false;
-
     public void playTrackPushed(View view) {
-        if (!pausePushed) {
-            trackPlayer.setTrack(new Track("track1", "somebody", "", R.raw.track1));
-        }
-        trackPlayer.play();
+        trackWorker.start();
     }
 
     public void pauseTrackPushed(View view) {
-        trackPlayer.pause();
-        pausePushed = true;
+        trackWorker.stop();
     }
 
     // Requesting permission to RECORD_AUDIO
@@ -93,5 +91,6 @@ public class SongActivity extends AppCompatActivity {
         super.onDestroy();
         trackPlayer.stop();
         trackPlayer.close();
+        trackWorker.close();
     }
 }
