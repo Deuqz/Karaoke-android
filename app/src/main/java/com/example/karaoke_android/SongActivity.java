@@ -3,8 +3,11 @@ package com.example.karaoke_android;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,6 +15,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
+import java.io.IOException;
 
 import database.Track;
 import database.User;
@@ -23,8 +28,8 @@ import voice.VoiceRecorderSimple;
 // TODO THERE IS WORK FOR DENIS!!!!
 
 public class SongActivity extends AppCompatActivity {
-    TrackPlayer trackPlayer;
-    VoiceRecorder voiceRecorder;
+    private TrackPlayer trackPlayer;
+    private VoiceRecorder voiceRecorder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +50,6 @@ public class SongActivity extends AppCompatActivity {
         voiceRecorder = new VoiceRecorderSimple(getApplicationContext(), user);
     }
 
-    // code below from Denis
     private boolean pausePushed = false;
 
     public void playTrackPushed(View view) {
@@ -77,9 +81,11 @@ public class SongActivity extends AppCompatActivity {
     }
 
     public void recordPushed(View view) {
+        voiceRecorder.startRecording();
     }
 
     public void stopRecordPushed(View view) {
+        voiceRecorder.stopRecording();
     }
 
     @Override

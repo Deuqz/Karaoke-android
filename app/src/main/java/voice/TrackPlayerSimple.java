@@ -3,6 +3,7 @@ package voice;
 import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -10,7 +11,7 @@ import java.io.IOException;
 import database.Track;
 
 public class TrackPlayerSimple implements TrackPlayer {
-    MediaPlayer mediaPlayer;
+    MediaPlayer mediaPlayer = null;
     Context context;
 
     public TrackPlayerSimple(Context context) {
@@ -29,6 +30,7 @@ public class TrackPlayerSimple implements TrackPlayer {
                         .build()
         );
         mediaPlayer.setOnCompletionListener(mp -> stop());
+        Log.e("TrackPlayerSimple", "SetTrack");
     }
 
     public void play() throws NoTrackException {
