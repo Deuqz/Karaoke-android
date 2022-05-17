@@ -75,6 +75,7 @@ public class User implements Parcelable, Serializable {
         }
     }
 
+
     public String getFirstName() {
         return firstName;
     }

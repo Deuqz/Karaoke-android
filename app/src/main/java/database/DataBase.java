@@ -1,23 +1,32 @@
 package database;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public interface DataBase {
 
     //    add user to dataBase
-    boolean add(User user) throws IOException;
+    public boolean add(User user) throws IOException;
 
     //    is user correct
-    boolean containsUser(String email);
+    public boolean containsUser(String email);
 
     //    is password correct
-    boolean containsPassword(String email, String password);
+    public boolean containsPassword(String email, String password);
 
     //    remove user from database
-    boolean remove(User user);
+    public boolean removeUser(User user);
 
     //    get user from database
-    default User getUser(String email) {
+    public default User getUser(String email) {
         throw new UnsupportedOperationException();
     }
+
+    public boolean addTrackToUser(String email, Track track);
+
+    public ArrayList<Track> getDefaultTracks();
+
+    public ArrayList<String> getAllUserEmails();
+
+    public boolean deleteTrack(String login, String name);
 }
