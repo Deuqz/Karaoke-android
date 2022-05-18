@@ -47,13 +47,6 @@ repositories {
 
 dependencies {
     testImplementation 'junit:junit:4.11'
-    // The following dependencies will be the ear modules and
-    // will be placed in the ear root
-    // deploy project(':war')
-
-    // The following dependencies will become ear libs and will
-    // be placed in a dir configured via the libDirName property
-    // earlib group: 'log4j', name: 'log4j'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     runtimeOnly 'io.grpc:grpc-netty-shaded:1.45.1'
