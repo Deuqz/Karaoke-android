@@ -4,17 +4,18 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Projects/AndroidStudioProjects/Karaoke-android/app/src/main/res/layout/activity_main.xml" value="0.4" />
-        <entry key="app/src/main/res/layout/activity_add_song.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_singup.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_song.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_start.xml" value="0.29444444444444445" />
-        <entry key="app/src/main/res/layout/fragment_music.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_music.xml" value="0.26685393258426965" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.10884353741496598" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.2200825309491059" />
         <entry key="app/src/main/res/layout/list_item.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/track_list_item.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/user_list_item.xml" value="0.25" />
       </map>
     </option>
   </component>

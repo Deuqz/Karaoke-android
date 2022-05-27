@@ -1,6 +1,6 @@
 package com.example.karaoke_android;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import database.FilesDatabase;
 import database.Track;
 import database.User;
 
@@ -20,22 +21,14 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
-public class MusicFragment extends Fragment  implements View.OnClickListener {
+public class MusicFragment extends Fragment implements View.OnClickListener {
 
-    static private final ArrayList<Track> allTracks;
+    static private ArrayList<Track> allTracks;
 
     private static Intent addTrackIntent;
 
-    static {
-//        TODO fill tracks
-        allTracks = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            allTracks.add(new Track("Track" + i, "Oxxxymiron", "", 0));
-        }
-    }
-
-    public static MusicFragment newInstance(User userSer) {
-        MusicFragment fragment = new MusicFragment();
+    public static MusicFragment newInstance(User userSer, Context context) {
+        MusicFragment fragment = new MusicFragment(context);
         Bundle bundle = new Bundle();
         bundle.putSerializable("User", userSer);
         fragment.setArguments(bundle);
@@ -53,7 +46,8 @@ public class MusicFragment extends Fragment  implements View.OnClickListener {
         return tracks;
     }
 
-    public MusicFragment() {
+    public MusicFragment(Context context) {
+        allTracks = (new FilesDatabase(context)).getDefaultTracks();
     }
 
     @Override

@@ -1,8 +1,10 @@
 package com.example.karaoke_android;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -36,19 +38,22 @@ public class MainActivity extends AppCompatActivity {
         profileTab.setText("\uD83D\uDC64");
         tabLayout.addTab(profileTab);
         User user = getIntent().getParcelableExtra("User");
-        Fragment fragment = MusicFragment.newInstance(user);
+        Fragment fragment = MusicFragment.newInstance(user, getApplicationContext());
         startFragment(fragment);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 startFragment(getFragment(tab, user));
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 startFragment(getFragment(tab, user));
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 startFragment(getFragment(tab, user));
@@ -65,14 +70,15 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private Fragment getFragment(TabLayout.Tab tab, User user) {
         Fragment fragment = null;
         switch (tab.getPosition()) {
             case 0:
-                fragment = MusicFragment.newInstance(user);
+                fragment = MusicFragment.newInstance(user, getApplicationContext());
                 break;
             case 1:
-                fragment = new SearchFragment();
+                fragment = SearchFragment.newInstance(user, getApplicationContext());
                 break;
             case 2:
                 fragment = new SettingsFragment();

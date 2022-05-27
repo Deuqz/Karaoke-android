@@ -1,24 +1,15 @@
 package database;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.os.Environment;
-
-import com.example.karaoke_android.R;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.ArrayList;
 
 public class FilesDatabase implements DataBase {
     private final Context context;
@@ -59,13 +50,12 @@ public class FilesDatabase implements DataBase {
     }
 
     @Override
-    public boolean remove(User user) {
+    public boolean removeUser(User user) {
         return context.deleteFile(user.getEmail());
     }
 
     @Override
     public User getUser(String email) {
-//        File userFile = new File(context.getFilesDir(), email);
         try (FileInputStream fr = context.openFileInput(email);
              BufferedReader reader = new BufferedReader(new InputStreamReader(fr))) {
             reader.readLine();
@@ -77,5 +67,29 @@ public class FilesDatabase implements DataBase {
         } catch (IOException e) {
             throw new RuntimeException("Can't get user");
         }
+    }
+
+    @Override
+    public boolean addTrackToUser(String email, Track track) {
+        return false;
+    }
+
+    @Override
+    public ArrayList<Track> getDefaultTracks() {
+        ArrayList<Track> allTracks = new ArrayList<>();
+        for (int i = 0; i < 30; i++) {
+            allTracks.add(new Track("Track" + i, "Oxxxymiron", "", 0));
+        }
+        return allTracks;
+    }
+
+    @Override
+    public ArrayList<String> getAllUserEmails() {
+        return null;
+    }
+
+    @Override
+    public boolean deleteTrack(String login, String name) {
+        return false;
     }
 }
