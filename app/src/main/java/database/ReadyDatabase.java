@@ -2,54 +2,54 @@ package database;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
-import com.example.grpc.GreetingServiceGrpc;
-import com.example.grpc.GreetingProto;
-
-import org.checkerframework.checker.units.qual.A;
+import com.example.grpc.client.GreetingServiceGrpc;
+import com.example.grpc.client.*;
 
 public class ReadyDatabase implements DataBase {
 
 
     @Override
     public boolean add(User user) throws IOException {
-        ManagedChannel channel = ManagedChannelBuilder.forTarget("localhost:8080").usePlaintext().build();
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.0.105", 50051).usePlaintext().build();
         GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
-        GreetingProto.addUserRequest addUserRequest = GreetingProto.addUserRequest.newBuilder()
+        addUserRequest request = addUserRequest.newBuilder()
                 .setFirstName(user.getFirstName())
                 .setSecondName(user.getSecondName())
                 .setEmail(user.getEmail())
                 .setPassword(user.getPassword())
                 .build();
-        GreetingProto.addUserResponse addUserResponse = stub.addUser(addUserRequest);
-        return addUserResponse.getCode();
+        addUserResponse response = stub.addUser(request);
+        channel.shutdown();
+        return response.getCode();
     }
 
     @Override
     public boolean containsUser(String login) {
-        ManagedChannel channel = ManagedChannelBuilder.forTarget("localhost:8080").usePlaintext().build();
+//        return false;
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.0.105", 50051).usePlaintext().build();
         GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
-        GreetingProto.containsUserRequest containsUserRequest = GreetingProto.containsUserRequest.newBuilder()
+        containsUserRequest request = containsUserRequest.newBuilder()
                 .setEmail(login)
                 .build();
-        GreetingProto.containsUserResponse containsUserResponse = stub.containsUser(containsUserRequest);
-        return containsUserResponse.getCode();
+        containsUserResponse response = stub.containsUser(request);
+        return response.getCode();
     }
 
     @Override
     public boolean containsPassword(String login, String password) {
-        ManagedChannel channel = ManagedChannelBuilder.forTarget("localhost:8080").usePlaintext().build();
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.0.105", 50051).usePlaintext().build();
         GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
-        GreetingProto.containsPasswordRequest containsPasswordRequest = GreetingProto.containsPasswordRequest.newBuilder()
+        containsPasswordRequest request = containsPasswordRequest.newBuilder()
                 .setEmail(login)
                 .setPassword(password)
                 .build();
-        GreetingProto.containsPasswordResponse containsPasswordResponse = stub.containsPassword(containsPasswordRequest);
-        return containsPasswordResponse.getCode();
+        containsPasswordResponse response = stub.containsPassword(request);
+        channel.shutdown();
+        return response.getCode();
     }
 
     @Override
@@ -59,56 +59,60 @@ public class ReadyDatabase implements DataBase {
 
     @Override
     public User getUser(String login) {
-        ManagedChannel channel = ManagedChannelBuilder.forTarget("localhost:8080").usePlaintext().build();
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.0.105", 50051).usePlaintext().build();
         GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
-        GreetingProto.getUserRequest getUserRequest = GreetingProto.getUserRequest.newBuilder()
+        getUserRequest request = getUserRequest.newBuilder()
                 .setLogin(login)
                 .build();
-        GreetingProto.getUserResponse getUserResponse = stub.getUser(getUserRequest);
-        GreetingProto.getUserTracksRequest getUserTracksRequest = GreetingProto.getUserTracksRequest.newBuilder()
+        getUserResponse response = stub.getUser(request);
+        getUserTracksRequest request1 = getUserTracksRequest.newBuilder()
                 .setLogin(login)
                 .build();
-        GreetingProto.getUserTracksResponse getUserTracksResponse = stub.getUserTracks(getUserTracksRequest);
+        getUserTracksResponse response1 = stub.getUserTracks(request1);
         ArrayList<Track> tracks = new ArrayList<>();
-        for (int i = 0; i < getUserTracksResponse.getAuthorCount(); i++) {
-            tracks.add(new Track(getUserTracksResponse.getName(i), getUserTracksResponse.getAuthor(i), getUserTracksResponse.getUrl(i), getUserTracksResponse.getId(i)));
+        for (int i = 0; i < response1.getAuthorCount(); i++) {
+            tracks.add(new Track(response1.getName(i), response1.getAuthor(i), response1.getUrl(i), response1.getId(i)));
         }
-        return new User(getUserResponse.getFirstName(), getUserResponse.getSecondName(), getUserResponse.getEmail(), getUserResponse.getPassword(), tracks);
+        channel.shutdown();
+        return new User(response.getFirstName(), response.getSecondName(), response.getEmail(), response.getPassword(), tracks);
     }
 
     @Override
     public boolean addTrackToUser(String email, Track track) {
-        ManagedChannel channel = ManagedChannelBuilder.forTarget("localhost:8080").usePlaintext().build();
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.0.105", 50051).usePlaintext().build();
         GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
-        GreetingProto.addTrackToUserRequest addTrackToUserRequest = GreetingProto.addTrackToUserRequest.newBuilder()
+        addTrackToUserRequest request = addTrackToUserRequest.newBuilder()
                 .setLogin(email)
                 .setName(track.getName())
                 .setAuthor(track.getAuthor())
                 .setUrl(track.getUrl())
                 .setId(track.getId())
                 .build();
-        GreetingProto.addTrackToUserResponse addTrackToUserResponse = stub.addTrackToUser(addTrackToUserRequest);
-        return addTrackToUserResponse.getCode();
+        addTrackToUserResponse response = stub.addTrackToUser(request);
+        channel.shutdown();
+        return response.getCode();
     }
 
     @Override
     public ArrayList<Track> getDefaultTracks() {
-        ManagedChannel channel = ManagedChannelBuilder.forTarget("localhost:8080").usePlaintext().build();
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.0.105", 50051).usePlaintext().build();
         GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
-        GreetingProto.getDefaultTracksResponse getDefaultTracksResponse = stub.getDefaultTracks(com.google.protobuf.Empty.getDefaultInstance());
+        getDefaultTracksResponse response = stub.getDefaultTracks(com.google.protobuf.Empty.getDefaultInstance());
+        channel.shutdown();
         ArrayList<Track> tracks = new ArrayList<>();
-        for (int i = 0; i < getDefaultTracksResponse.getAuthorCount(); i++) {
-            tracks.add(new Track(getDefaultTracksResponse.getName(i), getDefaultTracksResponse.getAuthor(i), getDefaultTracksResponse.getUrl(i), getDefaultTracksResponse.getId(i)));
+        for (int i = 0; i < response.getAuthorCount(); i++) {
+            tracks.add(new Track(response.getName(i), response.getAuthor(i), response.getUrl(i), response.getId(i)));
         }
         return tracks;
     }
 
     @Override
     public ArrayList<String> getAllUserEmails() {
-        ManagedChannel channel = ManagedChannelBuilder.forTarget("localhost:8080").usePlaintext().build();
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.0.105", 50051).usePlaintext().build();
         GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
-        GreetingProto.getAllUserEmailsResponse getAllUserEmailsResponse = stub.getAllUserEmails(com.google.protobuf.Empty.getDefaultInstance());
-        return (ArrayList<String>) getAllUserEmailsResponse.getNameList();
+        getAllUserEmailsResponse response = stub.getAllUserEmails(com.google.protobuf.Empty.getDefaultInstance());
+        channel.shutdown();
+        return (ArrayList<String>) response.getNameList();
     }
 
 

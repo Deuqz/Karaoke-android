@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import database.DataBase;
-import database.FilesDatabase;
+import database.ReadyDatabase;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -21,7 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        database = new FilesDatabase(getApplicationContext());
+        database = new ReadyDatabase();
     }
 
     @SuppressLint("SetTextI18n")

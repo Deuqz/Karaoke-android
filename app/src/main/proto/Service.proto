@@ -1,7 +1,11 @@
 syntax = "proto3";
-package com.example.grpc;
+
+option java_multiple_files = true;
+option java_package = "com.example.grpc.client";
 option java_outer_classname = "GreetingProto";
+option objc_class_prefix = "HLW";
 import "google/protobuf/empty.proto";
+package client;
 
 message addUserRequest{
   string firstName = 1;
@@ -86,21 +90,21 @@ message deleteTrackResponse{
 
 service GreetingService {
 
-  rpc addUser(addUserRequest) returns (addUserResponse);
+  rpc addUser(addUserRequest) returns (addUserResponse) {}
 
-  rpc containsUser(containsUserRequest) returns (containsUserResponse);
+  rpc containsUser(containsUserRequest) returns (containsUserResponse) {}
 
-  rpc containsPassword(containsPasswordRequest) returns (containsPasswordResponse);
+  rpc containsPassword(containsPasswordRequest) returns (containsPasswordResponse) {}
 
-  rpc getUser(getUserRequest) returns (getUserResponse);
+  rpc getUser(getUserRequest) returns (getUserResponse) {}
 
-  rpc getUserTracks(getUserTracksRequest) returns (getUserTracksResponse);
+  rpc getUserTracks(getUserTracksRequest) returns (getUserTracksResponse) {}
 
-  rpc addTrackToUser(addTrackToUserRequest) returns (addTrackToUserResponse);
+  rpc addTrackToUser(addTrackToUserRequest) returns (addTrackToUserResponse) {}
 
-  rpc getDefaultTracks(google.protobuf.Empty) returns (getDefaultTracksResponse);
+  rpc getDefaultTracks(google.protobuf.Empty) returns (getDefaultTracksResponse) {}
 
-  rpc getAllUserEmails(google.protobuf.Empty) returns (getAllUserEmailsResponse);
+  rpc getAllUserEmails(google.protobuf.Empty) returns (getAllUserEmailsResponse) {}
 
-  rpc deleteTrack(deleteTrackRequest) returns (deleteTrackResponse);
+  rpc deleteTrack(deleteTrackRequest) returns (deleteTrackResponse) {}
 }
