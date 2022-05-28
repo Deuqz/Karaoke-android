@@ -13,7 +13,7 @@ import java.sql.Statement;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Server server = ServerBuilder.forPort(8080).addService(new GreetingServiceImpl()).build();
+        Server server = ServerBuilder.forPort(50051).addService(new GreetingServiceImpl()).build();
         server.start();
         System.out.println("ABOBA!");
         server.awaitTermination();

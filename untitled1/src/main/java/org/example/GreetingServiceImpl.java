@@ -1,8 +1,7 @@
 package org.example;
 
-import com.example.grpc.GreetingServiceGrpc;
-import com.example.grpc.GreetingProto;
-import com.example.grpc.GreetingServiceOuterClass;
+
+import com.example.grpc.client.*;
 import io.grpc.stub.StreamObserver;
 
 import java.sql.Connection;
@@ -19,6 +18,7 @@ public class GreetingServiceImpl extends GreetingServiceGrpc.GreetingServiceImpl
     Statement statement = null;
 
     GreetingServiceImpl() {
+        System.out.println("INIT");
         try {
             Class.forName("org.postgresql.Driver");
         } catch (java.lang.ClassNotFoundException e) {
@@ -30,98 +30,116 @@ public class GreetingServiceImpl extends GreetingServiceGrpc.GreetingServiceImpl
         } catch (SQLException e) {
             System.out.println("Connection error\n" + e.getMessage());
         }
+        System.out.println("FINISH INIT");
     }
 
     @Override
-    public void addUser(GreetingProto.addUserRequest request, StreamObserver<GreetingProto.addUserResponse> responseStreamObserver) {
-        GreetingProto.addUserResponse.Builder addUserResponse = GreetingProto.addUserResponse.newBuilder();
+    public void addUser(addUserRequest request, StreamObserver<addUserResponse> responseStreamObserver) {
+        System.out.println("ADD USER");
+        addUserResponse.Builder response = addUserResponse.newBuilder();
         try {
             statement = connection.createStatement();
         } catch (SQLException e) {
-            responseStreamObserver.onNext(addUserResponse.setCode(false).build());
+            responseStreamObserver.onNext(response.setCode(false).build());
             responseStreamObserver.onCompleted();
             return;
         }
         assert statement != null;
         ResultSet resultSet = null;
         try {
-            resultSet = statement.executeQuery("INSERT INTO users VALUES (" + request.getFirstName() + ", " + request.getSecondName() + ", " + request.getEmail() + ", " + request.getPassword() + ");");
+            resultSet = statement.executeQuery("INSERT INTO users VALUES ('" + request.getFirstName() + "', '" + request.getSecondName() + "', '" + request.getEmail() + "', '" + request.getPassword() + "');");
         } catch (SQLException e) {
-            responseStreamObserver.onNext(addUserResponse.setCode(false).build());
+            responseStreamObserver.onNext(response.setCode(false).build());
             responseStreamObserver.onCompleted();
             return;
         }
-        responseStreamObserver.onNext(addUserResponse.setCode(true).build());
+        responseStreamObserver.onNext(response.setCode(true).build());
         responseStreamObserver.onCompleted();
+        System.out.println("FINISH ADD USER");
     }
 
     @Override
-    public void containsUser(GreetingProto.containsUserRequest request, StreamObserver<GreetingProto.containsUserResponse> responseStreamObserver) {
-        GreetingProto.containsUserResponse.Builder containsUserResponse = GreetingProto.containsUserResponse.newBuilder();
+    public void containsUser(containsUserRequest request, StreamObserver<containsUserResponse> responseStreamObserver) {
+        System.out.println("CONTAINS USER");
+        containsUserResponse.Builder response = containsUserResponse.newBuilder();
         try {
             statement = connection.createStatement();
         } catch (SQLException e) {
-            responseStreamObserver.onNext(containsUserResponse.setCode(false).build());
+            responseStreamObserver.onNext(response.setCode(false).build());
             responseStreamObserver.onCompleted();
         }
         assert statement != null;
         ResultSet resultSet = null;
         try {
-            resultSet = statement.executeQuery("SELECT count(*) FROM users WHERE email = " + request.getEmail() + ";");
+            String st = "SELECT count(*) FROM users WHERE email = '" + request.getEmail() + "';";
+            System.out.println(st);
+            resultSet = statement.executeQuery("SELECT count(*) FROM users WHERE email='" + request.getEmail() + "';");
+
         } catch (SQLException e) {
-            responseStreamObserver.onNext(containsUserResponse.setCode(false).build());
+            responseStreamObserver.onNext(response.setCode(false).build());
+            responseStreamObserver.onCompleted();
+        }
+        try {
+            resultSet.next();
+            if (resultSet.getInt("count") != 1) {
+                responseStreamObserver.onNext(response.setCode(false).build());
+            } else {
+                responseStreamObserver.onNext(response.setCode(true).build());
+                responseStreamObserver.onCompleted();
+            }
+        } catch (SQLException e) {
+            responseStreamObserver.onNext(response.setCode(false).build());
+            responseStreamObserver.onCompleted();
+        }
+        System.out.println("FINISH CONTAINS USER");
+    }
+
+    @Override
+    public void containsPassword(containsPasswordRequest request, StreamObserver<containsPasswordResponse> responseStreamObserver) {
+        System.out.println("CONTAINS PASSWORD");
+        containsPasswordResponse.Builder response = containsPasswordResponse.newBuilder();
+        try {
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            responseStreamObserver.onNext(response.setCode(false).build());
+            responseStreamObserver.onCompleted();
+        }
+        assert statement != null;
+        ResultSet resultSet = null;
+        try {
+            resultSet = statement.executeQuery("SELECT count(*) FROM users WHERE email = '" + request.getEmail() + "' AND password = '" + request.getPassword() + "';");
+        } catch (SQLException e) {
+            responseStreamObserver.onNext(response.setCode(false).build());
             responseStreamObserver.onCompleted();
         }
         try {
             assert resultSet != null;
             resultSet.next();
             if (resultSet.getInt("count") != 1) {
-                responseStreamObserver.onNext(containsUserResponse.setCode(false).build());
+                responseStreamObserver.onNext(response.setCode(false).build());
             } else {
-                responseStreamObserver.onNext(containsUserResponse.setCode(true).build());
+                responseStreamObserver.onNext(response.setCode(true).build());
                 responseStreamObserver.onCompleted();
             }
         } catch (SQLException e) {
-            responseStreamObserver.onNext(containsUserResponse.setCode(false).build());
+            responseStreamObserver.onNext(response.setCode(false).build());
             responseStreamObserver.onCompleted();
         }
+        System.out.println("FINISH CONTAINS PASSWORD");
     }
 
     @Override
-    public void containsPassword(GreetingProto.containsPasswordRequest request, StreamObserver<GreetingProto.containsPasswordResponse> responseStreamObserver) {
-        GreetingProto.containsPasswordResponse.Builder containsPasswordResponse = GreetingProto.containsPasswordResponse.newBuilder();
-        try {
-            statement = connection.createStatement();
-        } catch (SQLException e) {
-            responseStreamObserver.onNext(containsPasswordResponse.setCode(false).build());
-            responseStreamObserver.onCompleted();
-        }
-        assert statement != null;
-        ResultSet resultSet = null;
-        try {
-            resultSet = statement.executeQuery("SELECT count(*) FROM users WHERE email = " + request.getEmail() + " AND password = " + request.getPassword() + ";");
-        } catch (SQLException e) {
-            responseStreamObserver.onNext(containsPasswordResponse.setCode(false).build());
-            responseStreamObserver.onCompleted();
-        }
-        try {
-            assert resultSet != null;
-            resultSet.next();
-            if (resultSet.getInt("count") != 1) {
-                responseStreamObserver.onNext(containsPasswordResponse.setCode(false).build());
-            } else {
-                responseStreamObserver.onNext(containsPasswordResponse.setCode(true).build());
-                responseStreamObserver.onCompleted();
-            }
-        } catch (SQLException e) {
-            responseStreamObserver.onNext(containsPasswordResponse.setCode(false).build());
-            responseStreamObserver.onCompleted();
-        }
-    }
-
-    @Override
-    public void getUser(GreetingProto.getUserRequest request, StreamObserver<GreetingProto.getUserResponse> responseStreamObserver) {
-        GreetingProto.getUserResponse.Builder getUserResponse = GreetingProto.getUserResponse.newBuilder();
+    public void getUser(getUserRequest request, StreamObserver<getUserResponse> responseStreamObserver) {
+//        responseStreamObserver.onNext(GreetingProto.getUserResponse.newBuilder().
+//                setFirstName("bobaba").
+//                setSecondName("boba").
+//                setEmail("abpba").
+//                setPassword("aboba").
+//                setFirstName("bobaba").
+//                build());
+//        responseStreamObserver.onCompleted();
+        System.out.println("GET USER");
+        getUserResponse.Builder response = getUserResponse.newBuilder();
         try {
             statement = connection.createStatement();
         } catch (SQLException e) {
@@ -130,14 +148,14 @@ public class GreetingServiceImpl extends GreetingServiceGrpc.GreetingServiceImpl
         assert statement != null;
         ResultSet resultSet = null;
         try {
-            resultSet = statement.executeQuery("SELECT * FROM users WHERE email = " + request.getLogin() + ";");
+            resultSet = statement.executeQuery("SELECT * FROM users WHERE email = '" + request.getLogin() + "';");
         } catch (SQLException e) {
             responseStreamObserver.onCompleted();
         }
         try {
             assert resultSet != null;
             resultSet.next();
-            responseStreamObserver.onNext(getUserResponse
+            responseStreamObserver.onNext(response
                     .setFirstName(resultSet.getString("firstName"))
                     .setSecondName(resultSet.getString("secondName"))
                     .setEmail(resultSet.getString("email"))
@@ -147,11 +165,13 @@ public class GreetingServiceImpl extends GreetingServiceGrpc.GreetingServiceImpl
         } catch (SQLException e) {
             responseStreamObserver.onCompleted();
         }
+        System.out.println("FINISH GET USER");
     }
 
     @Override
-    public void getUserTracks(GreetingProto.getUserTracksRequest request, StreamObserver<GreetingProto.getUserTracksResponse> responseStreamObserver) {
-        GreetingProto.getUserTracksResponse.Builder getUserTracksResponse = GreetingProto.getUserTracksResponse.newBuilder();
+    public void getUserTracks(getUserTracksRequest request, StreamObserver<getUserTracksResponse> responseStreamObserver) {
+        System.out.println("GET USER TRACKS");
+        getUserTracksResponse.Builder response = getUserTracksResponse.newBuilder();
         try {
             statement = connection.createStatement();
         } catch (SQLException e) {
@@ -160,7 +180,7 @@ public class GreetingServiceImpl extends GreetingServiceGrpc.GreetingServiceImpl
         assert statement != null;
         ResultSet resultSet = null;
         try {
-            resultSet = statement.executeQuery("SELECT * from mixed_tracks WHERE author = " + request.getLogin() + ";");
+            resultSet = statement.executeQuery("SELECT * from mixed_tracks WHERE author = '" + request.getLogin() + "';");
         } catch (SQLException e) {
             responseStreamObserver.onCompleted();
         }
@@ -176,7 +196,7 @@ public class GreetingServiceImpl extends GreetingServiceGrpc.GreetingServiceImpl
                 url.add(resultSet.getString("url"));
                 id.add(resultSet.getInt("id"));
             }
-            responseStreamObserver.onNext(getUserTracksResponse
+            responseStreamObserver.onNext(response
                     .addAllName(names)
                     .addAllAuthor(author)
                     .addAllUrl(url)
@@ -186,27 +206,49 @@ public class GreetingServiceImpl extends GreetingServiceGrpc.GreetingServiceImpl
         } catch (SQLException e) {
             responseStreamObserver.onCompleted();
         }
+        System.out.println("FINISH GET USER TRACKS");
     }
 
     @Override
-    public void addTrackToUser(GreetingProto.addTrackToUserRequest request, StreamObserver<GreetingProto.addTrackToUserResponse> responseStreamObserver) {
-        GreetingProto.addTrackToUserResponse.Builder addTrackToUserResponse = GreetingProto.addTrackToUserResponse.newBuilder();
+    public void addTrackToUser(addTrackToUserRequest request, StreamObserver<addTrackToUserResponse> responseStreamObserver) {
+        System.out.println("ADD TRACK TO USER");
+
+        addTrackToUserResponse.Builder response = addTrackToUserResponse.newBuilder();
         try {
             statement = connection.createStatement();
         } catch (SQLException e) {
-            responseStreamObserver.onNext(addTrackToUserResponse.setCode(false).build());
+            responseStreamObserver.onNext(response.setCode(false).build());
             responseStreamObserver.onCompleted();
         }
         assert statement != null;
         ResultSet resultSet = null;
         try {
-            resultSet = statement.executeQuery("INSERT INTO mixed_tracks VALUES (" + request.getName() + ", " + request.getAuthor() + ", " + request.getUrl() + ", " + request.getId() + ");");
+            resultSet = statement.executeQuery("INSERT INTO mixed_tracks VALUES ('" + request.getName() + "', '" + request.getAuthor() + "', '" + request.getUrl() + "', " + request.getId() + ");");
         } catch (SQLException e) {
-            responseStreamObserver.onNext(addTrackToUserResponse.setCode(false).build());
+            responseStreamObserver.onNext(response.setCode(false).build());
             responseStreamObserver.onCompleted();
         }
-        responseStreamObserver.onNext(addTrackToUserResponse.setCode(true).build());
+        responseStreamObserver.onNext(response.setCode(true).build());
         responseStreamObserver.onCompleted();
+        System.out.println("FINISH ADD TRACK TO USER");
+
+    }
+
+    @Override
+    public void getDefaultTracks(com.google.protobuf.Empty empty, StreamObserver<getDefaultTracksResponse> responseStreamObserver){
+        System.out.println("GET DEFAULT TRACKS");
+        getDefaultTracksResponse.Builder response = getDefaultTracksResponse.newBuilder();
+        try{
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            responseStreamObserver.onNext(null);
+            responseStreamObserver.onCompleted();
+        }
+        ResultSet resultSet = null;
+        try {
+            resultSet = statement.executeQuery("")
+        }
+        System.out.println("FINISH GET DEFAULT TRACKS");
     }
 //    @Override
 //    public void userMixedTracks(GreetingProto.requestUserMixedTracks request, StreamObserver<GreetingServiceOuterClass.responseUserMixedTracks> responseObserver) {
