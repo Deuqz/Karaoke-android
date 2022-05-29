@@ -245,9 +245,9 @@ public class GreetingServiceImpl extends GreetingServiceGrpc.GreetingServiceImpl
             responseStreamObserver.onCompleted();
         }
         ResultSet resultSet = null;
-        try {
-            resultSet = statement.executeQuery("")
-        }
+//      try {
+//          resultSet = statement.executeQuery("")
+//      }
         response.addAllAuthor(new ArrayList<>());
         response.addAllId(new ArrayList<>());
         response.addAllUrl(new ArrayList<>());
