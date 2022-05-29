@@ -71,18 +71,11 @@ public class GreetingServiceImpl extends GreetingServiceGrpc.GreetingServiceImpl
         assert statement != null;
         ResultSet resultSet = null;
         try {
-            String st = "SELECT count(*) FROM users WHERE email = '" + request.getEmail() + "';";
-            System.out.println(st);
             resultSet = statement.executeQuery("SELECT count(*) FROM users WHERE email='" + request.getEmail() + "';");
-
-        } catch (SQLException e) {
-            responseStreamObserver.onNext(response.setCode(false).build());
-            responseStreamObserver.onCompleted();
-        }
-        try {
             resultSet.next();
             if (resultSet.getInt("count") != 1) {
                 responseStreamObserver.onNext(response.setCode(false).build());
+                responseStreamObserver.onCompleted();
             } else {
                 responseStreamObserver.onNext(response.setCode(true).build());
                 responseStreamObserver.onCompleted();
@@ -273,8 +266,8 @@ public class GreetingServiceImpl extends GreetingServiceGrpc.GreetingServiceImpl
             responseStreamObserver.onCompleted();
         }
         ArrayList<String> emails = new ArrayList<>();
-        try{
-            while (resultSet.next()){
+        try {
+            while (resultSet.next()) {
                 emails.add(resultSet.getString("email"));
             }
         } catch (SQLException e) {
@@ -282,6 +275,7 @@ public class GreetingServiceImpl extends GreetingServiceGrpc.GreetingServiceImpl
         }
         responseStreamObserver.onNext(response.addAllName(emails).build());
         responseStreamObserver.onCompleted();
+        System.out.println("FINISH GET ALL USER EMAILS");
     }
 //    @Override
 //    public void userMixedTracks(GreetingProto.requestUserMixedTracks request, StreamObserver<GreetingServiceOuterClass.responseUserMixedTracks> responseObserver) {
