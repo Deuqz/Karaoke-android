@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Layout for a single list item -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/trackEmail"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#EDEAE5"
+        android:textSize="20sp"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:id="@+id/trackFirstName"
+        android:layout_width="118dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#EDEAE5"
+        android:textSize="20sp"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:id="@+id/trackSecondName"
+        android:layout_width="118dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#EDEAE5"
+        android:textSize="20sp"
+        android:textStyle="bold|italic" />
+</LinearLayout>

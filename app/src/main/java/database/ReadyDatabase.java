@@ -14,7 +14,7 @@ public class ReadyDatabase implements DataBase {
 
     @Override
     public boolean add(User user) throws IOException {
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.0.105", 50051).usePlaintext().build();
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.88.60", 50051).usePlaintext().build();
         GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
         addUserRequest request = addUserRequest.newBuilder()
                 .setFirstName(user.getFirstName())
@@ -30,7 +30,7 @@ public class ReadyDatabase implements DataBase {
     @Override
     public boolean containsUser(String login) {
 //        return false;
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.0.105", 50051).usePlaintext().build();
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.88.60", 50051).usePlaintext().build();
         GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
         containsUserRequest request = containsUserRequest.newBuilder()
                 .setEmail(login)
@@ -41,7 +41,7 @@ public class ReadyDatabase implements DataBase {
 
     @Override
     public boolean containsPassword(String login, String password) {
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.0.105", 50051).usePlaintext().build();
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.88.60", 50051).usePlaintext().build();
         GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
         containsPasswordRequest request = containsPasswordRequest.newBuilder()
                 .setEmail(login)
@@ -59,7 +59,7 @@ public class ReadyDatabase implements DataBase {
 
     @Override
     public User getUser(String login) {
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.0.105", 50051).usePlaintext().build();
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.88.60", 50051).usePlaintext().build();
         GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
         getUserRequest request = getUserRequest.newBuilder()
                 .setLogin(login)
@@ -79,7 +79,7 @@ public class ReadyDatabase implements DataBase {
 
     @Override
     public boolean addTrackToUser(String email, Track track) {
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.0.105", 50051).usePlaintext().build();
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.88.60", 50051).usePlaintext().build();
         GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
         addTrackToUserRequest request = addTrackToUserRequest.newBuilder()
                 .setLogin(email)
@@ -95,7 +95,7 @@ public class ReadyDatabase implements DataBase {
 
     @Override
     public ArrayList<Track> getDefaultTracks() {
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.0.105", 50051).usePlaintext().build();
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.88.60", 50051).usePlaintext().build();
         GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
         getDefaultTracksResponse response = stub.getDefaultTracks(com.google.protobuf.Empty.getDefaultInstance());
         channel.shutdown();
@@ -108,7 +108,7 @@ public class ReadyDatabase implements DataBase {
 
     @Override
     public ArrayList<String> getAllUserEmails() {
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.0.105", 50051).usePlaintext().build();
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("192.168.88.60", 50051).usePlaintext().build();
         GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
         getAllUserEmailsResponse response = stub.getAllUserEmails(com.google.protobuf.Empty.getDefaultInstance());
         channel.shutdown();
@@ -121,6 +121,4 @@ public class ReadyDatabase implements DataBase {
         //детали обговорим...
         return false;
     }
-
-
 }

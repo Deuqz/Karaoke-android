@@ -29,7 +29,7 @@ public class TrackAdaptor extends ArrayAdapter<Track> {
         View listItemView = convertView;
         if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.list_item, parent, false);
+                    R.layout.track_list_item, parent, false);
         }
         Track currentTrack = getItem(position);
         TextView authorTextView = listItemView.findViewById(R.id.trackAuthor);
