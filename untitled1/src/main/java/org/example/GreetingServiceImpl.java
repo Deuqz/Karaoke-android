@@ -184,28 +184,28 @@ public class GreetingServiceImpl extends GreetingServiceGrpc.GreetingServiceImpl
         } catch (SQLException e) {
             responseStreamObserver.onCompleted();
         }
+        List<String> names = new ArrayList<>();
+        List<String> author = new ArrayList<>();
+        List<String> url = new ArrayList<>();
+        List<Integer> id = new ArrayList<>();
         try {
             assert resultSet != null;
-            List<String> names = new ArrayList<>();
-            List<String> author = new ArrayList<>();
-            List<String> url = new ArrayList<>();
-            List<Integer> id = new ArrayList<>();
             while (resultSet.next()) {
                 names.add(resultSet.getString("name"));
                 author.add(resultSet.getString("author"));
                 url.add(resultSet.getString("url"));
                 id.add(resultSet.getInt("id"));
             }
-            responseStreamObserver.onNext(response
-                    .addAllName(names)
-                    .addAllAuthor(author)
-                    .addAllUrl(url)
-                    .addAllId(id)
-                    .build());
-            responseStreamObserver.onCompleted();
         } catch (SQLException e) {
-            responseStreamObserver.onCompleted();
+
         }
+        responseStreamObserver.onNext(response
+                .addAllName(names)
+                .addAllAuthor(author)
+                .addAllUrl(url)
+                .addAllId(id)
+                .build());
+        responseStreamObserver.onCompleted();
         System.out.println("FINISH GET USER TRACKS");
     }
 
@@ -235,19 +235,19 @@ public class GreetingServiceImpl extends GreetingServiceGrpc.GreetingServiceImpl
     }
 
     @Override
-    public void getDefaultTracks(com.google.protobuf.Empty empty, StreamObserver<getDefaultTracksResponse> responseStreamObserver){
+    public void getDefaultTracks(com.google.protobuf.Empty empty, StreamObserver<getDefaultTracksResponse> responseStreamObserver) {
         System.out.println("GET DEFAULT TRACKS");
         getDefaultTracksResponse.Builder response = getDefaultTracksResponse.newBuilder();
-        try{
+        try {
             statement = connection.createStatement();
         } catch (SQLException e) {
             responseStreamObserver.onNext(null);
             responseStreamObserver.onCompleted();
         }
         ResultSet resultSet = null;
-//      try {
-//          resultSet = statement.executeQuery("")
-//      }
+//        try {
+//            resultSet = statement.executeQuery("")
+//        }
         response.addAllAuthor(new ArrayList<>());
         response.addAllId(new ArrayList<>());
         response.addAllUrl(new ArrayList<>());
@@ -255,6 +255,35 @@ public class GreetingServiceImpl extends GreetingServiceGrpc.GreetingServiceImpl
         responseStreamObserver.onNext(response.build());
         responseStreamObserver.onCompleted();
         System.out.println("FINISH GET DEFAULT TRACKS");
+    }
+
+    public void getAllUserEmails(com.google.protobuf.Empty empty, StreamObserver<getAllUserEmailsResponse> responseStreamObserver) {
+        System.out.println("GET ALL USER EMAILS");
+        getAllUserEmailsResponse.Builder response = getAllUserEmailsResponse.newBuilder();
+        try {
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            responseStreamObserver.onNext(null);
+            responseStreamObserver.onCompleted();
+        }
+        ResultSet resultSet = null;
+        try {
+            resultSet = statement.executeQuery("SELECT * FROM users;");
+        } catch (SQLException e) {
+            responseStreamObserver.onNext(null);
+            responseStreamObserver.onCompleted();
+        }
+        ArrayList<String> emails = new ArrayList<>();
+        try{
+            while (resultSet.next()){
+                emails.add(resultSet.getString("login"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        response.addAllName(emails);
+        responseStreamObserver.onNext(response.build());
+        responseStreamObserver.onCompleted();
     }
 //    @Override
 //    public void userMixedTracks(GreetingProto.requestUserMixedTracks request, StreamObserver<GreetingServiceOuterClass.responseUserMixedTracks> responseObserver) {
@@ -281,3 +310,4 @@ public class GreetingServiceImpl extends GreetingServiceGrpc.GreetingServiceImpl
 //        responseObserver.onCompleted();
 //    }
 }
+
