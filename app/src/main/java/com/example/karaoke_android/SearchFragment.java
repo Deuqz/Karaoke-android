@@ -27,7 +27,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static SearchFragment newInstance(User userSer) {
-        SearchFragment fragment = new SearchFragment();
+        SearchFragment fragment = new SearchFragment(userSer.getEmail());
         Bundle bundle = new Bundle();
         bundle.putSerializable("User", userSer);
         fragment.setArguments(bundle);
@@ -47,15 +47,14 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public SearchFragment() {
+    public SearchFragment(String currentUserEmail) {
         DataBase dataBase = new ReadyDatabase();
-//        TODO List<String> usersNames = dataBase.getAllUserEmails();
-        List<String> usersNames = null;
+        List<String> usersNames = dataBase.getAllUserEmails();
         if (usersNames == null) {
             allUsers = new ArrayList<>();
             return;
         }
-        allUsers = usersNames.stream().map(dataBase::getUser).collect(Collectors.toList());
+        allUsers = usersNames.stream().filter(e -> !e.equals(currentUserEmail)).map(dataBase::getUser).collect(Collectors.toList());
     }
 
     @Override

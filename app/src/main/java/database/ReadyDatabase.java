@@ -112,7 +112,7 @@ public class ReadyDatabase implements DataBase {
         GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
         getAllUserEmailsResponse response = stub.getAllUserEmails(com.google.protobuf.Empty.getDefaultInstance());
         channel.shutdown();
-        return (ArrayList<String>) response.getNameList();
+        return new ArrayList<>(response.getNameList());
     }
 
 
