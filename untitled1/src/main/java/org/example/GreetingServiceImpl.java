@@ -276,7 +276,7 @@ public class GreetingServiceImpl extends GreetingServiceGrpc.GreetingServiceImpl
         ArrayList<String> emails = new ArrayList<>();
         try{
             while (resultSet.next()){
-                emails.add(resultSet.getString("login"));
+                emails.add(resultSet.getString("email"));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
