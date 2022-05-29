@@ -8,7 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import database.DataBase;
-import database.FilesDatabase;
+import database.ReadyDatabase;
 import database.User;
 
 public class AddSongActivity extends AppCompatActivity {
@@ -19,7 +19,7 @@ public class AddSongActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_song);
-        database = new FilesDatabase(getApplicationContext());
+        database = new ReadyDatabase();
         User user = getIntent().getParcelableExtra("User");
         Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> {

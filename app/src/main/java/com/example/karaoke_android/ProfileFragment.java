@@ -43,7 +43,6 @@ public class ProfileFragment extends Fragment {
         secondName.setText(user.getSecondName());
         TextView email = view.findViewById(R.id.email);
         email.setText(user.getEmail());
-//        TODO write trackList, now it is empty
         TrackAdaptor trackAdapter = new TrackAdaptor(getActivity(), user.getTrackList());
         ListView listView = view.findViewById(R.id.listView);
         listView.setAdapter(trackAdapter);
