@@ -263,8 +263,7 @@ public class GreetingServiceImpl extends GreetingServiceGrpc.GreetingServiceImpl
         try {
             statement = connection.createStatement();
         } catch (SQLException e) {
-            responseStreamObserver.onNext(null);
-            responseStreamObserver.onCompleted();
+            System.out.println("(");
         }
         ResultSet resultSet = null;
         try {
@@ -281,8 +280,7 @@ public class GreetingServiceImpl extends GreetingServiceGrpc.GreetingServiceImpl
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        response.addAllName(emails);
-        responseStreamObserver.onNext(response.build());
+        responseStreamObserver.onNext(response.addAllName(emails).build());
         responseStreamObserver.onCompleted();
     }
 //    @Override
