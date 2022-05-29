@@ -248,6 +248,12 @@ public class GreetingServiceImpl extends GreetingServiceGrpc.GreetingServiceImpl
         try {
             resultSet = statement.executeQuery("")
         }
+        response.addAllAuthor(new ArrayList<>());
+        response.addAllId(new ArrayList<>());
+        response.addAllUrl(new ArrayList<>());
+        response.addAllName(new ArrayList<>());
+        responseStreamObserver.onNext(response.build());
+        responseStreamObserver.onCompleted();
         System.out.println("FINISH GET DEFAULT TRACKS");
     }
 //    @Override
