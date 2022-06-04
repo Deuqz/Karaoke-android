@@ -11,7 +11,7 @@ import java.io.IOException;
 import database.Track;
 
 public class TrackPlayerSimple implements TrackPlayer {
-    MediaPlayer mediaPlayer = null;
+    MediaPlayer mediaPlayer;
     Context context;
 
     public TrackPlayerSimple(Context context) {
@@ -30,7 +30,7 @@ public class TrackPlayerSimple implements TrackPlayer {
                         .build()
         );
         mediaPlayer.setOnCompletionListener(mp -> stop());
-        Log.e("TrackPlayerSimple", "SetTrack");
+//        Log.e("TrackPlayerSimple", "SetTrack");
     }
 
     public void play() throws NoTrackException {
@@ -51,18 +51,32 @@ public class TrackPlayerSimple implements TrackPlayer {
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
         }
-        try {
+        /*try {
             mediaPlayer.prepare();
             mediaPlayer.seekTo(0);
         }
         catch (IOException e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 
     public void close() {
         if (mediaPlayer != null) {
             mediaPlayer.release();
+            mediaPlayer = null;
         }
+    }
+
+    @Override
+    public int getPosition() {
+        if (mediaPlayer == null) {
+            return -1;
+        }
+        return mediaPlayer.getCurrentPosition();
+    }
+
+    @Override
+    public boolean isClosed() {
+        return mediaPlayer == null;
     }
 }

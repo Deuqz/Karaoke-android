@@ -6,6 +6,7 @@ import android.media.MediaRecorder;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.Random;
 
 import database.User;
 
@@ -48,6 +49,15 @@ public class VoiceRecorderSimple implements VoiceRecorder {
             recorder.release();
             recorder = null;
             Log.e(LOG_TAG, "stop recording");
+            try {
+                MediaPlayer player = new MediaPlayer();
+                player.setDataSource(fileName);
+                player.prepare();
+                player.start();
+                Log.e(LOG_TAG, "Play recorded voice");
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "prepare() failed");
+            }
         }
         /*if (flag) {
             flag = false;

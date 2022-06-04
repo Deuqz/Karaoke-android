@@ -1,7 +1,9 @@
 package voice;
 
+import database.Track;
+
 public interface TrackWorker {
-    void start();
+    void start(Track track, int track3text);
 
     void pause();
 

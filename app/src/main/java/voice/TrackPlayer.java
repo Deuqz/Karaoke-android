@@ -22,4 +22,12 @@ public interface TrackPlayer {
     default void close() {
         throw new UnsupportedOperationException();
     }
+
+    default boolean isClosed() {
+        throw new UnsupportedOperationException();
+    }
+
+    default int getPosition() {
+        throw new UnsupportedOperationException();
+    }
 }

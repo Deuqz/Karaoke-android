@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -13,11 +14,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import java.io.IOException;
 
+import database.FileController;
+import database.FileControllerRedis;
+import database.FileConverter;
+import database.FileEntity;
 import database.Track;
 import database.User;
 import voice.TrackPlayer;
@@ -31,7 +37,7 @@ import voice.VoiceRecorderSimple;
 
 public class SongActivity extends AppCompatActivity {
     private TrackPlayer trackPlayer;
-    private VoiceRecorder voiceRecorder;
+    private VoiceRecorderSimple voiceRecorder;
     private TrackWorker trackWorker;
 
     @Override
@@ -51,11 +57,12 @@ public class SongActivity extends AppCompatActivity {
         });
         voiceRecorder = new VoiceRecorderSimple(getApplicationContext(), user);
         trackPlayer = new TrackPlayerSimple(getApplicationContext());
-        trackWorker = new TrackWorkerSimple(getApplicationContext(), user);
+        TextView textViewWithSongText = findViewById(R.id.textView2);
+        trackWorker = new TrackWorkerSimple(getApplicationContext(), user, textViewWithSongText);
     }
 
     public void playTrackPushed(View view) {
-        trackWorker.start();
+        trackWorker.start(new Track("track2", "somebody", "", R.raw.track2), R.raw.track3text);
     }
 
     public void pauseTrackPushed(View view) {
@@ -84,6 +91,13 @@ public class SongActivity extends AppCompatActivity {
 
     public void stopRecordPushed(View view) {
         voiceRecorder.stopRecording();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void saveFile(View view) throws IOException {
+        FileEntity fileEntity = FileConverter.convert(voiceRecorder.getFileName());
+        FileController controller = new FileControllerRedis();
+        controller.upload(fileEntity);
     }
 
     @Override
