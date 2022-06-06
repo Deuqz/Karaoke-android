@@ -13,7 +13,7 @@
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/registration"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-56dp" />
+        tools:layout_editor_absoluteY="0dp" />
 
     <TextView
         android:id="@+id/textView"
@@ -47,7 +47,7 @@
     <EditText
         android:id="@+id/password"
         android:layout_width="354dp"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         android:hint="@string/password"
         android:textColor="#FFFFFF"
@@ -78,7 +78,7 @@
     <TextView
         android:id="@+id/errorMessage"
         android:layout_width="360dp"
-        android:layout_height="27dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text=""
         android:textColor="#FF0000"
