@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 fragment = SearchFragment.newInstance(user);
                 break;
             case 2:
-                fragment = new SettingsFragment();
+                fragment = SettingsFragment.newInstance(user);
                 break;
             case 3:
                 fragment = ProfileFragment.newInstance(user);
