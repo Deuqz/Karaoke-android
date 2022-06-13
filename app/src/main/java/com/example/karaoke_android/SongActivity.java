@@ -1,40 +1,59 @@
 package com.example.karaoke_android;
 
 import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothHeadset;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.AudioDeviceInfo;
+import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 
 import database.Track;
 import database.User;
 import voice.TrackPlayer;
 import voice.TrackPlayerSimple;
-import voice.VoiceRecorder;
+import voice.TrackWorker;
+import voice.TrackWorkerSimple;
+import voice.TrackWorkerSmart;
 import voice.VoiceRecorderSimple;
 
-// TODO THERE IS WORK FOR DENIS!!!!
-
 public class SongActivity extends AppCompatActivity {
-    TrackPlayer trackPlayer;
-    VoiceRecorder voiceRecorder;
+    private TrackPlayer trackPlayer;
+    private VoiceRecorderSimple voiceRecorder;
+    private TrackWorker trackWorker;
+    private User user;
+    private Track track;
+    private final String LOG_TAG = "SongActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song);
-        TextView textView = findViewById(R.id.textView);
+        TextView textView = findViewById(R.id.processView);
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
-        trackPlayer = new TrackPlayerSimple(getApplicationContext());
-        User user = getIntent().getParcelableExtra("User");
-        Track track = getIntent().getParcelableExtra("Track");
+        user = getIntent().getParcelableExtra("User");
+        track = getIntent().getParcelableExtra("Track");
         textView.setText(track.getName());
         Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> {
@@ -43,27 +62,50 @@ public class SongActivity extends AppCompatActivity {
             startActivity(intent);
         });
         voiceRecorder = new VoiceRecorderSimple(getApplicationContext(), user);
+        trackPlayer = new TrackPlayerSimple(getApplicationContext());
+        TextView textViewWithSongText = findViewById(R.id.textView2);
+        trackWorker = new TrackWorkerSmart(getApplicationContext(), user, textViewWithSongText, textView);
     }
 
-    // code below from Denis
-    private boolean pausePushed = false;
+    private boolean isHeadphonesPlugged(){
+        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        AudioDeviceInfo[] audioDevices = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS);
+        for(AudioDeviceInfo deviceInfo : audioDevices){
+            if(deviceInfo.getType() == AudioDeviceInfo.TYPE_WIRED_HEADPHONES
+                    || deviceInfo.getType() == AudioDeviceInfo.TYPE_WIRED_HEADSET
+                    || deviceInfo.getType() == AudioDeviceInfo.TYPE_BLUETOOTH_A2DP
+                    || deviceInfo.getType() == AudioDeviceInfo.TYPE_BLUETOOTH_SCO){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void playTrackPushed(View view) {
-        if (!pausePushed) {
-            trackPlayer.setTrack(new Track("track1", "somebody", "", R.raw.track1));
+//        Log.d(LOG_TAG, String.valueOf(isHeadphonesPlugged()));
+        if (isHeadphonesPlugged()) {
+//            Log.e("Song Activity", String.valueOf(R.raw.track2text));
+            Track track = new Track("track2", "somebody", "xxx.onion", "track2.mp3");
+            track.setTextId("track2text.txt");
+            Log.d("PlayTrackPushed", "Try play track");
+            trackWorker.start(track);
+        } else {
+            Toast.makeText(this, "Please, connect headphones", Toast.LENGTH_SHORT).show();
         }
-        trackPlayer.play();
     }
 
     public void pauseTrackPushed(View view) {
-        trackPlayer.pause();
-        pausePushed = true;
+        trackWorker.pause();
+    }
+
+    public void stopTrackPushed(View view) {
+        trackWorker.stop();
     }
 
     // Requesting permission to RECORD_AUDIO
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private boolean permissionToRecordAccepted = false;
-    private String[] permissions = {Manifest.permission.RECORD_AUDIO};
+    private String[] permissions = { Manifest.permission.RECORD_AUDIO };
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -77,15 +119,19 @@ public class SongActivity extends AppCompatActivity {
     }
 
     public void recordPushed(View view) {
+        voiceRecorder.startRecording();
     }
 
     public void stopRecordPushed(View view) {
+        voiceRecorder.stopRecording();
     }
+
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         trackPlayer.stop();
         trackPlayer.close();
+        trackWorker.close();
     }
 }

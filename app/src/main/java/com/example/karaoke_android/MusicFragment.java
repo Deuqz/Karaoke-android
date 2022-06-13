@@ -26,7 +26,7 @@ public class MusicFragment extends Fragment {
 //        TODO fill tracks
         allTracks = new ArrayList<>();
         for (int i = 0; i < 30; i++) {
-            allTracks.add(new Track("Track" + i, "Oxxxymiron", "", 0));
+            allTracks.add(new Track("Track" + i, "Oxxxymiron", "", ""));
         }
     }
 

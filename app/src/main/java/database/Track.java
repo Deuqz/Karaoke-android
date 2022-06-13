@@ -15,30 +15,34 @@ public class Track implements Parcelable, Serializable {
     private String name;
     private String author;
     private String url;
-    private int id;
+    private String id;
+    private String textId;
 
     public Track() {
     }
 
-    public Track(String name, String author, String url, int id) {
+    public Track(String name, String author, String url, String id) {
         this.name = name;
         this.author = author;
         this.url = url;
         this.id = id;
+        this.textId = id + "text";
     }
 
     public Track(Parcel in) {
         name = in.readString();
         author = in.readString();
         url = in.readString();
-        id = in.readInt();
+        id = in.readString();
+        textId = in.readString();
     }
 
     public Track(BufferedReader bufferedReader) throws IOException {
         name = bufferedReader.readLine();
         author = bufferedReader.readLine();
         url = bufferedReader.readLine();
-        id = bufferedReader.read();
+        id = bufferedReader.readLine();
+        textId = bufferedReader.readLine();
     }
 
     public void write(FileOutputStream fos) throws IOException {
@@ -48,7 +52,9 @@ public class Track implements Parcelable, Serializable {
         fos.write('\n');
         fos.write(url.getBytes(StandardCharsets.UTF_8));
         fos.write('\n');
-        fos.write(String.valueOf(id).getBytes(StandardCharsets.UTF_8));
+        fos.write(id.getBytes(StandardCharsets.UTF_8));
+        fos.write('\n');
+        fos.write(textId.getBytes(StandardCharsets.UTF_8));
         fos.write('\n');
     }
 
@@ -64,9 +70,11 @@ public class Track implements Parcelable, Serializable {
         return url;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
+
+    public String getTextId() { return textId; }
 
     public void setName(String name) {
         this.name = name;
@@ -80,8 +88,12 @@ public class Track implements Parcelable, Serializable {
         this.url = url;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public void setTextId(String textId) {
+        this.textId = textId;
     }
 
     @NonNull
@@ -111,6 +123,7 @@ public class Track implements Parcelable, Serializable {
         parcel.writeString(name);
         parcel.writeString(author);
         parcel.writeString(url);
-        parcel.writeInt(id);
+        parcel.writeString(id);
+        parcel.writeString(textId);
     }
 }
