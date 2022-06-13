@@ -33,6 +33,8 @@ import voice.TrackWorkerSimple;
 import voice.TrackWorkerSmart;
 import voice.VoiceRecorderSimple;
 
+import com.example.karaoke_android.LoginActivity;
+
 
 public class SongActivity extends AppCompatActivity {
     private TrackPlayer trackPlayer;
