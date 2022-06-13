@@ -11,7 +11,10 @@ import com.example.grpc.client.*;
 
 public class ReadyDatabase implements DataBase {
 
-    String HOST = "192.168.88.60";
+//    String HOST = "192.168.88.60";
+//    String HOST = "172.20.100.49";
+//    String HOST = "172.21.160.1";
+    String HOST = "192.168.0.100";
 
 
     @Override
