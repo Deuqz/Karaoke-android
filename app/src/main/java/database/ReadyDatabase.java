@@ -76,7 +76,7 @@ public class ReadyDatabase implements DataBase {
         getUserTracksResponse response1 = stub.getUserTracks(request1);
         ArrayList<Track> tracks = new ArrayList<>();
         for (int i = 0; i < response1.getAuthorCount(); i++) {
-            tracks.add(new Track(response1.getName(i), response1.getAuthor(i), response1.getUrl(i), response1.getId(i)));
+            tracks.add(new Track(response1.getName(i), response1.getAuthor(i), response1.getUrl(i), String.valueOf(response1.getId(i))));
         }
         channel.shutdown();
         return new User(response.getFirstName(), response.getSecondName(), response.getEmail(), response.getPassword(), tracks);
@@ -91,7 +91,7 @@ public class ReadyDatabase implements DataBase {
                 .setName(track.getName())
                 .setAuthor(track.getAuthor())
                 .setUrl(track.getUrl())
-                .setId(track.getId())
+                .setId(track.getId().hashCode())
                 .build();
         addTrackToUserResponse response = stub.addTrackToUser(request);
         channel.shutdown();
@@ -106,7 +106,7 @@ public class ReadyDatabase implements DataBase {
         channel.shutdown();
         ArrayList<Track> tracks = new ArrayList<>();
         for (int i = 0; i < response.getAuthorCount(); i++) {
-            tracks.add(new Track(response.getName(i), response.getAuthor(i), response.getUrl(i), response.getId(i)));
+            tracks.add(new Track(response.getName(i), response.getAuthor(i), response.getUrl(i), String.valueOf(response.getId(i))));
         }
         return tracks;
     }
