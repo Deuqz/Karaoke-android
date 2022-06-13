@@ -1,16 +1,12 @@
 package com.example.karaoke_android;
 
 import android.Manifest;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothHeadset;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioDeviceInfo;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
@@ -19,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -38,6 +33,7 @@ import voice.TrackWorkerSimple;
 import voice.TrackWorkerSmart;
 import voice.VoiceRecorderSimple;
 
+
 public class SongActivity extends AppCompatActivity {
     private TrackPlayer trackPlayer;
     private VoiceRecorderSimple voiceRecorder;
@@ -47,7 +43,7 @@ public class SongActivity extends AppCompatActivity {
     private final String LOG_TAG = "SongActivity";
 
     private void setSongText(String text) {
-        TextView songTextView = findViewById(R.id.songText);
+        TextView songTextView = findViewById(R.id.processView);
         songTextView.setText(text);
     }
 
@@ -67,6 +63,7 @@ public class SongActivity extends AppCompatActivity {
             intent.putExtra("User", (Parcelable) user);
             startActivity(intent);
         });
+        LoginActivity act;
         voiceRecorder = new VoiceRecorderSimple(getApplicationContext(), user);
         trackPlayer = new TrackPlayerSimple(getApplicationContext());
         TextView textViewWithSongText = findViewById(R.id.textView2);
