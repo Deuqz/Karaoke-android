@@ -3,7 +3,7 @@ package voice;
 import database.Track;
 
 public interface TrackPlayer {
-    default void setTrack(Track track) {
+    default void setTrack(Track track, TrackWorker worker) {
         throw new UnsupportedOperationException();
     }
 
@@ -28,6 +28,10 @@ public interface TrackPlayer {
     }
 
     default int getPosition() {
+        throw new UnsupportedOperationException();
+    }
+
+    default String getFilePath() {
         throw new UnsupportedOperationException();
     }
 }

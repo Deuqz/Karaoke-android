@@ -4,6 +4,8 @@ public class FileEntity {
     private String id;
     private byte[] data;
 
+    public FileEntity() {}
+
     public FileEntity(String id, byte[] data) {
         this.id = id;
         this.data = data;

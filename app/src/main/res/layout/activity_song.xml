@@ -73,7 +73,7 @@
         app:layout_constraintTop_toBottomOf="@+id/pauseTrackButton" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/processView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
@@ -93,6 +93,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#CCAF86"
+        android:onClick="stopTrackPushed"
         android:text="@string/back"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -101,16 +102,6 @@
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.906" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:onClick="saveFile"
-        android:text="Button"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="161dp" />
 
     <TextView
         android:id="@+id/textView2"
@@ -123,4 +114,15 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="stopTrackPushed"
+        android:text="stop_track"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="232dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

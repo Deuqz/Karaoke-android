@@ -13,20 +13,32 @@ import java.nio.file.Paths;
 import java.util.Random;
 
 public class FileConverter {
-    private static String getId() {
-        Random rand = new Random();
-        StringBuilder id = new StringBuilder();
-        for (int i = 0; i < 40; ++i) {
-            id.append(rand.nextInt(127));
+    static int x = 0;
+
+    static public String getNewId() {
+//        Random rand = new Random();
+//        String id = rand.ints('0', 'z' + 1)
+//                .filter(x -> x <= '9' || ('A' <= x && x <= 'Z') || 'a' <= x)
+//                .limit(40)
+//                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+//                .toString();
+//        return id;
+        if (x++ == 0) {
+            return "c_PzRJ7NuNxoM61aTdrviq4Yx090dr45iYz4Xpu8hA";
+        } else {
+            return "GjKByAAhYmTeBpB4HRypw4vIknnE8Z4g5lO0f1Rg";
         }
-        return id.toString();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    static public FileEntity convert(String id, String filePath) throws IOException {
+        Log.d("FileConverter", "Id is " + id);
+        File file = new File(filePath);
+        return new FileEntity(id, Files.readAllBytes(file.toPath()));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     static public FileEntity convert(String filePath) throws IOException {
-        String id = getId();
-        Log.e("FileConverter", "Id is " + id);
-        File file = new File(filePath);
-        return new FileEntity(id, Files.readAllBytes(file.toPath()));
+        return convert(getNewId(), filePath);
     }
 }
