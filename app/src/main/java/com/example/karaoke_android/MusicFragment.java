@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import database.ReadyDatabase;
 import database.Track;
 import database.User;
 
@@ -18,17 +19,18 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
-public class MusicFragment extends Fragment {
+public class MusicFragment extends Fragment implements View.OnClickListener {
 
-    static private final ArrayList<Track> allTracks;
+    static private ArrayList<Track> allTracks;
 
-    static {
-//        TODO fill tracks
-        allTracks = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            allTracks.add(new Track("Track" + i, "Oxxxymiron", "", ""));
-        }
-    }
+//    private static Intent addTrackIntent;
+//     static {
+// //        TODO fill tracks
+//         allTracks = new ArrayList<>();
+//         for (int i = 0; i < 30; i++) {
+//             allTracks.add(new Track("Track" + i, "Oxxxymiron", "", ""));
+//         }
+//     }
 
     public static MusicFragment newInstance(User userSer) {
         MusicFragment fragment = new MusicFragment();
@@ -50,6 +52,7 @@ public class MusicFragment extends Fragment {
     }
 
     public MusicFragment() {
+        allTracks = (new ReadyDatabase()).getDefaultTracks();
     }
 
     @Override
@@ -77,6 +80,10 @@ public class MusicFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_music, container, false);
         assert getArguments() != null;
         User user = (User) getArguments().getSerializable("User");
+//        addTrackIntent = new Intent(getActivity(), AddSongActivity.class);
+//        addTrackIntent.putExtra("User", (Parcelable) user);
+//        Button addButton = (Button) view.findViewById(R.id.button);
+//        addButton.setOnClickListener(this);
         EditText editText = view.findViewById(R.id.textInput);
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -96,5 +103,10 @@ public class MusicFragment extends Fragment {
         });
         buttonsRedraw(user, view, editText);
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+//        startActivity(addTrackIntent);
     }
 }

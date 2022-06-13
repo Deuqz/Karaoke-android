@@ -46,6 +46,11 @@ public class SongActivity extends AppCompatActivity {
     private Track track;
     private final String LOG_TAG = "SongActivity";
 
+    private void setSongText(String text) {
+        TextView songTextView = findViewById(R.id.songText);
+        songTextView.setText(text);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +60,7 @@ public class SongActivity extends AppCompatActivity {
         user = getIntent().getParcelableExtra("User");
         track = getIntent().getParcelableExtra("Track");
         textView.setText(track.getName());
+        setSongText("There will be the text of the song))");
         Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, com.example.karaoke_android.MainActivity.class);

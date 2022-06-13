@@ -104,6 +104,19 @@
         app:layout_constraintVertical_bias="0.906" />
 
     <TextView
+<!--    android:id="@+id/songText"
+        android:layout_width="309dp"
+        android:layout_height="66dp"
+        android:text="TextView"
+        android:gravity="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="16dp"
+        tools:ignore="MissingConstraints" />
+</androidx.constraintlayout.widget.ConstraintLayout> -->
+
         android:id="@+id/textView2"
         android:layout_width="282dp"
         android:layout_height="143dp"

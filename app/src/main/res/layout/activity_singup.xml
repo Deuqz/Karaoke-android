@@ -13,12 +13,12 @@
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/registration"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-56dp" />
+        tools:layout_editor_absoluteY="0dp" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="179dp"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:text="@string/registration"
         android:textColor="#231F19"
         android:textSize="30sp"
@@ -32,7 +32,7 @@
     <EditText
         android:id="@+id/firstName"
         android:layout_width="354dp"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         android:hint="@string/first_name"
         android:textColor="#FFFFFF"
@@ -48,7 +48,7 @@
     <EditText
         android:id="@+id/secondName"
         android:layout_width="354dp"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         android:hint="@string/second_name"
         android:textColor="#FFFFFF"
@@ -64,7 +64,7 @@
     <EditText
         android:id="@+id/email"
         android:layout_width="354dp"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="76dp"
         android:hint="@string/email"
         android:textColor="#FFFFFF"
@@ -79,7 +79,7 @@
     <EditText
         android:id="@+id/password"
         android:layout_width="354dp"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         android:hint="@string/password"
         android:textColor="#FFFFFF"
@@ -111,7 +111,7 @@
     <TextView
         android:id="@+id/errorMessage"
         android:layout_width="337dp"
-        android:layout_height="23dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text=""
         android:textColor="#FF0000"

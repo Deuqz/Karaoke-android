@@ -9,21 +9,26 @@ buildscript {
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+    id 'com.google.protobuf'
 }
 
 android {
-    compileSdk 32
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    compileSdkVersion 32
 
     defaultConfig {
+        // applicationId "io.grpc.helloworldexample"
+        // minSdkVersion 21
+        // targetSdkVersion 32
         applicationId "com.example.karaoke_android"
         minSdk 24
         targetSdk 32
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
 
     dexOptions {
         preDexLibraries = false
@@ -34,14 +39,35 @@ android {
     }
 
     buildTypes {
+        debug { minifyEnabled false }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+    lintOptions {
+        disable 'GoogleAppIndexingWarning', 'HardcodedText', 'InvalidPackage'
+        textReport true
+        textOutput "stdout"
+    }
+}
+
+protobuf {
+    protoc { artifact = 'com.google.protobuf:protoc:3.19.2' }
+    plugins {
+        grpc { artifact = 'io.grpc:protoc-gen-grpc-java:1.45.1' // CURRENT_GRPC_VERSION
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java { option 'lite' }
+            }
+            task.plugins {
+                grpc { // Options added to --grpc_out
+                    option 'lite' }
+            }
+        }
     }
 }
 
@@ -51,6 +77,7 @@ ext {
 }
 
 dependencies {
+    // For Backend
 //    implementation 'com.google.android.gms:play-services:6.5.+'
 //    implementation 'com.google.api-client:google-api-client-xml:1.18.0-rc'
 //    implementation 'com.google.http-client:google-http-client-gson:1.39.2'
@@ -61,11 +88,15 @@ dependencies {
     implementation 'redis.clients:jedis:2.2.0'
     implementation 'com.arthenica:mobile-ffmpeg-full:4.4'
 
+    // For Ui
+    implementation 'com.android.support:multidex:1.0.3'
+    
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.6.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation 'io.grpc:grpc-okhttp:1.45.1' // CURRENT_GRPC_VERSION
+    implementation 'io.grpc:grpc-protobuf-lite:1.45.1' // CURRENT_GRPC_VERSION
+    implementation 'io.grpc:grpc-stub:1.45.1' // CURRENT_GRPC_VERSION
+    implementation 'org.apache.tomcat:annotations-api:6.0.53'
 }

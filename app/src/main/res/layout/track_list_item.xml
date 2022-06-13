@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?><!-- Layout for a single list item -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
@@ -9,7 +11,7 @@
 
     <TextView
         android:id="@+id/trackAuthor"
-        android:layout_width="158dp"
+        android:layout_width="209dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="#EDEAE5"
@@ -18,10 +20,23 @@
 
     <TextView
         android:id="@+id/trackName"
-        android:layout_width="118dp"
+        android:layout_width="203dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="#EDEAE5"
         android:textSize="20sp"
         android:textStyle="bold|italic" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="138dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:focusable="false"
+        android:text="Like"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
 </LinearLayout>

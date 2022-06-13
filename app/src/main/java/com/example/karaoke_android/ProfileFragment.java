@@ -2,6 +2,7 @@ package com.example.karaoke_android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,14 +43,13 @@ public class ProfileFragment extends Fragment {
         secondName.setText(user.getSecondName());
         TextView email = view.findViewById(R.id.email);
         email.setText(user.getEmail());
-//        TODO write trackList, now it is empty
         TrackAdaptor trackAdapter = new TrackAdaptor(getActivity(), user.getTrackList());
         ListView listView = view.findViewById(R.id.listView);
         listView.setAdapter(trackAdapter);
         listView.setOnItemClickListener((adapterView, view1, i, l) -> {
             Intent intent = new Intent(getActivity(), SongActivity.class);
-//            TODO send track
-//            intent.putExtra("trackName", user.getTrackList().get(i).toString());
+            intent.putExtra("Track", (Parcelable) user.getTrackList().get(i));
+            intent.putExtra("User", (Parcelable) user);
             startActivity(intent);
         });
         return view;

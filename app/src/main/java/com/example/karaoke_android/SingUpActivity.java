@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.IOException;
 
 import database.DataBase;
-import database.FilesDatabase;
+import database.ReadyDatabase;
 import database.User;
 
 public class SingUpActivity extends AppCompatActivity {
@@ -24,7 +24,7 @@ public class SingUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_singup);
-        database = new FilesDatabase(getApplicationContext());
+        database = new ReadyDatabase();
     }
 
     @SuppressLint("SetTextI18n")
