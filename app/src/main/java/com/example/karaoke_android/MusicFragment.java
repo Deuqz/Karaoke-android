@@ -24,6 +24,13 @@ public class MusicFragment extends Fragment implements View.OnClickListener {
     static private ArrayList<Track> allTracks;
 
 //    private static Intent addTrackIntent;
+//     static {
+// //        TODO fill tracks
+//         allTracks = new ArrayList<>();
+//         for (int i = 0; i < 30; i++) {
+//             allTracks.add(new Track("Track" + i, "Oxxxymiron", "", ""));
+//         }
+//     }
 
     public static MusicFragment newInstance(User userSer) {
         MusicFragment fragment = new MusicFragment();

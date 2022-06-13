@@ -1,5 +1,16 @@
-apply plugin: 'com.android.application'
-apply plugin: 'com.google.protobuf'
+buildscript {
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.3.0'
+        classpath 'com.android.tools.build:gradle:1.1.1'
+    }
+}
+
+
+plugins {
+    id 'com.android.application'
+    id 'com.google.gms.google-services'
+    id 'com.google.protobuf'
+}
 
 android {
     compileOptions {
@@ -9,12 +20,24 @@ android {
     compileSdkVersion 32
 
     defaultConfig {
-        applicationId "io.grpc.helloworldexample"
-        minSdkVersion 21
-        targetSdkVersion 32
+        // applicationId "io.grpc.helloworldexample"
+        // minSdkVersion 21
+        // targetSdkVersion 32
+        applicationId "com.example.karaoke_android"
+        minSdk 24
+        targetSdk 32
         versionCode 1
         versionName "1.0"
     }
+
+    dexOptions {
+        preDexLibraries = false
+    }
+
+    project.tasks.withType(com.android.build.gradle.tasks.Dex) {
+        additionalParameters=['--core-library']
+    }
+
     buildTypes {
         debug { minifyEnabled false }
         release {
@@ -48,12 +71,26 @@ protobuf {
     }
 }
 
+
 ext {
     supportLibrary = "27.0.2"
 }
 
 dependencies {
+    // For Backend
+//    implementation 'com.google.android.gms:play-services:6.5.+'
+//    implementation 'com.google.api-client:google-api-client-xml:1.18.0-rc'
+//    implementation 'com.google.http-client:google-http-client-gson:1.39.2'
+//    implementation 'com.google.api-client:google-api-client-android:1.18.0-rc'
+//    implementation 'com.google.apis:google-api-services-drive:v2-rev20211205-1.32.1'
+    implementation platform('com.google.firebase:firebase-bom:30.1.0')
+    implementation 'com.google.firebase:firebase-storage'
+    implementation 'redis.clients:jedis:2.2.0'
+    implementation 'com.arthenica:mobile-ffmpeg-full:4.4'
+
+    // For Ui
     implementation 'com.android.support:multidex:1.0.3'
+    
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.6.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "394219303387",
+    "project_id": "karaoke-android-23275",
+    "storage_bucket": "karaoke-android-23275.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:394219303387:android:e6fab0f515fb853a0177fe",
+        "android_client_info": {
+          "package_name": "com.example.karaoke_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "394219303387-np3502c2h17rksjk19p59k4bkecomj6e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.karaoke_android",
+            "certificate_hash": "2e6d3b05c1cfd996aa39cd8090ce7a5fe34c19a0"
+          }
+        },
+        {
+          "client_id": "394219303387-7218ulf9glu10jku47hs609s632it7n5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_hop5fXdHtFmbRR27ayHMEL5BTV3PLIM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "394219303387-7218ulf9glu10jku47hs609s632it7n5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
