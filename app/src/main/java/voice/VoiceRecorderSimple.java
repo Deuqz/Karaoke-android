@@ -28,8 +28,7 @@ public class VoiceRecorderSimple implements VoiceRecorder {
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         filePath = context.getExternalCacheDir().getAbsolutePath();
-//        filePath += "/" + FileConverter.getNewId() + ".mp3";
-        filePath += "/" + user.getEmail() + "_" + FileConverter.getNewId() + ".mp3";
+        filePath += "/" + FileConverter.getNewUrl() + ".mp3";
         recorder.setOutputFile(filePath);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         try {
@@ -55,16 +54,6 @@ public class VoiceRecorderSimple implements VoiceRecorder {
             recorder.release();
             recorder = null;
             Log.d(LOG_TAG, "stop recording");
-            /*try {
-                MediaPlayer player = new MediaPlayer();
-                player.setDataSource(filePath);
-                player.prepare();
-                player.start();
-                Log.e(LOG_TAG, "Play recorded voice");
-                while (player.isPlaying()) {}
-            } catch (IOException e) {
-                Log.e(LOG_TAG, "prepare() failed");
-            }*/
         }
     }
 

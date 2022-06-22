@@ -33,7 +33,7 @@ public class FileLoadingControllerRedis implements FileLoadingController {
     public void upload(FileEntity fileEntity) {
         isWork.set(true);
         Jedis jedis = pool.getResource();
-        jedis.set(fileEntity.getId().getBytes(StandardCharsets.UTF_8), fileEntity.getData());
+        jedis.set(fileEntity.getUrl().getBytes(StandardCharsets.UTF_8), fileEntity.getData());
         isWork.set(false);
     }
 

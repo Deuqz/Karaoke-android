@@ -1,7 +1,9 @@
 package com.example.karaoke_android;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -68,6 +70,12 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         userAdaptor.setUser(user);
         ListView listView = view.findViewById(R.id.listView);
         listView.setAdapter(userAdaptor);
+        /*listView.setOnItemClickListener((adapterView, view1, i, l) -> {
+            Intent intent = new Intent(getActivity(), SongActivity.class); // Other activity
+            // intent.putExtra("Track", (Parcelable) tracks.get(i));
+            intent.putExtra("User", (Parcelable) users.get(i));
+            startActivity(intent);
+        });*/
     }
 
     @Override

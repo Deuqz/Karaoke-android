@@ -56,7 +56,7 @@ public class FileLoadingControllerFirebase implements FileLoadingController {
         StorageMetadata metadata = new StorageMetadata.Builder()
                 .setContentType("audio/mpeg")
                 .build();
-        StorageReference file = storageRef.child(String.format("%s.mp3", fileEntity.getId()));
+        StorageReference file = storageRef.child(String.format("%s.mp3", fileEntity.getUrl()));
         Log.d(LOG_TAG, String.format("Try upload file %s", file.getName()));
         UploadTask uploadTask = file.putBytes(fileEntity.getData(), metadata);
         uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

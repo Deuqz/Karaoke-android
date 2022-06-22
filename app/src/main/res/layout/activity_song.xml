@@ -19,58 +19,17 @@
 
     <Button
         android:id="@+id/playTrackButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="152dp"
+        android:layout_width="43dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="184dp"
         android:backgroundTint="#CCAF86"
         android:onClick="playTrackPushed"
         android:text="play_track"
         android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/pauseTrackButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="152dp"
-        android:layout_marginEnd="44dp"
-        android:backgroundTint="#CCAF86"
-        android:onClick="pauseTrackPushed"
-        android:text="pause_track"
-        android:textColor="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/recordButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="108dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="#CCAF86"
-        android:onClick="recordPushed"
-        android:text="record"
-        android:textColor="#000000"
-        app:layout_constraintEnd_toStartOf="@+id/stopRecordButton"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/playTrackButton" />
-
-    <Button
-        android:id="@+id/stopRecordButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="108dp"
-        android:layout_marginEnd="40dp"
-        android:backgroundTint="#CCAF86"
-        android:onClick="stopRecordPushed"
-        android:text="stop"
-        android:textColor="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pauseTrackButton" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.782" />
 
     <TextView
         android:id="@+id/processView"
@@ -120,22 +79,23 @@
         android:id="@+id/textView2"
         android:layout_width="282dp"
         android:layout_height="143dp"
-        android:layout_marginBottom="148dp"
+        android:layout_marginBottom="320dp"
         android:text=""
         android:textColor="#000000"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="46dp"
+        android:layout_height="41dp"
         android:onClick="stopTrackPushed"
         android:text="stop_track"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.892"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="232dp" />
+        tools:layout_editor_absoluteY="542dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

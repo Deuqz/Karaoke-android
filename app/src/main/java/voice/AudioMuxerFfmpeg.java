@@ -17,14 +17,14 @@ public class AudioMuxerFfmpeg implements AudioMuxer {
     private final String[] command;
 
     private final String newFile;
-    private final String newId;
+    private final String newUrl;
 
     private AtomicBoolean isWorked = new AtomicBoolean(false);
 
     public AudioMuxerFfmpeg(String trackFile, String voiceFile, Context context) {
-        newId = FileConverter.getNewId();
+        newUrl = FileConverter.getNewUrl();
         newFile = context.getExternalCacheDir().getAbsolutePath()
-                + String.format("/%s.mp3", newId);
+                + String.format("/%s.mp3", newUrl);
         command = new String[]{"-i", trackFile,
                 "-i", voiceFile,
                 "-filter_complex",
@@ -57,5 +57,5 @@ public class AudioMuxerFfmpeg implements AudioMuxer {
     }
 
     @Override
-    public String getId() { return newId; }
+    public String getUrl() { return newUrl; }
 }

@@ -3,6 +3,7 @@ package com.example.karaoke_android;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import database.ReadyDatabase;
 import database.User;
 
 public class ProfileFragment extends Fragment {
@@ -44,6 +46,10 @@ public class ProfileFragment extends Fragment {
         TextView email = view.findViewById(R.id.email);
         email.setText(user.getEmail());
         TrackAdaptor trackAdapter = new TrackAdaptor(getActivity(), user.getTrackList());
+
+        Log.e("ProfileFragment", String.valueOf((new ReadyDatabase()).getUser(user.getEmail()).getTrackList().size()));
+        Log.e("ProfileFragment", String.valueOf(user.getTrackList().size()));
+
         ListView listView = view.findViewById(R.id.listView);
         listView.setAdapter(trackAdapter);
         listView.setOnItemClickListener((adapterView, view1, i, l) -> {
@@ -51,6 +57,7 @@ public class ProfileFragment extends Fragment {
             intent.putExtra("Track", (Parcelable) user.getTrackList().get(i));
             intent.putExtra("User", (Parcelable) user);
             startActivity(intent);
+            // TODO Denis play track
         });
         return view;
     }

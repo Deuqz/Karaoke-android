@@ -2,6 +2,7 @@ package com.example.karaoke_android;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import database.ReadyDatabase;
 import database.Track;
 import database.User;
 
@@ -39,16 +41,16 @@ public class TrackAdaptor extends ArrayAdapter<Track> {
         authorTextView.setText(currentTrack.getAuthor());
         TextView nameTextView = listItemView.findViewById(R.id.trackName);
         nameTextView.setText(currentTrack.getName());
-        Switch switch1 = (Switch) listItemView.findViewById(R.id.switch1);
+//        Switch switch1 = (Switch) listItemView.findViewById(R.id.switch1);
 //        TODO fix with database, user and track
-        switch1.setChecked(user.containsTrack(currentTrack));
-        switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                System.out.println("ON");
-            } else {
-                System.out.println("OFF");
-            }
-        });
+//        switch1.setChecked(user.containsTrack(currentTrack));
+//        switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
+//            if (isChecked) {
+//                System.out.println("ON");
+//            } else {
+//                System.out.println("OFF");
+//            }
+//        });
         return listItemView;
     }
 }

@@ -12,8 +12,6 @@ import com.example.grpc.client.*;
 public class ReadyDatabase implements DataBase {
 
 //    String HOST = "192.168.88.60";
-//    String HOST = "172.20.100.49";
-//    String HOST = "172.21.160.1";
     String HOST = "192.168.0.100";
 
 
@@ -34,7 +32,6 @@ public class ReadyDatabase implements DataBase {
 
     @Override
     public boolean containsUser(String login) {
-//        return false;
         ManagedChannel channel = ManagedChannelBuilder.forAddress(HOST, 50051).usePlaintext().build();
         GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
         containsUserRequest request = containsUserRequest.newBuilder()
@@ -76,7 +73,7 @@ public class ReadyDatabase implements DataBase {
         getUserTracksResponse response1 = stub.getUserTracks(request1);
         ArrayList<Track> tracks = new ArrayList<>();
         for (int i = 0; i < response1.getAuthorCount(); i++) {
-            tracks.add(new Track(response1.getName(i), response1.getAuthor(i), response1.getUrl(i), String.valueOf(response1.getId(i))));
+            tracks.add(new Track(response1.getName(i), response1.getAuthor(i), response1.getUrl(i), response1.getId(i)));
         }
         channel.shutdown();
         return new User(response.getFirstName(), response.getSecondName(), response.getEmail(), response.getPassword(), tracks);
@@ -91,7 +88,7 @@ public class ReadyDatabase implements DataBase {
                 .setName(track.getName())
                 .setAuthor(track.getAuthor())
                 .setUrl(track.getUrl())
-                .setId(track.getId().hashCode())
+                .setId(track.getId())
                 .build();
         addTrackToUserResponse response = stub.addTrackToUser(request);
         channel.shutdown();
@@ -106,7 +103,7 @@ public class ReadyDatabase implements DataBase {
         channel.shutdown();
         ArrayList<Track> tracks = new ArrayList<>();
         for (int i = 0; i < response.getAuthorCount(); i++) {
-            tracks.add(new Track(response.getName(i), response.getAuthor(i), response.getUrl(i), String.valueOf(response.getId(i))));
+            tracks.add(new Track(response.getName(i), response.getAuthor(i), response.getUrl(i), response.getId(i)));
         }
         return tracks;
     }

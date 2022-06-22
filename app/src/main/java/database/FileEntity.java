@@ -1,26 +1,26 @@
 package database;
 
 public class FileEntity {
-    private String id;
+    private String url;
     private byte[] data;
 
     public FileEntity() {}
 
-    public FileEntity(String id, byte[] data) {
-        this.id = id;
+    public FileEntity(String url, byte[] data) {
+        this.url = url;
         this.data = data;
     }
 
-    public String getId() {
-        return id;
+    public String getUrl() {
+        return url;
     }
 
     public byte[] getData() {
         return data;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String url) {
+        this.url = url;
     }
 
     public void setData(byte[] data) {
