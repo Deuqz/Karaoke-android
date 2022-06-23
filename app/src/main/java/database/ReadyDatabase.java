@@ -9,6 +9,8 @@ import io.grpc.ManagedChannelBuilder;
 import com.example.grpc.client.GreetingServiceGrpc;
 import com.example.grpc.client.*;
 
+import org.checkerframework.checker.units.qual.A;
+
 public class ReadyDatabase implements DataBase {
 
 //    String HOST = "192.168.88.60";
@@ -122,5 +124,20 @@ public class ReadyDatabase implements DataBase {
     public boolean deleteTrack(String login, String name) {
         //детали обговорим...
         return false;
+    }
+
+    @Override
+    public ArrayList<Track> getLikes(String user) {
+        return new ArrayList<Track>();
+    }
+
+    @Override
+    public void removeLike(Track track, String user) {
+
+    }
+
+    @Override
+    public void addLike(Track track, String user) {
+
     }
 }

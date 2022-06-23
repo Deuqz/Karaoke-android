@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/trackEmail"
-        android:layout_width="130dp"
+        android:layout_width="149dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="#EDEAE5"
@@ -18,7 +18,7 @@
 
     <TextView
         android:id="@+id/trackFirstName"
-        android:layout_width="118dp"
+        android:layout_width="137dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="#EDEAE5"

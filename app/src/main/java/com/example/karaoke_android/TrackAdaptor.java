@@ -19,9 +19,14 @@ import database.User;
 public class TrackAdaptor extends ArrayAdapter<Track> {
 
     User user;
+    boolean visibleSwitch;
 
     public TrackAdaptor(Activity context, ArrayList<Track> tracks) {
         super(context, 0, tracks);
+    }
+
+    public void setVisibleSwitch(boolean visibleSwitch) {
+        this.visibleSwitch = visibleSwitch;
     }
 
     public void setUser(User user) {
@@ -41,16 +46,20 @@ public class TrackAdaptor extends ArrayAdapter<Track> {
         authorTextView.setText(currentTrack.getAuthor());
         TextView nameTextView = listItemView.findViewById(R.id.trackName);
         nameTextView.setText(currentTrack.getName());
-//        Switch switch1 = (Switch) listItemView.findViewById(R.id.switch1);
-//        TODO fix with database, user and track
-//        switch1.setChecked(user.containsTrack(currentTrack));
-//        switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
-//            if (isChecked) {
-//                System.out.println("ON");
-//            } else {
-//                System.out.println("OFF");
-//            }
-//        });
+        Switch switch1 = (Switch) listItemView.findViewById(R.id.switch1);
+        if (!visibleSwitch) {
+            switch1.setVisibility(View.INVISIBLE);
+        } else {
+            switch1.setVisibility(View.VISIBLE);
+            switch1.setChecked(user.containsTrack(currentTrack));
+            switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    (new ReadyDatabase()).removeLike(currentTrack, user.getEmail());
+                } else {
+                    (new ReadyDatabase()).addLike(currentTrack, user.getEmail());
+                }
+            });
+        }
         return listItemView;
     }
 }

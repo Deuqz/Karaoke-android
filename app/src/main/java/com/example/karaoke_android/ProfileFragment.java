@@ -46,6 +46,7 @@ public class ProfileFragment extends Fragment {
         TextView email = view.findViewById(R.id.email);
         email.setText(user.getEmail());
         TrackAdaptor trackAdapter = new TrackAdaptor(getActivity(), user.getTrackList());
+        trackAdapter.setVisibleSwitch(false);
 
         Log.e("ProfileFragment", String.valueOf((new ReadyDatabase()).getUser(user.getEmail()).getTrackList().size()));
         Log.e("ProfileFragment", String.valueOf(user.getTrackList().size()));

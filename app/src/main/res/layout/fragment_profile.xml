@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
-        android:layout_height="560dp"
+        android:layout_height="630dp"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/profile"
         tools:layout_editor_absoluteX="0dp"

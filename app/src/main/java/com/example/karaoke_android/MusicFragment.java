@@ -63,6 +63,7 @@ public class MusicFragment extends Fragment implements View.OnClickListener {
     private void buttonsRedraw(User user, View view, EditText editText) {
         ArrayList<Track> tracks = getTackList(editText.getText().toString());
         TrackAdaptor trackAdapter = new TrackAdaptor(getActivity(), tracks);
+        trackAdapter.setVisibleSwitch(true);
         trackAdapter.setUser(user);
         ListView listView = view.findViewById(R.id.listView);
         listView.setAdapter(trackAdapter);
