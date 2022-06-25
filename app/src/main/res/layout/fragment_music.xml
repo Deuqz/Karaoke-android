@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
-        android:layout_height="560dp"
+        android:layout_height="630dp"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/music"
         tools:layout_editor_absoluteX="0dp"
@@ -30,8 +30,8 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:focusable="true"
-        android:layout_below="@+id/textInput" >
+        android:layout_below="@+id/textInput"
+        android:focusable="true">
 
     </ListView>
 </RelativeLayout>

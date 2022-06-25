@@ -18,36 +18,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-
 import database.Track;
 import database.User;
-import voice.TrackPlayer;
-import voice.TrackPlayerSimple;
 import voice.TrackWorker;
-import voice.TrackWorkerSimple;
 import voice.TrackWorkerSmart;
-import voice.VoiceRecorderSimple;
-
-import com.example.karaoke_android.LoginActivity;
 
 
 public class SongActivity extends AppCompatActivity {
-    private TrackPlayer trackPlayer;
-    private VoiceRecorderSimple voiceRecorder;
     private TrackWorker trackWorker;
     private User user;
     private Track track;
-    private final String LOG_TAG = "SongActivity";
-
-    private void setSongText(String text) {
-        TextView songTextView = findViewById(R.id.processView);
-        songTextView.setText(text);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,16 +38,12 @@ public class SongActivity extends AppCompatActivity {
         user = getIntent().getParcelableExtra("User");
         track = getIntent().getParcelableExtra("Track");
         textView.setText(track.getName());
-        setSongText("There will be the text of the song))");
         Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, com.example.karaoke_android.MainActivity.class);
             intent.putExtra("User", (Parcelable) user);
             startActivity(intent);
         });
-        LoginActivity act;
-        voiceRecorder = new VoiceRecorderSimple(getApplicationContext(), user);
-        trackPlayer = new TrackPlayerSimple(getApplicationContext());
         TextView textViewWithSongText = findViewById(R.id.textView2);
         trackWorker = new TrackWorkerSmart(getApplicationContext(), user, textViewWithSongText, textView);
     }
@@ -87,11 +63,9 @@ public class SongActivity extends AppCompatActivity {
     }
 
     public void playTrackPushed(View view) {
-//        Log.d(LOG_TAG, String.valueOf(isHeadphonesPlugged()));
         if (isHeadphonesPlugged()) {
-//            Log.e("Song Activity", String.valueOf(R.raw.track2text));
-            Track track = new Track("track2", "somebody", "xxx.onion", "track2.mp3");
-            track.setTextId("track2text.txt");
+//            Track track = new Track("track2", "somebody", "xxx.onion", "track2.mp3");
+//            track.setTextId("track2text.txt");
             Log.d("PlayTrackPushed", "Try play track");
             trackWorker.start(track);
         } else {
@@ -119,24 +93,14 @@ public class SongActivity extends AppCompatActivity {
             permissionToRecordAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
         }
         if (!permissionToRecordAccepted) {
+            Toast.makeText(this, "No permissions", Toast.LENGTH_SHORT).show();
             finish();
         }
     }
 
-    public void recordPushed(View view) {
-        voiceRecorder.startRecording();
-    }
-
-    public void stopRecordPushed(View view) {
-        voiceRecorder.stopRecording();
-    }
-
-
     @Override
     public void onDestroy() {
         super.onDestroy();
-        trackPlayer.stop();
-        trackPlayer.close();
         trackWorker.close();
     }
 }

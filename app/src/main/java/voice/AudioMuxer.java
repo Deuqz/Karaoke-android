@@ -11,5 +11,5 @@ public interface AudioMuxer {
 
     String getFileName();
 
-    String getId();
+    String getUrl();
 }

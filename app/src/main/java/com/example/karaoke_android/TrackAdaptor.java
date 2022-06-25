@@ -11,19 +11,30 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import database.ReadyDatabase;
 import database.Track;
 import database.User;
 
 public class TrackAdaptor extends ArrayAdapter<Track> {
 
     User user;
+    boolean visibleSwitch;
+    ArrayList<Integer> likedTracks;
 
     public TrackAdaptor(Activity context, ArrayList<Track> tracks) {
         super(context, 0, tracks);
     }
 
+    public void setVisibleSwitch(boolean visibleSwitch) {
+        this.visibleSwitch = visibleSwitch;
+    }
+
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setLikedTracks(ArrayList<Integer> likedTracks) {
+        this.likedTracks = likedTracks;
     }
 
     @SuppressLint("UseSwitchCompatOrMaterialCode")
@@ -39,16 +50,22 @@ public class TrackAdaptor extends ArrayAdapter<Track> {
         authorTextView.setText(currentTrack.getAuthor());
         TextView nameTextView = listItemView.findViewById(R.id.trackName);
         nameTextView.setText(currentTrack.getName());
-        Switch switch1 = (Switch) listItemView.findViewById(R.id.switch1);
-//        TODO fix with database, user and track
-        switch1.setChecked(user.containsTrack(currentTrack));
-        switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                System.out.println("ON");
-            } else {
-                System.out.println("OFF");
-            }
-        });
+        Switch switch1 = listItemView.findViewById(R.id.switch1);
+        if (!visibleSwitch) {
+            switch1.setVisibility(View.INVISIBLE);
+        } else {
+            switch1.setVisibility(View.VISIBLE);
+            boolean contains = likedTracks.contains(currentTrack.getId());
+            switch1.setChecked(contains);
+            switch1.setOnClickListener(view -> {
+                if (contains) {
+                    (new ReadyDatabase()).removeLike(currentTrack.getId(), user.getEmail());
+                }
+                if (!contains) {
+                    (new ReadyDatabase()).addLike(currentTrack.getId(), user.getEmail());
+                }
+            });
+        }
         return listItemView;
     }
 }

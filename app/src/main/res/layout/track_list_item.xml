@@ -11,7 +11,7 @@
 
     <TextView
         android:id="@+id/trackAuthor"
-        android:layout_width="209dp"
+        android:layout_width="153dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="#EDEAE5"
@@ -33,7 +33,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:focusable="false"
-        android:text="Like"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold|italic"

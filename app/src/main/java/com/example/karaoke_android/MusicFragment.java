@@ -18,19 +18,13 @@ import database.User;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class MusicFragment extends Fragment implements View.OnClickListener {
 
     static private ArrayList<Track> allTracks;
+    static private ArrayList<Integer> likedTracks;
 
-//    private static Intent addTrackIntent;
-//     static {
-// //        TODO fill tracks
-//         allTracks = new ArrayList<>();
-//         for (int i = 0; i < 30; i++) {
-//             allTracks.add(new Track("Track" + i, "Oxxxymiron", "", ""));
-//         }
-//     }
 
     public static MusicFragment newInstance(User userSer) {
         MusicFragment fragment = new MusicFragment();
@@ -63,7 +57,9 @@ public class MusicFragment extends Fragment implements View.OnClickListener {
     private void buttonsRedraw(User user, View view, EditText editText) {
         ArrayList<Track> tracks = getTackList(editText.getText().toString());
         TrackAdaptor trackAdapter = new TrackAdaptor(getActivity(), tracks);
+        trackAdapter.setVisibleSwitch(true);
         trackAdapter.setUser(user);
+        trackAdapter.setLikedTracks(likedTracks);
         ListView listView = view.findViewById(R.id.listView);
         listView.setAdapter(trackAdapter);
         listView.setOnItemClickListener((adapterView, view1, i, l) -> {
@@ -80,10 +76,7 @@ public class MusicFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_music, container, false);
         assert getArguments() != null;
         User user = (User) getArguments().getSerializable("User");
-//        addTrackIntent = new Intent(getActivity(), AddSongActivity.class);
-//        addTrackIntent.putExtra("User", (Parcelable) user);
-//        Button addButton = (Button) view.findViewById(R.id.button);
-//        addButton.setOnClickListener(this);
+        likedTracks = (ArrayList<Integer>) (new ReadyDatabase()).getLikeTracks(user.getEmail()).stream().map(Track::getId).collect(Collectors.toList());
         EditText editText = view.findViewById(R.id.textInput);
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -107,6 +100,5 @@ public class MusicFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-//        startActivity(addTrackIntent);
     }
 }

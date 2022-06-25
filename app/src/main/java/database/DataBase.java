@@ -29,4 +29,10 @@ public interface DataBase {
     public ArrayList<String> getAllUserEmails();
 
     public boolean deleteTrack(String login, String name);
+
+    public void addLike(int trackId, String user);
+
+    public void removeLike(int trackId, String user);
+
+    public ArrayList<Track> getLikeTracks(String user);
 }

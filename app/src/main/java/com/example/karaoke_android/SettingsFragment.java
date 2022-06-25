@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import database.ReadyDatabase;
 import database.Track;
 import database.User;
 
@@ -15,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
 
@@ -35,9 +37,11 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void buttonsRedraw(User user, View view) {
-        ArrayList<Track> tracks = user.getTrackList();
+        ArrayList<Track> tracks = (new ReadyDatabase()).getLikeTracks(user.getEmail());
         Collections.reverse(tracks);
         TrackAdaptor trackAdapter = new TrackAdaptor(getActivity(), tracks);
+        trackAdapter.setVisibleSwitch(true);
+        trackAdapter.setLikedTracks((ArrayList<Integer>) tracks.stream().map(Track::getId).collect(Collectors.toList()));
         trackAdapter.setUser(user);
         ListView listView = view.findViewById(R.id.listView);
         listView.setAdapter(trackAdapter);

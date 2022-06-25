@@ -3,7 +3,6 @@ package voice;
 import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
-import android.os.Environment;
 import android.util.Log;
 
 import java.io.IOException;
@@ -26,7 +25,7 @@ public class TrackPlayerSimple implements TrackPlayer {
             stop();
         }
         trackPath = context.getExternalCacheDir().getAbsolutePath();
-        trackPath += "/" + track.getId();
+        trackPath += String.format("/%s.mp3", track.getUrl());
         Log.d(LOG_TAG, "Set track %s" + trackPath);
         mediaPlayer = new MediaPlayer();
         try {
