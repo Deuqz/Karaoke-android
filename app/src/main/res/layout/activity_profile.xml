@@ -30,7 +30,7 @@
             android:shadowDx="0"
             android:shadowDy="8"
             android:shadowRadius="1"
-            android:text="@string/profileTitle"
+            android:text="USER PROFILE"
             android:textAllCaps="true"
             android:textColor="#502F00"
             android:textSize="30sp"
