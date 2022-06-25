@@ -93,4 +93,19 @@ public class FilesDatabase implements DataBase {
     public boolean deleteTrack(String login, String name) {
         return false;
     }
+
+    @Override
+    public void addLike(int trackId, String user) {
+
+    }
+
+    @Override
+    public void removeLike(int trackId, String user) {
+
+    }
+
+    @Override
+    public ArrayList<Track> getLikeTracks(String user) {
+        return null;
+    }
 }

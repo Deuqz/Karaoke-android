@@ -18,29 +18,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-
 import database.Track;
 import database.User;
-import voice.TrackPlayer;
-import voice.TrackPlayerSimple;
 import voice.TrackWorker;
-import voice.TrackWorkerSimple;
 import voice.TrackWorkerSmart;
-import voice.VoiceRecorderSimple;
-
-import com.example.karaoke_android.LoginActivity;
 
 
 public class SongActivity extends AppCompatActivity {
     private TrackWorker trackWorker;
     private User user;
     private Track track;
-    private final String LOG_TAG = "SongActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

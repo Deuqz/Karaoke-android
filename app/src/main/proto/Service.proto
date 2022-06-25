@@ -88,6 +88,35 @@ message deleteTrackResponse{
   bool code = 1;
 }
 
+message addLikeRequest{
+  string login = 1;
+  int32 id = 2;
+}
+
+message addLikeResponse{
+  bool code = 1;
+}
+
+message removeLikeRequest{
+  string login = 1;
+  int32 id = 2;
+}
+
+message removeLikeResponse{
+  bool code = 1;
+}
+
+message getLikedTracksRequest{
+  string login = 1;
+}
+
+message getLikedTracksResponse{
+  repeated string name = 1;
+  repeated string author = 2;
+  repeated string url = 3;
+  repeated int32 id = 4;
+}
+
 service GreetingService {
 
   rpc addUser(addUserRequest) returns (addUserResponse) {}
@@ -107,4 +136,11 @@ service GreetingService {
   rpc getAllUserEmails(google.protobuf.Empty) returns (getAllUserEmailsResponse) {}
 
   rpc deleteTrack(deleteTrackRequest) returns (deleteTrackResponse) {}
+
+  rpc addLike(addLikeRequest) returns (addLikeResponse) {}
+
+  rpc removeLike(removeLikeRequest) returns (removeLikeResponse) {}
+
+  rpc getLikedTracks(getLikedTracksRequest) returns (getLikedTracksResponse) {}
+
 }

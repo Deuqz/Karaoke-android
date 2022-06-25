@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ProfileFragment">
+    tools:context=".ProfileActivity">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
-        android:layout_height="630dp"
+        android:layout_height="wrap_content"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/profile"
+        app:srcCompat="@drawable/profile2"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />
 
@@ -30,7 +30,7 @@
             android:shadowDx="0"
             android:shadowDy="8"
             android:shadowRadius="1"
-            android:text="@string/profileTitle"
+            android:text="USER PROFILE"
             android:textAllCaps="true"
             android:textColor="#502F00"
             android:textSize="30sp"
@@ -144,4 +144,18 @@
         android:layout_width="match_parent"
         android:layout_height="320dp"
         android:layout_below="@+id/trackListLayout" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_below="@+id/listView"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="134dp"
+        android:layout_width="100dp"
+        android:layout_height="44dp"
+        android:backgroundTint="#CCAF86"
+        android:gravity="center_horizontal"
+        android:text="Back"
+        android:textColor="#000000" />
+
 </RelativeLayout>
