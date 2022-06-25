@@ -127,17 +127,17 @@ public class ReadyDatabase implements DataBase {
     }
 
     @Override
-    public ArrayList<Track> getLikes(String user) {
+    public ArrayList<Track> getLikeTracks(String user) {
         return new ArrayList<Track>();
     }
 
     @Override
-    public void removeLike(Track track, String user) {
+    public void removeLike(int trackId, String user) {
 
     }
 
     @Override
-    public void addLike(Track track, String user) {
+    public void addLike(int trackId, String user) {
 
     }
 }

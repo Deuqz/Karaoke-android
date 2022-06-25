@@ -30,9 +30,9 @@ public interface DataBase {
 
     public boolean deleteTrack(String login, String name);
 
-    public void addLike(Track track, String user);
+    public void addLike(int trackId, String user);
 
-    public void removeLike(Track track, String user);
+    public void removeLike(int trackId, String user);
 
-    public ArrayList<Track> getLikes(String user);
+    public ArrayList<Track> getLikeTracks(String user);
 }

@@ -95,17 +95,17 @@ public class FilesDatabase implements DataBase {
     }
 
     @Override
-    public ArrayList<Track> getLikes(String user) {
+    public void addLike(int trackId, String user) {
+
+    }
+
+    @Override
+    public void removeLike(int trackId, String user) {
+
+    }
+
+    @Override
+    public ArrayList<Track> getLikeTracks(String user) {
         return null;
-    }
-
-    @Override
-    public void removeLike(Track track, String user) {
-
-    }
-
-    @Override
-    public void addLike(Track track, String user) {
-
     }
 }

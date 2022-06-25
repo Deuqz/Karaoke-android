@@ -54,9 +54,9 @@ public class TrackAdaptor extends ArrayAdapter<Track> {
             switch1.setChecked(user.containsTrack(currentTrack));
             switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
-                    (new ReadyDatabase()).removeLike(currentTrack, user.getEmail());
+                    (new ReadyDatabase()).removeLike(currentTrack.getId(), user.getEmail());
                 } else {
-                    (new ReadyDatabase()).addLike(currentTrack, user.getEmail());
+                    (new ReadyDatabase()).addLike(currentTrack.getId(), user.getEmail());
                 }
             });
         }

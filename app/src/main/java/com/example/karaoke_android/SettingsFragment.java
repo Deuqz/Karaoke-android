@@ -36,7 +36,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void buttonsRedraw(User user, View view) {
-        ArrayList<Track> tracks = (new ReadyDatabase()).getLikes(user.getEmail());
+        ArrayList<Track> tracks = (new ReadyDatabase()).getLikeTracks(user.getEmail());
         Collections.reverse(tracks);
         TrackAdaptor trackAdapter = new TrackAdaptor(getActivity(), tracks);
         trackAdapter.setVisibleSwitch(true);
