@@ -9,8 +9,6 @@ import io.grpc.ManagedChannelBuilder;
 import com.example.grpc.client.GreetingServiceGrpc;
 import com.example.grpc.client.*;
 
-import org.checkerframework.checker.units.qual.A;
-
 public class ReadyDatabase implements DataBase {
 
 //    String HOST = "192.168.88.60";
@@ -128,30 +126,30 @@ public class ReadyDatabase implements DataBase {
 
     @Override
     public ArrayList<Track> getLikeTracks(String user) {
-        ManagedChannel channel = ManagedChannelBuilder.forAdress(HOST, 50051).usePlaintext().build();
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(HOST, 50051).usePlaintext().build();
         GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
-        getLikeTracksRequest request = getLikeTracksRequest.newBuilder().setLogin(user).build();
-	getLikeTracksResponse response = stub.getLikeTracks(request);
-	ArrayList<Track> tracks = new ArrayList<>();
-	for (int i = 0; i < response.getAuthorCount(); i++) {
+        getLikedTracksRequest request = getLikedTracksRequest.newBuilder().setLogin(user).build();
+        getLikedTracksResponse response = stub.getLikedTracks(request);
+        ArrayList<Track> tracks = new ArrayList<>();
+        for (int i = 0; i < response.getAuthorCount(); i++) {
             tracks.add(new Track(response.getName(i), response.getAuthor(i), response.getUrl(i), response.getId(i)));
         }
-	return tracks;
+        return tracks;
     }
 
     @Override
     public void removeLike(int trackId, String user) {
-        ManagedChannel channel = ManagedChannelBuilder.forAdress(HOST, 50051).usePlaintext().build();
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(HOST, 50051).usePlaintext().build();
         GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
-        removeLikeRequest request = removeLikeRequest.newBuilder().setLogin(user).setId(trackId);
-	removeLikeResponse response = stub.removeLike(request);
+        removeLikeRequest request = removeLikeRequest.newBuilder().setLogin(user).setId(trackId).build();
+        removeLikeResponse response = stub.removeLike(request);
     }
 
     @Override
     public void addLike(int trackId, String user) {
-        ManagedChannel channel = ManagedChannelBuilder.forAdress(HOST, 50051).usePlaintext().build();
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(HOST, 50051).usePlaintext().build();
         GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
-        addLikeRequest request = addLikeRequest.newBuilder().setLogin(user).setId(trackId);
-        addLikeResponse response = stub.removeLike(request);
+        addLikeRequest request = addLikeRequest.newBuilder().setLogin(user).setId(trackId).build();
+        addLikeResponse response = stub.addLike(request);
     }
 }

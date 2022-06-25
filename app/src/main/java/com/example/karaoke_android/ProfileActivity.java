@@ -22,8 +22,8 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        User user_main = (User) getIntent().getParcelableExtra("User");
-        User user = (User) getIntent().getParcelableExtra("User2");
+        User user_main = getIntent().getParcelableExtra("User");
+        User user = getIntent().getParcelableExtra("User2");
         database = new ReadyDatabase();
         TextView firstName = findViewById(R.id.firstName);
         firstName.setText(user.getFirstName());

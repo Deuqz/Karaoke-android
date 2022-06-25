@@ -2,7 +2,6 @@ package com.example.karaoke_android;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ public class TrackAdaptor extends ArrayAdapter<Track> {
 
     User user;
     boolean visibleSwitch;
+    ArrayList<Integer> likedTracks;
 
     public TrackAdaptor(Activity context, ArrayList<Track> tracks) {
         super(context, 0, tracks);
@@ -31,6 +31,10 @@ public class TrackAdaptor extends ArrayAdapter<Track> {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setLikedTracks(ArrayList<Integer> likedTracks) {
+        this.likedTracks = likedTracks;
     }
 
     @SuppressLint("UseSwitchCompatOrMaterialCode")
@@ -46,16 +50,18 @@ public class TrackAdaptor extends ArrayAdapter<Track> {
         authorTextView.setText(currentTrack.getAuthor());
         TextView nameTextView = listItemView.findViewById(R.id.trackName);
         nameTextView.setText(currentTrack.getName());
-        Switch switch1 = (Switch) listItemView.findViewById(R.id.switch1);
+        Switch switch1 = listItemView.findViewById(R.id.switch1);
         if (!visibleSwitch) {
             switch1.setVisibility(View.INVISIBLE);
         } else {
             switch1.setVisibility(View.VISIBLE);
-            switch1.setChecked(user.containsTrack(currentTrack));
-            switch1.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked) {
+            boolean contains = likedTracks.contains(currentTrack.getId());
+            switch1.setChecked(contains);
+            switch1.setOnClickListener(view -> {
+                if (contains) {
                     (new ReadyDatabase()).removeLike(currentTrack.getId(), user.getEmail());
-                } else {
+                }
+                if (!contains) {
                     (new ReadyDatabase()).addLike(currentTrack.getId(), user.getEmail());
                 }
             });

@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
 
@@ -40,6 +41,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         Collections.reverse(tracks);
         TrackAdaptor trackAdapter = new TrackAdaptor(getActivity(), tracks);
         trackAdapter.setVisibleSwitch(true);
+        trackAdapter.setLikedTracks((ArrayList<Integer>) tracks.stream().map(Track::getId).collect(Collectors.toList()));
         trackAdapter.setUser(user);
         ListView listView = view.findViewById(R.id.listView);
         listView.setAdapter(trackAdapter);
