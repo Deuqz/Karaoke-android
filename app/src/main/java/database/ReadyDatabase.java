@@ -13,8 +13,8 @@ import org.checkerframework.checker.units.qual.A;
 
 public class ReadyDatabase implements DataBase {
 
-//    String HOST = "192.168.88.60";
-    String HOST = "192.168.0.100";
+    String HOST = "172.20.55.155";
+//    String HOST = "192.168.0.100";
 
 
     @Override
