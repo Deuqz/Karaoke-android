@@ -128,16 +128,30 @@ public class ReadyDatabase implements DataBase {
 
     @Override
     public ArrayList<Track> getLikeTracks(String user) {
-        return new ArrayList<Track>();
+        ManagedChannel channel = ManagedChannelBuilder.forAdress(HOST, 50051).usePlaintext().build();
+        GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
+        getLikeTracksRequest request = getLikeTracksRequest.newBuilder().setLogin(user).build();
+	getLikeTracksResponse response = stub.getLikeTracks(request);
+	ArrayList<Track> tracks = new ArrayList<>();
+	for (int i = 0; i < response.getAuthorCount(); i++) {
+            tracks.add(new Track(response.getName(i), response.getAuthor(i), response.getUrl(i), response.getId(i)));
+        }
+	return tracks;
     }
 
     @Override
     public void removeLike(int trackId, String user) {
-
+        ManagedChannel channel = ManagedChannelBuilder.forAdress(HOST, 50051).usePlaintext().build();
+        GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
+        removeLikeRequest request = removeLikeRequest.newBuilder().setLogin(user).setId(trackId);
+	removeLikeResponse response = stub.removeLike(request);
     }
 
     @Override
     public void addLike(int trackId, String user) {
-
+        ManagedChannel channel = ManagedChannelBuilder.forAdress(HOST, 50051).usePlaintext().build();
+        GreetingServiceGrpc.GreetingServiceBlockingStub stub = GreetingServiceGrpc.newBlockingStub(channel);
+        addLikeRequest request = addLikeRequest.newBuilder().setLogin(user).setId(trackId);
+        addLikeResponse response = stub.removeLike(request);
     }
 }
