@@ -7,6 +7,8 @@ import android.util.Log;
 
 import java.io.IOException;
 
+import javax.annotation.Nullable;
+
 import database.Track;
 import exceptions.NoTrackException;
 
@@ -20,7 +22,7 @@ public class TrackPlayerSimple implements TrackPlayer {
         this.context = context;
     }
 
-    public void setTrack(Track track, TrackWorker worker) {
+    public void setTrack(Track track, @Nullable TrackWorker worker) {
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             stop();
         }
@@ -44,7 +46,9 @@ public class TrackPlayerSimple implements TrackPlayer {
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                worker.stop();
+                if (worker != null) {
+                    worker.stop();
+                }
             }
         });
         try {
@@ -98,5 +102,20 @@ public class TrackPlayerSimple implements TrackPlayer {
     @Override
     public String getFilePath() {
         return trackPath;
+    }
+
+    @Override
+    public int getDuration() {
+        return mediaPlayer.getDuration();
+    }
+
+    @Override
+    public boolean isPlaying() {
+        return mediaPlayer.isPlaying();
+    }
+
+    @Override
+    public void changeTime(int newTime) {
+        mediaPlayer.seekTo(newTime);
     }
 }

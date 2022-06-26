@@ -34,4 +34,10 @@ public interface TrackPlayer {
     default String getFilePath() {
         throw new UnsupportedOperationException();
     }
+
+    int getDuration();
+
+    boolean isPlaying();
+
+    void changeTime(int newTime);
 }
