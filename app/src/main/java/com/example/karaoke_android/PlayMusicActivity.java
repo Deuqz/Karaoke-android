@@ -7,9 +7,13 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
+import android.view.Gravity;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -52,7 +56,15 @@ public class PlayMusicActivity extends AppCompatActivity {
         nextButtom = findViewById(R.id.play_music_next);
         previousButtom = findViewById(R.id.play_music_previous);
 
+        ImageView backButton = findViewById(R.id.play_music_back_button);
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ProfileActivity.class);
+            intent.putExtra("User", (Parcelable) user);
+            startActivity(intent);
+        });
+
         titleTV.setSelected(true);
+        titleTV.setGravity(Gravity.CENTER_HORIZONTAL);
 
         user = getIntent().getParcelableExtra("User");
         curTrack = getIntent().getParcelableExtra("Track");
