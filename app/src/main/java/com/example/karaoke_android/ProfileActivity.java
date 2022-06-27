@@ -38,7 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
         ListView listView = findViewById(R.id.listView);
         listView.setAdapter(trackAdapter);
         listView.setOnItemClickListener((adapterView, view1, i, l) -> {
-            Intent intent = new Intent(this, SongActivity.class);
+            Intent intent = new Intent(this, PlayMusicActivity.class);
             intent.putExtra("Track", (Parcelable) user.getTrackList().get(i));
             intent.putExtra("User", (Parcelable) user_main);
             startActivity(intent);

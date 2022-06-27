@@ -54,11 +54,10 @@ public class ProfileFragment extends Fragment {
         ListView listView = view.findViewById(R.id.listView);
         listView.setAdapter(trackAdapter);
         listView.setOnItemClickListener((adapterView, view1, i, l) -> {
-            Intent intent = new Intent(getActivity(), SongActivity.class);
+            Intent intent = new Intent(getActivity(), PlayMusicActivity.class);
             intent.putExtra("Track", (Parcelable) user.getTrackList().get(i));
             intent.putExtra("User", (Parcelable) user);
             startActivity(intent);
-            // TODO Denis play track
         });
         return view;
     }

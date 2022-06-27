@@ -7,6 +7,18 @@
     android:background="#776262"
     tools:context=".PlayMusicActivity">
 
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/play_music"
+        tools:layout_editor_absoluteX="36dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    
+
     <TextView
         android:id="@+id/play_music_song_title"
         android:layout_width="match_parent"

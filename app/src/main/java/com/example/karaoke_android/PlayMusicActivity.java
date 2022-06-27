@@ -124,10 +124,10 @@ public class PlayMusicActivity extends AppCompatActivity {
 
     private void pausePlay() {
         if (trackPlayer.isPlaying()) {
-            pausePlayButtom.setImageResource(R.drawable.ic_baseline_pause_circle_outline_24);
+            pausePlayButtom.setImageResource(R.drawable.ic_baseline_play_arrow_24);
             trackPlayer.pause();
         } else {
-            pausePlayButtom.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+            pausePlayButtom.setImageResource(R.drawable.ic_baseline_pause_circle_outline_24);
             trackPlayer.play();
         }
     }
