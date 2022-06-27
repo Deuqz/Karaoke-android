@@ -41,6 +41,8 @@ public class ProfileActivity extends AppCompatActivity {
             Intent intent = new Intent(this, PlayMusicActivity.class);
             intent.putExtra("Track", (Parcelable) user.getTrackList().get(i));
             intent.putExtra("User", (Parcelable) user_main);
+            intent.putExtra("User2", (Parcelable) user);
+            intent.putExtra("CAME_FROM", 1);
             startActivity(intent);
         });
         Button backButton = findViewById(R.id.button);

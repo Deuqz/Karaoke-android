@@ -57,6 +57,7 @@ public class ProfileFragment extends Fragment {
             Intent intent = new Intent(getActivity(), PlayMusicActivity.class);
             intent.putExtra("Track", (Parcelable) user.getTrackList().get(i));
             intent.putExtra("User", (Parcelable) user);
+            intent.putExtra("CAME_FROM", 0);
             startActivity(intent);
         });
         return view;

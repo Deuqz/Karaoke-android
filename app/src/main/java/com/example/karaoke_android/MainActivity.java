@@ -75,16 +75,16 @@ public class MainActivity extends AppCompatActivity {
         Fragment fragment = null;
         switch (tab.getPosition()) {
             case 0:
-                fragment = MusicFragment.newInstance(user);
+                fragment = ProfileFragment.newInstance(user);
                 break;
             case 1:
-                fragment = SearchFragment.newInstance(user);
+                fragment = MusicFragment.newInstance(user);
                 break;
             case 2:
                 fragment = SettingsFragment.newInstance(user);
                 break;
             case 3:
-                fragment = ProfileFragment.newInstance(user);
+                fragment = SearchFragment.newInstance(user);
                 break;
         }
         return fragment;

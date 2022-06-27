@@ -38,6 +38,7 @@ public class PlayMusicActivity extends AppCompatActivity {
     private ImageView previousButtom;
 
     private User user;
+    private User user2;
     private List<Track> allTracks;
     private Track curTrack;
 
@@ -56,18 +57,31 @@ public class PlayMusicActivity extends AppCompatActivity {
         nextButtom = findViewById(R.id.play_music_next);
         previousButtom = findViewById(R.id.play_music_previous);
 
-        ImageView backButton = findViewById(R.id.play_music_back_button);
-        backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ProfileActivity.class);
-            intent.putExtra("User", (Parcelable) user);
-            startActivity(intent);
-        });
-
         titleTV.setSelected(true);
         titleTV.setGravity(Gravity.CENTER_HORIZONTAL);
 
-        user = getIntent().getParcelableExtra("User");
-        curTrack = getIntent().getParcelableExtra("Track");
+        Intent intent = getIntent();
+        ImageView backButton = findViewById(R.id.play_music_back_button);
+        backButton.setOnClickListener(v -> {
+            trackPlayer.stop();
+            Intent newIntent;
+            if (user2 != null) {
+                newIntent = new Intent(this, ProfileActivity.class);
+                newIntent.putExtra("User", (Parcelable) user);
+                newIntent.putExtra("User2", (Parcelable) user2);
+            } else {
+                newIntent = new Intent(this, MainActivity.class);
+                newIntent.putExtra("User", (Parcelable) user);
+            }
+            startActivity(newIntent);
+        });
+
+        int cameFrom = intent.getIntExtra("CAME_FROM", -1);
+        user = intent.getParcelableExtra("User");
+        if (cameFrom == 1) { // Came from ProfileActivity
+            user2 = intent.getParcelableExtra("User2");
+        }
+        curTrack = intent.getParcelableExtra("Track");
         allTracks = user.getTrackList();
 
         trackPlayer = new TrackPlayerSimple(getApplicationContext());
@@ -148,5 +162,11 @@ public class PlayMusicActivity extends AppCompatActivity {
     public static String convertToTimeFormat(int milsec) {
         return String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(milsec) % TimeUnit.HOURS.toMinutes(1),
                 TimeUnit.MILLISECONDS.toSeconds(milsec) % TimeUnit.MINUTES.toSeconds(1));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        trackPlayer.close();
     }
 }
