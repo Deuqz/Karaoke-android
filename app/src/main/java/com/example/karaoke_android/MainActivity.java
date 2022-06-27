@@ -25,20 +25,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         frameLayout = findViewById(R.id.frameLayout);
         tabLayout = findViewById(R.id.tabLayout);
-        TabLayout.Tab profileTab = tabLayout.newTab();
-        profileTab.setText("\uD83D\uDC64");
-        tabLayout.addTab(profileTab);
         TabLayout.Tab musicTab = tabLayout.newTab();
         musicTab.setText("\uD83C\uDFB6");
         tabLayout.addTab(musicTab);
-        TabLayout.Tab settingsTab = tabLayout.newTab();
-        settingsTab.setText("\uD83D\uDC99");
-        tabLayout.addTab(settingsTab);
         TabLayout.Tab searchTab = tabLayout.newTab();
         searchTab.setText("\uD83D\uDD0E");
         tabLayout.addTab(searchTab);
+        TabLayout.Tab settingsTab = tabLayout.newTab();
+        settingsTab.setText("\uD83D\uDC99");
+        tabLayout.addTab(settingsTab);
+        TabLayout.Tab profileTab = tabLayout.newTab();
+        profileTab.setText("\uD83D\uDC64");
+        tabLayout.addTab(profileTab);
         User user = getIntent().getParcelableExtra("User");
-        Fragment fragment = MusicFragment.newInstance(user);
+        Fragment fragment = ProfileFragment.newInstance(user);
         startFragment(fragment);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
