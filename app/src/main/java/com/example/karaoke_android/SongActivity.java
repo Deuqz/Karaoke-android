@@ -43,6 +43,7 @@ public class SongActivity extends AppCompatActivity {
         processTextView.setText(track.getName());
         Button backButton = findViewById(R.id.song_back_button);
         backButton.setOnClickListener(v -> {
+            trackWorker.stop();
             Intent intent = new Intent(this, com.example.karaoke_android.MainActivity.class);
             Log.e("Song Activity", String.valueOf(user.getTrackList().size()));
             intent.putExtra("User", (Parcelable) user);
