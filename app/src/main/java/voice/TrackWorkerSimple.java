@@ -39,7 +39,7 @@ public class TrackWorkerSimple implements TrackWorker {
                              TextView curTimeTV, TextView totalTimeTV, SeekBar seekBar) {
         this.user = user;
         this.activity = activity;
-        trackPlayer = new TrackPlayerSimple(activity.getApplicationContext());
+        trackPlayer = new TrackPlayerSimple(activity);
         voiceRecorder = new VoiceRecorderSimple(activity.getApplicationContext(), user);
         pausePushed = false;
 
@@ -51,6 +51,7 @@ public class TrackWorkerSimple implements TrackWorker {
         this.curTimeTV = curTimeTV;
         this.totalTimeTV = totalTimeTV;
         this.seekBar = seekBar;
+        this.seekBar.setClickable(false);
     }
 
     protected class UIUpdater implements Runnable {

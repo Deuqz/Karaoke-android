@@ -1,5 +1,6 @@
 package voice;
 
+import android.app.Activity;
 import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
@@ -14,19 +15,20 @@ import exceptions.NoTrackException;
 
 public class TrackPlayerSimple implements TrackPlayer {
     protected MediaPlayer mediaPlayer;
-    protected Context context;
+    protected Activity activity;
     protected String trackPath;
-    protected static final String LOG_TAG = "TrackPlayerSimple";
+    protected String LOG_TAG;
 
-    public TrackPlayerSimple(Context context) {
-        this.context = context;
+    public TrackPlayerSimple(Activity activity) {
+        LOG_TAG = "TrackPlayerSimple";
+        this.activity = activity;
     }
 
     public void setTrack(Track track, @Nullable TrackWorker worker) {
         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             stop();
         }
-        trackPath = context.getExternalCacheDir().getAbsolutePath();
+        trackPath = activity.getApplicationContext().getExternalCacheDir().getAbsolutePath();
         trackPath += String.format("/%s.mp3", track.getUrl());
         Log.d(LOG_TAG, "Set track %s" + trackPath);
         mediaPlayer = new MediaPlayer();

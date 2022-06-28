@@ -1,5 +1,6 @@
 package database;
 
+import android.net.Uri;
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -91,5 +92,12 @@ public class FileLoadingControllerFirebase implements FileLoadingController {
     @Override
     public void setWorkStatus(boolean status) {
         isWorked.set(status);
+    }
+
+    public Uri getURI(String filename) {
+        Task<Uri> urlTask = storageRef.child(filename).getDownloadUrl();
+        while (!urlTask.isComplete()) {
+        }
+        return urlTask.getResult();
     }
 }

@@ -3,11 +3,14 @@ package voice;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.media.AsyncPlayer;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -20,10 +23,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Consumer;
 
 import database.DataBase;
 import database.FileConverter;
@@ -45,9 +50,11 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
     protected final DataBase dataBase;
     protected static final String LOG_TAG = "TrackWorkerSmart";
 
+    protected final Button backButton;
+    protected final ImageView playPauseButton;
 
     public TrackWorkerSmart(Activity activity, User user, TextView textView, TextView processView, TextView curTimeTV,
-                            TextView totalTimeTV, SeekBar seekBar) {
+                            TextView totalTimeTV, SeekBar seekBar, Button backButton, ImageView playPauseButton) {
         super(activity, user, textView, processView, curTimeTV, totalTimeTV, seekBar);
         downloader = new UseCaseFilesDownload();
         uploader = new UseCaseFilesUpload();
@@ -56,6 +63,9 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
         dataBase = new ReadyDatabase();
         // controller = new FileLoadingControllerRedis(host, port);
         controller = new FileLoadingControllerFirebase();
+
+        this.backButton = backButton;
+        this.playPauseButton = playPauseButton;
     }
 
     protected class UseCaseFilesDownload implements Runnable {
@@ -148,7 +158,7 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
         @Override
         public void run() {
             if (controller.isWorked() || merger.isWorked()) {
-                Log.e(LOG_TAG, (String) processView.getText());
+                Log.d(LOG_TAG, (String) processView.getText());
                 switch (step) {
                     case FIRST:
                         processView.setText(processing1);
@@ -163,12 +173,178 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
                         step = StepProcess.FIRST;
                         break;
                 }
-//                SystemClock.sleep(200);
-                new Handler().postDelayed(this, 200);
+//                new Handler().postDelayed(this, 500);
+                SystemClock.sleep(200);
             } else {
                 processView.setText(curTrack.getName());
-                new Handler().removeCallbacks(this);
+//                new Handler().removeCallbacks(this);
             }
+        }
+    }
+
+    protected class DownloadTask extends AsyncTask<Void, Void, Void> {
+        private Track track;
+//        private TrackWorkerSimple worker;
+        Consumer<Track> func;
+
+        public void setTrack(Track track) {
+            this.track = track;
+        }
+
+        public void setFunc(Consumer<Track> func) {
+            this.func = func;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+            indicator.run();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            backButton.setEnabled(false);
+            playPauseButton.setEnabled(false);
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        protected Void doInBackground(Void... voids) {
+            curTrack = track;
+            String url = track.getUrl();
+            Context context = activity.getApplicationContext();
+            String trackPath = context.getExternalCacheDir().getAbsolutePath();
+            trackPath += "/" + getTrackFileName(url);
+            Log.d(LOG_TAG, "Path to file: " + trackPath);
+            if (!pausePushed && !Files.exists(Paths.get(trackPath))) {
+                String message = String.format("Download trackFile: %s, url: %s", track.getName(), getTrackFileName(url));
+                FileEntity trackEntity = downloadData(getTrackFileName(url), message);
+
+                Log.d(LOG_TAG, String.format("Write file %s by path %s", trackEntity.getUrl(), trackPath));
+                try {
+                    FileOutputStream fosTrack = new FileOutputStream(trackPath);
+                    fosTrack.write(trackEntity.getData());
+                    fosTrack.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e(LOG_TAG, "Can't write file");
+                    Toast.makeText(context, "Can't download track", Toast.LENGTH_SHORT).show();
+                    return null;
+                }
+                Log.d(LOG_TAG, "Write file successfully");
+            }
+
+            String textUrl = getTrackTextFileName(url);
+            String message = String.format("Download text by url: %s", textUrl);
+            FileEntity textEntity = downloadData(textUrl, message);
+            curText = new ByteArrayInputStream(textEntity.getData());
+            return null;
+        }
+
+        private FileEntity downloadData(String url, String message) {
+            Log.d(LOG_TAG, message);
+            downloader.setUrl(url);
+            controller.setWorkStatus(true);
+            Thread downloading = new Thread(downloader);
+            downloading.start();
+            while(controller.isWorked()) {
+                publishProgress();
+            }
+            FileEntity entity = downloader.getFileEntity();
+            Log.d(LOG_TAG, "Download successfully");
+            return entity;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            backButton.setEnabled(true);
+            playPauseButton.setEnabled(true);
+            func.accept(track);
+        }
+    }
+
+    protected class UploadTask extends AsyncTask<Void, Void, Void> {
+        Runnable func;
+
+        public void setFunc(Runnable func) {
+            this.func = func;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+            indicator.run();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            backButton.setEnabled(false);
+            playPauseButton.setEnabled(false);
+            func.run();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String voicePath = voiceRecorder.getFilePath();
+            String trackPath = trackPlayer.getFilePath();
+            Log.d(LOG_TAG, String.format("Merge files %s and %s", trackPath, voicePath));
+            AudioMuxer muxer = new AudioMuxerFfmpeg(trackPath, voicePath, activity.getApplicationContext());
+            merger.setMuxer(muxer);
+            Thread merging = new Thread(merger);
+            merging.start();
+//            activity.runOnUiThread(indicator);
+            while(merger.isWorked()) {
+                publishProgress();
+            }
+            String filePath = merger.getNewFilePath();
+
+            try {
+                String newRecordUrl = merger.getNewUrl();
+                Log.d(LOG_TAG, String.format("Upload trackFile with voice %s", filePath));
+                FileEntity entity = FileConverter.convert(newRecordUrl, filePath);
+                uploader.setEntity(entity);
+                Thread uploading = new Thread(uploader);
+                uploading.start();
+//                activity.runOnUiThread(indicator);
+//                try {
+//                    uploading.join();
+//                } catch (InterruptedException e) {}
+                while(controller.isWorked()) {
+                    publishProgress();
+                }
+
+                Log.e(LOG_TAG, String.valueOf(user.getTrackList().size()));
+                String author = user.getEmail();
+                int newRecordId = user.getTrackList().size();
+                Track newTrack = new Track(curTrack.getName(), author, newRecordUrl, newRecordId);
+                dataBase.addTrackToUser(user.getEmail(), newTrack);
+                user.addTrack(newTrack);
+                Log.e(LOG_TAG, String.valueOf(user.getTrackList().size()));
+                Log.d(LOG_TAG, "Upload successfully");
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "Can't upload file " + filePath);
+                Toast.makeText(activity.getApplicationContext(), "Can't upload track", Toast.LENGTH_SHORT).show();
+            } finally {
+                try {
+                    Files.delete(Paths.get(voicePath));
+                    Files.delete(Paths.get(trackPath));
+                    Files.delete(Paths.get(filePath));
+                } catch (IOException e) {
+                    Log.d(LOG_TAG, "Can't delete files");
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            backButton.setEnabled(true);
+            playPauseButton.setEnabled(true);
         }
     }
 
@@ -183,68 +359,16 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void start(Track track) {
-        curTrack = track;
-        String url = track.getUrl();
-        Context context = activity.getApplicationContext();
-        String trackPath = context.getExternalCacheDir().getAbsolutePath();
-        trackPath += "/" + getTrackFileName(url);
-        Log.d(LOG_TAG, "Path to file: " + trackPath);
-        Log.d(LOG_TAG, String.valueOf(Files.exists(Paths.get(trackPath))));
-        if (!pausePushed && !Files.exists(Paths.get(trackPath))) {
-            String message = String.format("Download trackFile: %s, url: %s", track.getName(), getTrackFileName(url));
-            FileEntity trackEntity = downloadData(getTrackFileName(url), message);
-
-            Log.d(LOG_TAG, String.format("Write file %s by path %s", trackEntity.getUrl(), trackPath));
-            try {
-                FileOutputStream fosTrack = new FileOutputStream(trackPath);
-                fosTrack.write(trackEntity.getData());
-                fosTrack.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.e(LOG_TAG, "Can't write file");
-                Toast.makeText(context, "Can't download track", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            Log.d(LOG_TAG, "Write file successfully");
-        }
-
-        String textUrl = getTrackTextFileName(url);
-        String message = String.format("Download text by url: %s", textUrl);
-        FileEntity textEntity = downloadData(textUrl, message);
-        curText = new ByteArrayInputStream(textEntity.getData());
-
-        super.start(track);
-    }
-
-    private FileEntity downloadData(String url, String message) {
-        Log.d(LOG_TAG, message);
-        downloader.setUrl(url);
-        controller.setWorkStatus(true);
-        Thread downloading = new Thread(downloader);
-//        Thread processing = new Thread(indicator);
-//        processing.start();
-        downloading.start();
-//        indicator.run();
-        activity.runOnUiThread(indicator);
-//        try {
-//            downloading.join();
-//        } catch (InterruptedException e) {
-//            Log.e(LOG_TAG, "Can't wait downloading");
-//            e.printStackTrace();
-//        }
-        try {
-            downloading.join();
-        } catch (InterruptedException ignored) {
-        }
-        FileEntity entity = downloader.getFileEntity();
-        Log.d(LOG_TAG, "Download successfully");
-        return entity;
+        DownloadTask task = new DownloadTask();
+        task.setTrack(track);
+        task.setFunc(super::start);
+        task.execute();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void stop() {
-        super.stop();
+        /*super.stop();
 
         String voicePath = voiceRecorder.getFilePath();
         String trackPath = trackPlayer.getFilePath();
@@ -252,37 +376,20 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
         AudioMuxer muxer = new AudioMuxerFfmpeg(trackPath, voicePath, activity.getApplicationContext());
         merger.setMuxer(muxer);
         Thread merging = new Thread(merger);
-//        Thread processing = new Thread(indicator);
         merging.start();
-//        processing.start();
-//        indicator.run();
         activity.runOnUiThread(indicator);
         try {
             merging.join();
         } catch (InterruptedException ignored) {}
-        try {
-//            merging.join();
-            Files.delete(Paths.get(voicePath));
-//        } catch (InterruptedException e) {
-//            Log.e(LOG_TAG, "Can't join merging process");
-//            e.printStackTrace();
-        } catch (IOException e) {
-            Log.d(LOG_TAG, "Can't delete voice file");
-        }
         String filePath = merger.getNewFilePath();
 
         try {
             String newRecordUrl = merger.getNewUrl();
-
             Log.d(LOG_TAG, String.format("Upload trackFile with voice %s", filePath));
             FileEntity entity = FileConverter.convert(newRecordUrl, filePath);
             uploader.setEntity(entity);
             Thread uploading = new Thread(uploader);
-//            processing = new Thread(indicator);
             uploading.start();
-//            processing.start();
-//            processing.join();
-//            indicator.run();
             activity.runOnUiThread(indicator);
             try {
                 uploading.join();
@@ -299,10 +406,18 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
         } catch (IOException e) {
             Log.e(LOG_TAG, "Can't upload file " + filePath);
             Toast.makeText(activity.getApplicationContext(), "Can't upload track", Toast.LENGTH_SHORT).show();
-        } /*catch (InterruptedException e) {
-            Log.e(LOG_TAG, "Can't upload file" + filePath);
-            e.printStackTrace();
+        } finally {
+            try {
+                Files.delete(Paths.get(voicePath));
+                Files.delete(Paths.get(trackPath));
+                Files.delete(Paths.get(filePath));
+            } catch (IOException e) {
+                Log.d(LOG_TAG, "Can't delete files");
+            }
         }*/
+        UploadTask task = new UploadTask();
+        task.setFunc(super::stop);
+        task.execute();
     }
 
     protected String getTrackFileName(String url) {
@@ -311,5 +426,23 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
 
     protected String getTrackTextFileName(String url) {
         return String.format("%stext.txt", url);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public void close() {
+        super.close();
+        Path voicePath = Paths.get(voiceRecorder.getFilePath());
+        Path trackPath = Paths.get(trackPlayer.getFilePath());
+        try {
+            if (Files.exists(voicePath)) {
+                Files.delete(voicePath);
+            }
+            if (Files.exists(trackPath)) {
+                Files.delete(trackPath);
+            }
+        } catch (IOException e) {
+            Log.d(LOG_TAG, "Can't delete files");
+        }
     }
 }

@@ -5,6 +5,8 @@ public interface FileLoadingController {
 
     void upload(FileEntity fileEntity);
 
+
+
     boolean isWorked();
 
     void setWorkStatus(boolean status);

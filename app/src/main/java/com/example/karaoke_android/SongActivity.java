@@ -31,6 +31,7 @@ public class SongActivity extends AppCompatActivity {
     private Track track;
 
     private ImageView pausePlayButtom;
+    private Button backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,18 +42,19 @@ public class SongActivity extends AppCompatActivity {
         user = getIntent().getParcelableExtra("User");
         track = getIntent().getParcelableExtra("Track");
         processTextView.setText(track.getName());
-        Button backButton = findViewById(R.id.song_back_button);
+        backButton = findViewById(R.id.song_back_button);
         backButton.setOnClickListener(v -> {
-            trackWorker.stop();
+//            trackWorker.stop();
+            trackWorker.close();
             Intent intent = new Intent(this, com.example.karaoke_android.MainActivity.class);
             Log.e("Song Activity", String.valueOf(user.getTrackList().size()));
             intent.putExtra("User", (Parcelable) user);
             startActivity(intent);
         });
+        pausePlayButtom = findViewById(R.id.song_pause_play);
         trackWorker = new TrackWorkerSmart(this, user, findViewById(R.id.textView2), processTextView,
                 findViewById(R.id.song_cur_time), findViewById(R.id.song_total_time),
-                findViewById(R.id.song_seekBar));
-        pausePlayButtom = findViewById(R.id.song_pause_play);
+                findViewById(R.id.song_seekBar), backButton, pausePlayButtom);
     }
 
     private boolean isHeadphonesPlugged(){

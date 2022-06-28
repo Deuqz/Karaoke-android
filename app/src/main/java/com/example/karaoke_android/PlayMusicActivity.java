@@ -28,6 +28,7 @@ import database.Track;
 import database.User;
 import voice.TrackPlayer;
 import voice.TrackPlayerSimple;
+import voice.TrackPlayerURL;
 
 public class PlayMusicActivity extends AppCompatActivity {
 
@@ -90,7 +91,7 @@ public class PlayMusicActivity extends AppCompatActivity {
         }
         curTrack = intent.getParcelableExtra("Track");
 
-        trackPlayer = new TrackPlayerSimple(getApplicationContext());
+        trackPlayer = new TrackPlayerURL(this);
 
         pausePlayButtom.setOnClickListener(v -> pausePlay());
         nextButtom.setOnClickListener(v -> playNextTrack());
@@ -139,9 +140,6 @@ public class PlayMusicActivity extends AppCompatActivity {
         titleTV.setText(curTrack.getName());
         totalTimeTV.setText(convertToTimeFormat(trackPlayer.getDuration()));
         previousButtom.setEnabled(curTrack.getId() != 0);
-        Log.e("PlayMusicActivity", String.valueOf(curTrack.getId() < allTracks.size() - 1));
-        Log.e("PlayMusicActivity", String.valueOf(curTrack.getId()));
-        Log.e("PlayMusicActivity", String.valueOf(allTracks.size() - 1));
         nextButtom.setEnabled(curTrack.getId() < allTracks.size() - 1);
 
         trackPlayer.play();
