@@ -11,6 +11,7 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,23 +30,28 @@ public class SongActivity extends AppCompatActivity {
     private User user;
     private Track track;
 
+    private ImageView pausePlayButtom;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song);
-        TextView textView = findViewById(R.id.processView);
+        TextView processTextView = findViewById(R.id.processView);
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
         user = getIntent().getParcelableExtra("User");
         track = getIntent().getParcelableExtra("Track");
-        textView.setText(track.getName());
-        Button backButton = findViewById(R.id.backButton);
+        processTextView.setText(track.getName());
+        Button backButton = findViewById(R.id.song_back_button);
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, com.example.karaoke_android.MainActivity.class);
+            Log.e("Song Activity", String.valueOf(user.getTrackList().size()));
             intent.putExtra("User", (Parcelable) user);
             startActivity(intent);
         });
-        TextView textViewWithSongText = findViewById(R.id.textView2);
-        trackWorker = new TrackWorkerSmart(getApplicationContext(), user, textViewWithSongText, textView);
+        trackWorker = new TrackWorkerSmart(this, user, findViewById(R.id.textView2), processTextView,
+                findViewById(R.id.song_cur_time), findViewById(R.id.song_total_time),
+                findViewById(R.id.song_seekBar));
+        pausePlayButtom = findViewById(R.id.song_pause_play);
     }
 
     private boolean isHeadphonesPlugged(){
@@ -62,23 +68,23 @@ public class SongActivity extends AppCompatActivity {
         return false;
     }
 
-    public void playTrackPushed(View view) {
-        if (isHeadphonesPlugged()) {
-//            Track track = new Track("track2", "somebody", "xxx.onion", "track2.mp3");
-//            track.setTextId("track2text.txt");
-            Log.d("PlayTrackPushed", "Try play track");
-            trackWorker.start(track);
+    boolean pauseFlag = false;
+
+    public void pausePlayTrackPushed(View view) {
+        if (!pauseFlag) {
+            if (isHeadphonesPlugged()) {
+                Log.d("PlayTrackPushed", "Try play track");
+                pausePlayButtom.setImageResource(R.drawable.ic_baseline_pause_circle_outline_24);
+                trackWorker.start(track);
+                pauseFlag = true;
+            } else {
+                Toast.makeText(this, "Please, connect headphones", Toast.LENGTH_SHORT).show();
+            }
         } else {
-            Toast.makeText(this, "Please, connect headphones", Toast.LENGTH_SHORT).show();
+            pausePlayButtom.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+            trackWorker.pause();
+            pauseFlag = false;
         }
-    }
-
-    public void pauseTrackPushed(View view) {
-        trackWorker.pause();
-    }
-
-    public void stopTrackPushed(View view) {
-        trackWorker.stop();
     }
 
     // Requesting permission to RECORD_AUDIO

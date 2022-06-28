@@ -1,10 +1,15 @@
 package voice;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Build;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +21,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import database.DataBase;
 import database.FileConverter;
@@ -37,8 +45,10 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
     protected final DataBase dataBase;
     protected static final String LOG_TAG = "TrackWorkerSmart";
 
-    public TrackWorkerSmart(Context context, User user, TextView textView, TextView processView) {
-        super(context, user, textView, processView);
+
+    public TrackWorkerSmart(Activity activity, User user, TextView textView, TextView processView, TextView curTimeTV,
+                            TextView totalTimeTV, SeekBar seekBar) {
+        super(activity, user, textView, processView, curTimeTV, totalTimeTV, seekBar);
         downloader = new UseCaseFilesDownload();
         uploader = new UseCaseFilesUpload();
         merger = new UseCaseMergeFiles();
@@ -137,7 +147,7 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
 
         @Override
         public void run() {
-            while (controller.isWorked() || merger.isWorked()) {
+            if (controller.isWorked() || merger.isWorked()) {
                 Log.e(LOG_TAG, (String) processView.getText());
                 switch (step) {
                     case FIRST:
@@ -153,9 +163,12 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
                         step = StepProcess.FIRST;
                         break;
                 }
-                SystemClock.sleep(200);
+//                SystemClock.sleep(200);
+                new Handler().postDelayed(this, 200);
+            } else {
+                processView.setText(curTrack.getName());
+                new Handler().removeCallbacks(this);
             }
-            processView.setText("");
         }
     }
 
@@ -172,8 +185,9 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
     public void start(Track track) {
         curTrack = track;
         String url = track.getUrl();
+        Context context = activity.getApplicationContext();
         String trackPath = context.getExternalCacheDir().getAbsolutePath();
-        trackPath += getTrackFileName(url);
+        trackPath += "/" + getTrackFileName(url);
         Log.d(LOG_TAG, "Path to file: " + trackPath);
         Log.d(LOG_TAG, String.valueOf(Files.exists(Paths.get(trackPath))));
         if (!pausePushed && !Files.exists(Paths.get(trackPath))) {
@@ -210,13 +224,18 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
 //        Thread processing = new Thread(indicator);
 //        processing.start();
         downloading.start();
-        indicator.run();
+//        indicator.run();
+        activity.runOnUiThread(indicator);
 //        try {
 //            downloading.join();
 //        } catch (InterruptedException e) {
 //            Log.e(LOG_TAG, "Can't wait downloading");
 //            e.printStackTrace();
 //        }
+        try {
+            downloading.join();
+        } catch (InterruptedException ignored) {
+        }
         FileEntity entity = downloader.getFileEntity();
         Log.d(LOG_TAG, "Download successfully");
         return entity;
@@ -230,13 +249,17 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
         String voicePath = voiceRecorder.getFilePath();
         String trackPath = trackPlayer.getFilePath();
         Log.d(LOG_TAG, String.format("Merge files %s and %s", trackPath, voicePath));
-        AudioMuxer muxer = new AudioMuxerFfmpeg(trackPath, voicePath, context);
+        AudioMuxer muxer = new AudioMuxerFfmpeg(trackPath, voicePath, activity.getApplicationContext());
         merger.setMuxer(muxer);
         Thread merging = new Thread(merger);
 //        Thread processing = new Thread(indicator);
         merging.start();
 //        processing.start();
-        indicator.run();
+//        indicator.run();
+        activity.runOnUiThread(indicator);
+        try {
+            merging.join();
+        } catch (InterruptedException ignored) {}
         try {
 //            merging.join();
             Files.delete(Paths.get(voicePath));
@@ -259,25 +282,23 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
             uploading.start();
 //            processing.start();
 //            processing.join();
-            indicator.run();
+//            indicator.run();
+            activity.runOnUiThread(indicator);
+            try {
+                uploading.join();
+            } catch (InterruptedException e) {}
 
+            Log.e(LOG_TAG, String.valueOf(user.getTrackList().size()));
             String author = user.getEmail();
             int newRecordId = user.getTrackList().size();
             Track newTrack = new Track(curTrack.getName(), author, newRecordUrl, newRecordId);
             dataBase.addTrackToUser(user.getEmail(), newTrack);
             user.addTrack(newTrack);
+            Log.e(LOG_TAG, String.valueOf(user.getTrackList().size()));
             Log.d(LOG_TAG, "Upload successfully");
-
-            Log.d(LOG_TAG, String.format("Try play new track %s", filePath));
-
-            MediaPlayer player = new MediaPlayer();
-            player.setDataSource(filePath);
-            player.prepare();
-            Log.e(LOG_TAG, "Play recorded voice");
-            player.start();
         } catch (IOException e) {
             Log.e(LOG_TAG, "Can't upload file " + filePath);
-            Toast.makeText(context, "Can't upload track", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity.getApplicationContext(), "Can't upload track", Toast.LENGTH_SHORT).show();
         } /*catch (InterruptedException e) {
             Log.e(LOG_TAG, "Can't upload file" + filePath);
             e.printStackTrace();

@@ -38,7 +38,8 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         assert getArguments() != null;
-        User user = (User) getArguments().getSerializable("User");
+        User tempUser = (User) getArguments().getSerializable("User");
+        User user = (new ReadyDatabase()).getUser(tempUser.getEmail());
         TextView firstName = view.findViewById(R.id.firstName);
         firstName.setText(user.getFirstName());
         TextView secondName = view.findViewById(R.id.secondName);
@@ -61,5 +62,11 @@ public class ProfileFragment extends Fragment {
             startActivity(intent);
         });
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
     }
 }

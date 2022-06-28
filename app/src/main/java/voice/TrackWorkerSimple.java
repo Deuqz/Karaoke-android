@@ -1,12 +1,19 @@
 package voice;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.io.InputStream;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import database.Track;
 import database.User;
@@ -14,7 +21,7 @@ import database.User;
 public class TrackWorkerSimple implements TrackWorker {
 
     protected User user;
-    protected Context context;
+    protected Activity activity;
     protected TrackPlayer trackPlayer;
     protected VoiceRecorder voiceRecorder;
     protected boolean pausePushed;
@@ -24,66 +31,84 @@ public class TrackWorkerSimple implements TrackWorker {
 
     protected Track curTrack;
 
-    public TrackWorkerSimple(Context context, User user, TextView textView, TextView processView) {
+    private final TextView curTimeTV;
+    private final TextView totalTimeTV;
+    private final SeekBar seekBar;
+
+    public TrackWorkerSimple(Activity activity, User user, TextView textView, TextView processView,
+                             TextView curTimeTV, TextView totalTimeTV, SeekBar seekBar) {
         this.user = user;
-        this.context = context;
-        trackPlayer = new TrackPlayerSimple(context);
-        voiceRecorder = new VoiceRecorderSimple(context, user);
+        this.activity = activity;
+        trackPlayer = new TrackPlayerSimple(activity.getApplicationContext());
+        voiceRecorder = new VoiceRecorderSimple(activity.getApplicationContext(), user);
         pausePushed = false;
+
         this.textView = textView;
         this.processView = processView;
+        this.textView.setGravity(Gravity.CENTER_HORIZONTAL);
+        this.processView.setGravity(Gravity.CENTER_HORIZONTAL);
+
+        this.curTimeTV = curTimeTV;
+        this.totalTimeTV = totalTimeTV;
+        this.seekBar = seekBar;
     }
 
-    protected class TextUpdater implements Runnable {
-        Map<Integer, String> timeCodes;
+    protected class UIUpdater implements Runnable {
+        private final Iterator<Map.Entry<Integer, String>> it;
+        private Map.Entry<Integer, String> curEntry;
+//        private Handler handler;
 
-        public TextUpdater(Map<Integer, String> timeCodes) {
-            this.timeCodes = timeCodes;
+        public UIUpdater(Map<Integer, String> timeCodes) {
+            it = timeCodes.entrySet().iterator();
+            curEntry = it.next();
         }
 
         @Override
         public void run() {
-            for (Map.Entry<Integer, String> entry : timeCodes.entrySet()) {
-                while (!trackPlayer.isClosed()) {
-                    if (!pausePushed) {
-                        int x = trackPlayer.getPosition();
-                        if (x == -1) {
-                            return;
-                        }
-                        if (x >= entry.getKey()) {
-                            break;
-                        }
+            if (!trackPlayer.isClosed()) {
+                int pos = trackPlayer.getPosition();
+                seekBar.setProgress(pos);
+                curTimeTV.setText(convertToTimeFormat(pos));
+                if (pos >= curEntry.getKey()) {
+                    textView.setText(curEntry.getValue());
+                    if (it.hasNext()) {
+                        curEntry = it.next();
                     }
-                    SystemClock.sleep(1000);
                 }
-                textView.setText(entry.getValue());
+                new Handler().postDelayed(this, 100);
+            } else {
+                new Handler().removeCallbacks(this);
             }
-            textView.setText("");
         }
     }
 
     protected InputStream getSongText(int textId) {
-        return context.getResources().openRawResource(textId);
+        return activity.getApplicationContext().getResources().openRawResource(textId);
     }
 
     @Override
     public void start(Track track) {
         curTrack = track;
-        Thread t = null;
+//        Thread t = null;
+        Map<Integer, String> timeCodes = null;
         if (!pausePushed) {
             Log.d(LOG_TAG, "Parse text");
             InputStream is = getSongText(3);
-            Map<Integer, String> timeCodes = TextParser.parse(is);
-            t = new Thread(new TextUpdater(timeCodes));
+            timeCodes = TextParser.parse(is);
+//            t = new Thread(new TextUpdater(timeCodes));
             trackPlayer.setTrack(track, this);
             Log.d(LOG_TAG, "Start work");
         } else {
             Log.d(LOG_TAG, "Continue work");
         }
         trackPlayer.play();
+        totalTimeTV.setText(convertToTimeFormat(trackPlayer.getDuration()));
+        seekBar.setMax(trackPlayer.getDuration());
         voiceRecorder.startRecording();
         if (!pausePushed) {
-            t.start();
+//            t.start();
+            assert timeCodes != null;
+            activity.runOnUiThread(new UIUpdater(timeCodes));
         }
         pausePushed = false;
     }
@@ -106,5 +131,11 @@ public class TrackWorkerSimple implements TrackWorker {
     public void close() {
         trackPlayer.stop();
         trackPlayer.close();
+    }
+
+    @SuppressLint("DefaultLocale")
+    private static String convertToTimeFormat(int milsec) {
+        return String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(milsec) % TimeUnit.HOURS.toMinutes(1),
+                TimeUnit.MILLISECONDS.toSeconds(milsec) % TimeUnit.MINUTES.toSeconds(1));
     }
 }

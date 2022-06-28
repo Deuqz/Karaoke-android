@@ -2,6 +2,7 @@ package com.example.karaoke_android;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 import androidx.annotation.RequiresApi;
@@ -32,12 +33,15 @@ public class MainActivity extends AppCompatActivity {
         musicTab.setText("\uD83C\uDFB6");
         tabLayout.addTab(musicTab);
         TabLayout.Tab settingsTab = tabLayout.newTab();
-        settingsTab.setText("\uD83D\uDC99");
+        settingsTab.setText("❤");
         tabLayout.addTab(settingsTab);
         TabLayout.Tab searchTab = tabLayout.newTab();
         searchTab.setText("\uD83D\uDD0E");
         tabLayout.addTab(searchTab);
         User user = getIntent().getParcelableExtra("User");
+
+        Log.e("MainActivity", String.valueOf(user.getTrackList().size()));
+
         Fragment fragment = ProfileFragment.newInstance(user);
         startFragment(fragment);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import database.Track;
 import database.User;
@@ -44,6 +46,8 @@ public class PlayMusicActivity extends AppCompatActivity {
 
     private TrackPlayer trackPlayer;
 
+    private AtomicBoolean flagStop = new AtomicBoolean(false);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +65,7 @@ public class PlayMusicActivity extends AppCompatActivity {
         titleTV.setGravity(Gravity.CENTER_HORIZONTAL);
 
         Intent intent = getIntent();
-        ImageView backButton = findViewById(R.id.play_music_back_button);
+        TextView backButton = findViewById(R.id.play_music_back_button);
         backButton.setOnClickListener(v -> {
             trackPlayer.stop();
             Intent newIntent;
@@ -80,9 +84,11 @@ public class PlayMusicActivity extends AppCompatActivity {
         user = intent.getParcelableExtra("User");
         if (cameFrom == 1) { // Came from ProfileActivity
             user2 = intent.getParcelableExtra("User2");
+            allTracks = user2.getTrackList();
+        } else {
+            allTracks = user.getTrackList();
         }
         curTrack = intent.getParcelableExtra("Track");
-        allTracks = user.getTrackList();
 
         trackPlayer = new TrackPlayerSimple(getApplicationContext());
 
@@ -98,7 +104,11 @@ public class PlayMusicActivity extends AppCompatActivity {
                     seekBar.setProgress(pos);
                     curTimeTV.setText(convertToTimeFormat(pos));
                 }
-                new Handler().postDelayed(this, 100);
+                if (flagStop.get()) {
+                    new Handler().removeCallbacks(this);
+                } else {
+                    new Handler().postDelayed(this, 100);
+                }
             }
         });
 
@@ -129,7 +139,10 @@ public class PlayMusicActivity extends AppCompatActivity {
         titleTV.setText(curTrack.getName());
         totalTimeTV.setText(convertToTimeFormat(trackPlayer.getDuration()));
         previousButtom.setEnabled(curTrack.getId() != 0);
-        nextButtom.setEnabled(curTrack.getId() != allTracks.size() - 1);
+        Log.e("PlayMusicActivity", String.valueOf(curTrack.getId() < allTracks.size() - 1));
+        Log.e("PlayMusicActivity", String.valueOf(curTrack.getId()));
+        Log.e("PlayMusicActivity", String.valueOf(allTracks.size() - 1));
+        nextButtom.setEnabled(curTrack.getId() < allTracks.size() - 1);
 
         trackPlayer.play();
         seekBar.setProgress(0);
@@ -159,7 +172,7 @@ public class PlayMusicActivity extends AppCompatActivity {
     }
 
     @SuppressLint("DefaultLocale")
-    public static String convertToTimeFormat(int milsec) {
+    private static String convertToTimeFormat(int milsec) {
         return String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(milsec) % TimeUnit.HOURS.toMinutes(1),
                 TimeUnit.MILLISECONDS.toSeconds(milsec) % TimeUnit.MINUTES.toSeconds(1));
     }
@@ -168,5 +181,6 @@ public class PlayMusicActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         trackPlayer.close();
+        flagStop.set(true);
     }
 }
