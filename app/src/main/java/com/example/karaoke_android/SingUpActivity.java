@@ -4,11 +4,19 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
 
@@ -18,7 +26,8 @@ import database.User;
 
 public class SingUpActivity extends AppCompatActivity {
 
-    DataBase database;
+    private DataBase database;
+    private static final String LOG_TAG = "SingUpActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +57,22 @@ public class SingUpActivity extends AppCompatActivity {
         User newUser = new User(firstName, secondName, email, password);
         try {
             database.add(newUser);
+            FirebaseAuth.getInstance()
+                    .createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Log.d(LOG_TAG, "createUserWithEmail:success");
+                    } else {
+                        Log.w(LOG_TAG, "createUserWithEmail:failure", task.getException());
+                        Toast.makeText(SingUpActivity.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(SingUpActivity.this, StartActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
