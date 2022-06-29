@@ -114,7 +114,9 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
             return newFilePath;
         }
 
-        public String getNewUrl() { return newUrl; }
+        public String getNewUrl() {
+            return newUrl;
+        }
 
         public boolean isWorked() {
             return muxer != null && muxer.isWorked();
@@ -208,11 +210,10 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
             trackPath += "/" + getTrackFileName(url);
             Log.d(LOG_TAG, "Path to file: " + trackPath);
             if (!pausePushed && !Files.exists(Paths.get(trackPath))) {
-                String message = String.format("Download trackFile: %s, url: %s", track.getName(), getTrackFileName(url));
-                FileEntity trackEntity = downloadData(getTrackFileName(url), message);
-
-                Log.d(LOG_TAG, String.format("Write file %s by path %s", trackEntity.getUrl(), trackPath));
                 try {
+                    String message = String.format("Download trackFile: %s, url: %s", track.getName(), getTrackFileName(url));
+                    FileEntity trackEntity = downloadData(getTrackFileName(url), message);
+                    Log.d(LOG_TAG, String.format("Write file %s by path %s", trackEntity.getUrl(), trackPath));
                     FileOutputStream fosTrack = new FileOutputStream(trackPath);
                     fosTrack.write(trackEntity.getData());
                     fosTrack.flush();
@@ -221,14 +222,20 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
                     Log.e(LOG_TAG, "Can't write file");
                     Toast.makeText(context, "Can't download track", Toast.LENGTH_SHORT).show();
                     return null;
+                } catch (Exception e) {
+                    Toast.makeText(activity.getApplicationContext(), "This song is not available now", Toast.LENGTH_SHORT).show();
                 }
                 Log.d(LOG_TAG, "Write file successfully");
             }
 
             String textUrl = getTrackTextFileName(url);
             String message = String.format("Download text by url: %s", textUrl);
-            FileEntity textEntity = downloadData(textUrl, message);
-            curText = new ByteArrayInputStream(textEntity.getData());
+            try {
+                FileEntity textEntity = downloadData(textUrl, message);
+                curText = new ByteArrayInputStream(textEntity.getData());
+            } catch (Exception e) {
+                Toast.makeText(activity.getApplicationContext(), "This song is not available now", Toast.LENGTH_SHORT).show();
+            }
             return null;
         }
 
@@ -238,7 +245,7 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
             controller.setWorkStatus(true);
             Thread downloading = new Thread(downloader);
             downloading.start();
-            while(controller.isWorked()) {
+            while (controller.isWorked()) {
                 publishProgress();
             }
             FileEntity entity = downloader.getFileEntity();
@@ -286,7 +293,7 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
             merger.setMuxer(muxer);
             Thread merging = new Thread(merger);
             merging.start();
-            while(merger.isWorked()) {
+            while (merger.isWorked()) {
                 publishProgress();
             }
             String filePath = merger.getNewFilePath();
@@ -298,7 +305,7 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
                 uploader.setEntity(entity);
                 Thread uploading = new Thread(uploader);
                 uploading.start();
-                while(controller.isWorked()) {
+                while (controller.isWorked()) {
                     publishProgress();
                 }
 
