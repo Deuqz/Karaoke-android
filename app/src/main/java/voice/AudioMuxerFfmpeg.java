@@ -8,7 +8,6 @@ import com.arthenica.mobileffmpeg.FFmpeg;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import database.FileConverter;
-import database.Track;
 
 public class AudioMuxerFfmpeg implements AudioMuxer {
 

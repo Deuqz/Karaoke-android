@@ -1,24 +1,16 @@
 package com.example.karaoke_android;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.Gravity;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +19,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import database.Track;
 import database.User;
 import voice.TrackPlayer;
-import voice.TrackPlayerSimple;
 import voice.TrackPlayerURL;
 
 public class PlayMusicActivity extends AppCompatActivity {
@@ -47,7 +38,7 @@ public class PlayMusicActivity extends AppCompatActivity {
 
     private TrackPlayer trackPlayer;
 
-    private AtomicBoolean flagStop = new AtomicBoolean(false);
+    private final AtomicBoolean flagStop = new AtomicBoolean(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

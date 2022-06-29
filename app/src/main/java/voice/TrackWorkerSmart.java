@@ -1,13 +1,9 @@
 package voice;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.media.AsyncPlayer;
-import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Button;
@@ -25,9 +21,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 
 import database.DataBase;
@@ -182,7 +175,6 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
 
     protected class DownloadTask extends AsyncTask<Void, Void, Void> {
         private Track track;
-//        private TrackWorkerSimple worker;
         Consumer<Track> func;
 
         public void setTrack(Track track) {
@@ -294,7 +286,6 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
             merger.setMuxer(muxer);
             Thread merging = new Thread(merger);
             merging.start();
-//            activity.runOnUiThread(indicator);
             while(merger.isWorked()) {
                 publishProgress();
             }
@@ -307,10 +298,6 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
                 uploader.setEntity(entity);
                 Thread uploading = new Thread(uploader);
                 uploading.start();
-//                activity.runOnUiThread(indicator);
-//                try {
-//                    uploading.join();
-//                } catch (InterruptedException e) {}
                 while(controller.isWorked()) {
                     publishProgress();
                 }

@@ -60,7 +60,6 @@ public class FilesDatabase implements DataBase {
 
     @Override
     public User getUser(String email) {
-//        File userFile = new File(context.getFilesDir(), email);
         try (FileInputStream fr = context.openFileInput(email);
              BufferedReader reader = new BufferedReader(new InputStreamReader(fr))) {
             reader.readLine();

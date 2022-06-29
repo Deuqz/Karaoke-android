@@ -1,7 +1,6 @@
 package voice;
 
 import android.app.Activity;
-import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.util.Log;

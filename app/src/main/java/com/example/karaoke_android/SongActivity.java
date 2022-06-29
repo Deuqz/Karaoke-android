@@ -31,7 +31,6 @@ public class SongActivity extends AppCompatActivity {
     private Track track;
 
     private ImageView pausePlayButtom;
-    private Button backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +41,8 @@ public class SongActivity extends AppCompatActivity {
         user = getIntent().getParcelableExtra("User");
         track = getIntent().getParcelableExtra("Track");
         processTextView.setText(track.getName());
-        backButton = findViewById(R.id.song_back_button);
+        Button backButton = findViewById(R.id.song_back_button);
         backButton.setOnClickListener(v -> {
-//            trackWorker.stop();
             trackWorker.close();
             Intent intent = new Intent(this, com.example.karaoke_android.MainActivity.class);
             Log.e("Song Activity", String.valueOf(user.getTrackList().size()));

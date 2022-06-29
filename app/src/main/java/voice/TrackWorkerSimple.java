@@ -2,9 +2,7 @@ package voice;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.SeekBar;
@@ -57,7 +55,6 @@ public class TrackWorkerSimple implements TrackWorker {
     protected class UIUpdater implements Runnable {
         private final Iterator<Map.Entry<Integer, String>> it;
         private Map.Entry<Integer, String> curEntry;
-//        private Handler handler;
 
         public UIUpdater(Map<Integer, String> timeCodes) {
             it = timeCodes.entrySet().iterator();
@@ -106,7 +103,6 @@ public class TrackWorkerSimple implements TrackWorker {
         seekBar.setMax(trackPlayer.getDuration());
         voiceRecorder.startRecording();
         if (!pausePushed) {
-//            t.start();
             assert timeCodes != null;
             activity.runOnUiThread(new UIUpdater(timeCodes));
         }
