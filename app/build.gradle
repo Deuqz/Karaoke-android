@@ -20,9 +20,6 @@ android {
     compileSdkVersion 32
 
     defaultConfig {
-        // applicationId "io.grpc.helloworldexample"
-        // minSdkVersion 21
-        // targetSdkVersion 32
         applicationId "com.example.karaoke_android"
         minSdk 24
         targetSdk 32
@@ -78,11 +75,6 @@ ext {
 
 dependencies {
     // For Backend
-//    implementation 'com.google.android.gms:play-services:6.5.+'
-//    implementation 'com.google.api-client:google-api-client-xml:1.18.0-rc'
-//    implementation 'com.google.http-client:google-http-client-gson:1.39.2'
-//    implementation 'com.google.api-client:google-api-client-android:1.18.0-rc'
-//    implementation 'com.google.apis:google-api-services-drive:v2-rev20211205-1.32.1'
     implementation platform('com.google.firebase:firebase-bom:30.1.0')
     implementation 'com.google.firebase:firebase-storage'
     implementation 'com.google.firebase:firebase-auth'

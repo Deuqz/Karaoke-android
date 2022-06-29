@@ -173,11 +173,9 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
                         step = StepProcess.FIRST;
                         break;
                 }
-//                new Handler().postDelayed(this, 500);
                 SystemClock.sleep(200);
             } else {
                 processView.setText(curTrack.getName());
-//                new Handler().removeCallbacks(this);
             }
         }
     }
@@ -368,53 +366,6 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void stop() {
-        /*super.stop();
-
-        String voicePath = voiceRecorder.getFilePath();
-        String trackPath = trackPlayer.getFilePath();
-        Log.d(LOG_TAG, String.format("Merge files %s and %s", trackPath, voicePath));
-        AudioMuxer muxer = new AudioMuxerFfmpeg(trackPath, voicePath, activity.getApplicationContext());
-        merger.setMuxer(muxer);
-        Thread merging = new Thread(merger);
-        merging.start();
-        activity.runOnUiThread(indicator);
-        try {
-            merging.join();
-        } catch (InterruptedException ignored) {}
-        String filePath = merger.getNewFilePath();
-
-        try {
-            String newRecordUrl = merger.getNewUrl();
-            Log.d(LOG_TAG, String.format("Upload trackFile with voice %s", filePath));
-            FileEntity entity = FileConverter.convert(newRecordUrl, filePath);
-            uploader.setEntity(entity);
-            Thread uploading = new Thread(uploader);
-            uploading.start();
-            activity.runOnUiThread(indicator);
-            try {
-                uploading.join();
-            } catch (InterruptedException e) {}
-
-            Log.e(LOG_TAG, String.valueOf(user.getTrackList().size()));
-            String author = user.getEmail();
-            int newRecordId = user.getTrackList().size();
-            Track newTrack = new Track(curTrack.getName(), author, newRecordUrl, newRecordId);
-            dataBase.addTrackToUser(user.getEmail(), newTrack);
-            user.addTrack(newTrack);
-            Log.e(LOG_TAG, String.valueOf(user.getTrackList().size()));
-            Log.d(LOG_TAG, "Upload successfully");
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Can't upload file " + filePath);
-            Toast.makeText(activity.getApplicationContext(), "Can't upload track", Toast.LENGTH_SHORT).show();
-        } finally {
-            try {
-                Files.delete(Paths.get(voicePath));
-                Files.delete(Paths.get(trackPath));
-                Files.delete(Paths.get(filePath));
-            } catch (IOException e) {
-                Log.d(LOG_TAG, "Can't delete files");
-            }
-        }*/
         UploadTask task = new UploadTask();
         task.setFunc(super::stop);
         task.execute();
@@ -425,7 +376,8 @@ public class TrackWorkerSmart extends TrackWorkerSimple {
     }
 
     protected String getTrackTextFileName(String url) {
-        return String.format("%stext.txt", url);
+        // return String.format("%stext.txt", url); // Simple format
+        return String.format("%stext.json", url); // Json format
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

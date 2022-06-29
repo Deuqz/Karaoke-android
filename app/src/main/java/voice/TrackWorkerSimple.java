@@ -90,13 +90,12 @@ public class TrackWorkerSimple implements TrackWorker {
     @Override
     public void start(Track track) {
         curTrack = track;
-//        Thread t = null;
         Map<Integer, String> timeCodes = null;
         if (!pausePushed) {
             Log.d(LOG_TAG, "Parse text");
             InputStream is = getSongText(3);
-            timeCodes = TextParser.parse(is);
-//            t = new Thread(new TextUpdater(timeCodes));
+            // timeCodes = TextParser.parse(is); // Simple format
+            timeCodes = TextParser.parseJSON(is);
             trackPlayer.setTrack(track, this);
             Log.d(LOG_TAG, "Start work");
         } else {
